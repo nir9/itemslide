@@ -1,0 +1,35 @@
+
+ul {
+    position: fixed;
+    
+    margin-top:6vh;
+	height: 80vh;
+    width:10000px;
+	line-height: 250px;
+	overflow: hidden;
+}
+
+li {
+    display:inline;
+	float: left;
+	width: 84vw;
+	height: 80vh;
+	margin: 0 1px 0 0;
+	padding: 0;
+	/*background: #333;*/
+	color: #FFF;
+	text-align: left;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+	cursor: pointer;
+    background: #000000;
+    -webkit-transform:  scale(0.9);/*rotateY(-60deg)*/
+	-ms-transform:  scale(0.9);
+    -moz-transform:  scale(0.9);
+	transform: scale(0.9);
+    
+    
+    
+}
