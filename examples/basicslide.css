@@ -4,6 +4,7 @@ body{
 }
 ul {
     position: fixed;
+    left:0;
     display: inline;
     margin-top:6vh;
 	/*height: 80vh;*/
