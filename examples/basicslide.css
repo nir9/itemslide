@@ -1,4 +1,7 @@
-
+body{
+	font-family: 'Open Sans', sans-serif;
+	text-align:center;
+}
 ul {
     position: fixed;
     display: inline;
@@ -41,4 +44,9 @@ li {
 #active
 {
     background-color:#F00;
+}
+
+#headertext
+{
+	font-size:5vh;
 }
