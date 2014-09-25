@@ -23,7 +23,7 @@
 
         mc.on("panleft panright", function (ev) {
             //            console.log(ev.velocityX +" gesture detected.");
-            overallslide -= ev.velocityX * sensitivity;
+            overallslide = Number(slides.css("left").replace("px",""))-ev.velocityX * sensitivity;
 
             slides.css("left", overallslide);
         });
@@ -40,7 +40,7 @@
             
             console.log(ev.velocityX);
             slides.animate({
-                left: "-="+(ev.velocityX*100)
+                left: "-="+(ev.velocityX*200)
             }, {
                     duration: 250,
                     easing: 'swing'
