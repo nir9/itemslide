@@ -40,7 +40,7 @@
             
             console.log(ev.velocityX);
             slides.animate({
-                left: "-="+(ev.velocityX*ev.velocity
+                left: "-="+(ev.velocityX*ev.velocityX*20)
             }, {
                     duration: 250,
                     easing: 'swing'
