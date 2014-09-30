@@ -62,7 +62,8 @@
             //$(this).next();
             //slides.css("left",overallslide);
         },{
-            velocity: 0.05
+            velocity: 0.05,
+            threshold: 0
             });
 //asdasd
         /*overallslide += accel;
