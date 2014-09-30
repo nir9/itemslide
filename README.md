@@ -5,7 +5,8 @@ jQuery plugin for item sliding
 
 Dependinces:
 jQuery
-Hammer.js
+<a href="http://hammerjs.github.io/">Hammer.js</a>
+<a href="http://ricostacruz.com/jquery.transit/">jQuery Transit</a>
 
 How to initialize:
 

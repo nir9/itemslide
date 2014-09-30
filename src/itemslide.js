@@ -11,11 +11,16 @@
         //alert(target);
         //$(this)
 
+        // (WIDTH of (this) - WIDTH of slide)/2
+        
         slides = $(this); //Saves the object in a variable //.children
         //alert("children: " + slides.length);
         /*$( this ).children( 'li.target' ).css("border", "3px double red");*/
         //alert(slides.children.length*slides.children('li').css("width").replace("px",""));
         console.log(slides.css("width")); //TODO: solve width problem
+        
+        slides.css("left", ($("body").css("width").replace("px","")-slides.css("left").replace("px","")-slides.children('li').css("width").replace("px",""))/2);
+        console.log(slides.css("left"));
         /*slides.css("width",slides.children.length*slides.children('li').css("width").replace("px","")*2);*/
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
 
@@ -40,16 +45,16 @@
             
             console.log(ev.velocityX);
             slides.animate({
-                left: "-="+(ev.velocityX*200)
+                left: "-="+(ev.velocityX*250)
             }, {
-                    duration: 250,
+                    duration: 225,
                     easing: 'swing'
                 });
             
             //$(this).next();
             //slides.css("left",overallslide);
         },{
-            velocity: 0.2
+            velocity: 0.05
             });
 //asdasd
         /*overallslide += accel;
