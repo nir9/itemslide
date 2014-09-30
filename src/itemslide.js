@@ -42,11 +42,11 @@
 
             console.log(ev.velocityX);
             slides.animate({
-<<<<<<< HEAD
+
                 left: "-=" + (ev.velocityX * 200)
-=======
+
                 left: "-="+(ev.velocityX*Math.abs(ev.velocityX)*200)
->>>>>>> dd3e6dd22a03ad9488974be78327feeaa21fccc0
+
             }, {
                 duration: 250,
                 easing: 'swing'
@@ -80,10 +80,8 @@
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
 
-<<<<<<< HEAD
+
 
 
 })(jQuery);
-=======
-})(jQuery);
->>>>>>> dd3e6dd22a03ad9488974be78327feeaa21fccc0
+
