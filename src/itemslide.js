@@ -13,14 +13,18 @@
 
         // (WIDTH of (this) - WIDTH of slide)/2
         
-        slides = $(this); //Saves the object in a variable //.children
+        slides = $(this); //Saves the object in a variable
+        
         //alert("children: " + slides.length);
         /*$( this ).children( 'li.target' ).css("border", "3px double red");*/
         //alert(slides.children.length*slides.children('li').css("width").replace("px",""));
-        console.log(slides.css("width")); //TODO: solve width problem
         
-        slides.css("left", ($("body").css("width").replace("px","")-slides.css("left").replace("px","")-slides.children('li').css("width").replace("px",""))/2);
+        console.log(slides.css("width"));
+        
+        slides.css("left", ($("body").css("width").replace("px","")-slides.css("left").replace("px","")-slides.children('li').css("width").replace("px",""))/2);//Centerize sliding area
+        
         console.log(slides.css("left"));
+        
         /*slides.css("width",slides.children.length*slides.children('li').css("width").replace("px","")*2);*/
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
 
@@ -44,12 +48,16 @@
             }*/
             
             console.log(ev.velocityX);
-            slides.animate({
+            /*var numbervel = ev.velocityX*250;*/
+            slides.transition({ x: "-="+ ev.velocityX*250}, 'ease');
+            
+            
+            /*slides.animate({
                 left: "-="+(ev.velocityX*250)
             }, {
                     duration: 225,
                     easing: 'swing'
-                });
+                });*/
             
             //$(this).next();
             //slides.css("left",overallslide);
