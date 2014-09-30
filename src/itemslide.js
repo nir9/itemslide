@@ -23,9 +23,9 @@
 
         mc.on("panleft panright", function (ev) {
             //            console.log(ev.velocityX +" gesture detected.");
-            overallslide = Number(slides.css("left").replace("px",""))-ev.velocityX * sensitivity;
+            //overallslide = Number(slides.css("left").replace("px",""))-ev.velocityX * sensitivity;
 
-            slides.css("left", overallslide);
+            slides.css("left", "-="+ev.velocityX * sensitivity);
         });
         mc.on("swipe", function (ev) {
             //            console.log(ev.velocityX +" gesture detected.");
@@ -48,7 +48,9 @@
             
             //$(this).next();
             //slides.css("left",overallslide);
-        });
+        },{
+            velocity: 0.2
+            });
 //asdasd
         /*overallslide += accel;
             accel-=0.01;*/
