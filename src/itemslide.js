@@ -1,9 +1,11 @@
 (function ($) {
+    var vel = 0.1;
     var accel = 0;
     var overallslide = 0;
     var sensitivity = 20;
     var slides;
     var currentIndex = 0;
+
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function () {
 
@@ -23,7 +25,7 @@
 
         mc.on("panleft panright", function (ev) {
             //            console.log(ev.velocityX +" gesture detected.");
-            overallslide = Number(slides.css("left").replace("px",""))-ev.velocityX * sensitivity;
+            overallslide = Number(slides.css("left").replace("px", "")) - ev.velocityX * sensitivity;
 
             slides.css("left", overallslide);
         });
@@ -37,22 +39,29 @@
                 slides.css("left",overallslide);
                 accel-=0.001;
             }*/
-            
+
             console.log(ev.velocityX);
             slides.animate({
-                left: "-="+(ev.velocityX*200)
+                left: "-=" + (ev.velocityX * 200)
             }, {
-                    duration: 250,
-                    easing: 'swing'
-                });
-            
+                duration: 250,
+                easing: 'swing'
+            });
+
             //$(this).next();
             //slides.css("left",overallslide);
+        }, {
+            velocity: vel,
+
         });
 
         /*overallslide += accel;
             accel-=0.01;*/
 
+
+        slides.children('li').click(function () {
+            slides.next();
+        });
     }
 
 
@@ -66,5 +75,7 @@
         console.log("new index: " + currentIndex);
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
+
+
 
 })(jQuery);
