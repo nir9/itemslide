@@ -31,7 +31,7 @@
         mc.on("panleft panright", function (ev) {//Hammerjs pan(drag) event happens very fast
             
 
-            slides.css("left", "-="+ev.velocityX * sensitivity);//Change x of slides to velocity of drag
+            slides.css("left", "-="+ev.deltaX * sensitivity);//Change x of slides to velocity of drag
         });
         mc.on("swipe", function (ev) {//Hammerjs Swipe (called when mouse realsed after mouse down)
             
