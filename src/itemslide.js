@@ -50,15 +50,15 @@
             console.log(ev.velocityX);
             /*var numbervel = ev.velocityX*250;*/
             
-            slides.transition({ x:"-="+ ev.velocityX*250}, 'ease');
+            /*slides.transition({ x:"-="+ ev.velocityX*250}, 'ease');*/
             
             
-            /*slides.animate({
+            slides.animate({
                 left: "-="+(ev.velocityX*250)
             }, {
                     duration: 225,
                     easing: 'swing'
-                });*/
+                });
             
             //$(this).next();
             //slides.css("left",overallslide);
