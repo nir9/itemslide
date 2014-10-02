@@ -13,11 +13,9 @@
 
         // (WIDTH of (this) - WIDTH of slide)/2
         
-        slides = $(this); //Saves the object in a variable
+        slides = $(this); //Saves the object given to the plugin in a variable
         
-        //alert("children: " + slides.length);
-        /*$( this ).children( 'li.target' ).css("border", "3px double red");*/
-        //alert(slides.children.length*slides.children('li').css("width").replace("px",""));
+        
         
         console.log(slides.css("width"));
         
@@ -25,50 +23,37 @@
         
         console.log(slides.css("left"));
         
-        /*slides.css("width",slides.children.length*slides.children('li').css("width").replace("px","")*2);*/
+        
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
 
         var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
 
-        mc.on("panleft panright", function (ev) {
-            //            console.log(ev.velocityX +" gesture detected.");
-            //overallslide = Number(slides.css("left").replace("px",""))-ev.velocityX * sensitivity;
+        mc.on("panleft panright", function (ev) {//Hammerjs pan(drag) event happens very fast
+            
 
-            slides.css("left", "-="+ev.velocityX * sensitivity);
+            slides.css("left", "-="+ev.velocityX * sensitivity);//Change x of slides to velocity of drag
         });
-        mc.on("swipe", function (ev) {
-            //            console.log(ev.velocityX +" gesture detected.");
-            /*accel -= ev.velocityX/100;
-            while(accel>0)
-            {
-                console.log("YAYY");
-                overallslide+=accel;
-                slides.css("left",overallslide);
-                accel-=0.001;
-            }*/
+        mc.on("swipe", function (ev) {//Hammerjs Swipe (called when mouse realsed after mouse down)
+            
             
             console.log(ev.velocityX);
-            /*var numbervel = ev.velocityX*250;*/
             
-            /*slides.transition({ x:"-="+ ev.velocityX*250}, 'ease');*/
             
             
             slides.animate({
                 left: "-="+(ev.velocityX*250)
             }, {
                     /*duration: 225,*/
-                    easing: 'easeOutQuart'
+                    easing: 'easeOutQuart'//Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
                 });
             
-            //$(this).next();
-            //slides.css("left",overallslide);
+            
         },{
-            velocity: 0.05,
-            threshold: 0
+            velocity: 0.05,//minimum velocity
+            threshold: 0//Minimum distance
             });
-//asdasd
-        /*overallslide += accel;
-            accel-=0.01;*/
+
+        
 
     }
 
