@@ -4,6 +4,7 @@
     var sensitivity = 10;
     var slides;
     var currentIndex = 0;
+    var duration = 275;
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function () {
 
@@ -44,12 +45,13 @@
 
 
 
-            slides.animate({
+            /*slides.animate({
                 left: "-=" + (ev.velocityX * 250)
             }, {
-                /*duration: 225,*/
+                duration: speed,
                 easing: 'easeOutQuart' //Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
-            });
+            });*/
+            slides.animateWithCss({left: "-=" + (ev.velocityX * 250)}, duration, 'easeOutQuart');
 
             disable = true;
 
