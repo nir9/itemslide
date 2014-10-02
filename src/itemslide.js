@@ -57,7 +57,7 @@
                 left: "-="+(ev.velocityX*250)
             }, {
                     duration: 225,
-                    easing: 'swing'
+                    easing: 'ease'
                 });
             
             //$(this).next();
