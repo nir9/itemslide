@@ -8,7 +8,7 @@ body{
     -ms-user-select: none; /* IE10+ */
 
 }
-a{
+li a{
     
     background-color: blue;
     color:#fff;
@@ -44,10 +44,10 @@ ul {margin: 0;
 }
 
 li {margin: 0;
-    font-size:10vh;
+    font-size:9vh;
 	float: left;
 	width: 84vw;
-	height: 80vh;
+	height: 75vh;
 	/*margin: 0 1px 0 0;*/
 	/*padding: 0;*/
 	/*background: #333;*/
@@ -81,4 +81,9 @@ li {margin: 0;
 #headertext
 {
 	font-size:6vh;
+}
+
+#codetext
+{
+    font-size:4vh;
 }

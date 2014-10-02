@@ -4,16 +4,23 @@
     var sensitivity = 10;
     var slides;
     var currentIndex = 0;
-    var duration = 275;
+    
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
-    $.fn.initslide = function () {
+    $.fn.initslide = function (options) {
 
-        //var target = $(this).attr('id');
-        //alert(target);
-        //$(this)
-
+        
         // (WIDTH of (this) - WIDTH of slide)/2
 
+
+        var defaults = {
+            duration: 275,
+            pan_sensitivity: 10,
+            swipe_sensitivity: 250
+        };
+
+        var settings = $.extend({}, defaults, options);
+
+        /*console.log(settings.duration);*/
         slides = $(this); //Saves the object given to the plugin in a variable
 
 
@@ -33,7 +40,7 @@
 
             console.log("YAYY");
             if (!disable) {
-                slides.css("left", "-=" + ev.velocityX * sensitivity); //Change x of slides to velocity of drag
+                slides.css("left", "-=" + ev.velocityX * settings.pan_sensitivity); //Change x of slides to velocity of drag
             } else {
                 disable = false;
             }
@@ -51,7 +58,9 @@
                 duration: speed,
                 easing: 'easeOutQuart' //Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
             });*/
-            slides.animateWithCss({left: "-=" + (ev.velocityX * 250)}, duration, 'easeOutQuart');
+            slides.animateWithCss({
+                left: "-=" + (ev.velocityX * settings.swipe_sensitivity)
+            }, settings.duration, 'easeOutQuart');
 
             disable = true;
 
