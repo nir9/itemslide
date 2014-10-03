@@ -68,7 +68,7 @@
             velocity: 0.05, //minimum velocity
             threshold: 0 //Minimum distance
         });
-
+	getLandingSlideIndex(2300);
 
 
     }
