@@ -86,7 +86,7 @@
     }
     
     function getLandingSlideIndex(x){
-for(var i=0;i<slides.children.length)
+for(var i=0;i<slides.children.length;i++)
 {
 	if(slides.children(i).css("left") > x && slides.children(i).css("left")+slides.children(i).css("width") < x)
 	{
