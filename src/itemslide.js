@@ -84,5 +84,21 @@
         console.log("new index: " + currentIndex);
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
+    
+    function getLandingSlideIndex(x){
+for(var i=0;i<slides.children.length)
+{
+	if(slides.children(i).css("left") > x && slides.children(i).css("left")+slides.children(i).css("width") < x)
+	{
+	    console.log(i)
+		return i;
+	}
+}
+}
+
+function gotoSlideByIndex(i)
+{
+	
+}
 
 })(jQuery);
