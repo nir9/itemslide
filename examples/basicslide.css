@@ -87,3 +87,12 @@ li {margin: 0;
 {
     font-size:4vh;
 }
+
+#fotter
+{
+
+    position:fixed;
+    font-size:3vh;
+    bottom:2%;
+    width:100%;
+}

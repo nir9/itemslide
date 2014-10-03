@@ -4,7 +4,8 @@
     var sensitivity = 10;
     var slides;
     var currentIndex = 0;
-    
+    var settings;
+    var initialLeft;
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
 
@@ -13,22 +14,22 @@
 
 
         var defaults = {
-            duration: 275,
+            duration: 300,
             pan_sensitivity: 10,
             swipe_sensitivity: 250
         };
 
-        var settings = $.extend({}, defaults, options);
+        settings = $.extend({}, defaults, options);
 
         /*console.log(settings.duration);*/
         slides = $(this); //Saves the object given to the plugin in a variable
 
-
-
+        initialLeft=slides.css("left").replace("px", "");
+        console.log("initialLeft: "+initialLeft);
         console.log(slides.css("width"));
 
-        slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2); //Centerize sliding area
-
+        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2); //Centerize sliding area
+        gotoSlideByIndex(0);
         console.log(slides.css("left"));
 
 
@@ -58,10 +59,9 @@
                 duration: speed,
                 easing: 'easeOutQuart' //Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
             });*/
-            slides.animateWithCss({
-                left: "-=" + (ev.velocityX * settings.swipe_sensitivity)
-            }, settings.duration, 'easeOutQuart');
 
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px","")));
+            console.log(slides.css("left").replace("px",""));
             disable = true;
 
         }, {
@@ -73,6 +73,10 @@
 
     }
 
+    $.fn.gotoSlide = function (i)
+    {
+        gotoSlideByIndex(i);
+    }
 
     $.fn.next = function () { //Next slide
         changeActiveSlideTo(currentIndex + 1);
@@ -85,30 +89,32 @@
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
     
-    function getLandingSlideIndex(x){console.log("Sup");
+    function getLandingSlideIndex(x){
+    console.log("Sup");
 for(var i=0;i<slides.children('li').length;i++)
 {
     //console.log(slides.children(i).css("width").replace("px","")*i);
 	if(slides.children(i).css("width").replace("px","")*i > x/* && slides.children(i).css("width").replace("px","")*i+slides.children(i).css("width").replace("px","") < x*/)
-
-    function getLandingSlideIndex(x){console.log("hello");
-for(var i=0;i<slides.children.length;i++)
-{console.log(slides.children.length);
-console.log(slides.children(i).css("left"));
-	if(slides.children(i).css("left") > x && slides.children(i).css("left")+slides.children(i).css("width") < x)
-
-	{
+    {
 
 	    console.log(i)
 		return i;
 	}
 }
+                                    }
                                      //console.log($('li:nth-child(' + (2)+ ')').css('width'));
-}
 
-function gotoSlideByIndex(i)
+
+function gotoSlideByIndex(i)//TODO: not exactly centered - center the slide
 {
-	
+	changeActiveSlideTo(i);
+    /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
+
+    slides.animateWithCss({
+                left: -(i * slides.children('li').css("width").replace("px","") - (($("body").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2))
+    }, settings.duration, 'easeOutQuart');
+    console.log("LEFT ::: " + slides.css('left'));
+    //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
 }
 
 })(jQuery);
