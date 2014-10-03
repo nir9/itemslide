@@ -85,16 +85,25 @@
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
     
+    function getLandingSlideIndex(x){console.log("Sup");
+for(var i=0;i<slides.children('li').length;i++)
+{
+    //console.log(slides.children(i).css("width").replace("px","")*i);
+	if(slides.children(i).css("width").replace("px","")*i > x/* && slides.children(i).css("width").replace("px","")*i+slides.children(i).css("width").replace("px","") < x*/)
+
     function getLandingSlideIndex(x){console.log("hello");
 for(var i=0;i<slides.children.length;i++)
 {console.log(slides.children.length);
 console.log(slides.children(i).css("left"));
 	if(slides.children(i).css("left") > x && slides.children(i).css("left")+slides.children(i).css("width") < x)
+
 	{
+
 	    console.log(i)
 		return i;
 	}
 }
+                                     //console.log($('li:nth-child(' + (2)+ ')').css('width'));
 }
 
 function gotoSlideByIndex(i)
