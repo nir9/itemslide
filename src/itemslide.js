@@ -85,7 +85,7 @@
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
     
-    function getLandingSlideIndex(x){
+    function getLandingSlideIndex(x){alert("hello");
 for(var i=0;i<slides.children.length;i++)
 {
 	if(slides.children(i).css("left") > x && slides.children(i).css("left")+slides.children(i).css("width") < x)
