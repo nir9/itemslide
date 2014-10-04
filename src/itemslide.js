@@ -9,7 +9,7 @@
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
 
-        
+
         // (WIDTH of (this) - WIDTH of slide)/2
 
 
@@ -24,12 +24,13 @@
         /*console.log(settings.duration);*/
         slides = $(this); //Saves the object given to the plugin in a variable
 
-        initialLeft=slides.css("left").replace("px", "");
-        console.log("initialLeft: "+initialLeft);
+        initialLeft = slides.css("left").replace("px", "");
+        console.log("initialLeft: " + initialLeft);
         console.log(slides.css("width"));
 
         //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2); //Centerize sliding area
         gotoSlideByIndex(0);
+        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
         console.log(slides.css("left"));
 
 
@@ -60,21 +61,20 @@
                 easing: 'easeOutQuart' //Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
             });*/
 
-            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px","")));
-            console.log(slides.css("left").replace("px",""));
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
+            console.log(slides.css("left").replace("px", ""));
             disable = true;
 
         }, {
-            velocity: 0.05, //minimum velocity
+            velocity: 0.000001, //minimum velocity
             threshold: 0 //Minimum distance
         });
-	getLandingSlideIndex(2300);
+        getLandingSlideIndex(2300);
 
 
     }
 
-    $.fn.gotoSlide = function (i)
-    {
+    $.fn.gotoSlide = function (i) {
         gotoSlideByIndex(i);
     }
 
@@ -88,33 +88,34 @@
         console.log("new index: " + currentIndex);
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
-    
-    function getLandingSlideIndex(x){
-    console.log("Sup");
-for(var i=0;i<slides.children('li').length;i++)
-{
-    //console.log(slides.children(i).css("width").replace("px","")*i);
-	if(slides.children(i).css("width").replace("px","")*i > x/* && slides.children(i).css("width").replace("px","")*i+slides.children(i).css("width").replace("px","") < x*/)
+
+    function getLandingSlideIndex(x) {//Get slide that will be selected when silding occured
+        console.log("Sup");
+        for (var i = 0; i < slides.children('li').length; i++) {
+            //console.log(slides.children(i).css("width").replace("px","")*i);
+            if (slides.children(i).css("width").replace("px", "") * i > x /* && slides.children(i).css("width").replace("px","")*i+slides.children(i).css("width").replace("px","") < x*/ ) {
+
+                console.log(i)
+                return i;
+
+            }
+
+        }
+        return currentIndex;
+    }
+    //console.log($('li:nth-child(' + (2)+ ')').css('width'));
+
+
+    function gotoSlideByIndex(i) //TODO: not exactly centered - center the slide
     {
+        changeActiveSlideTo(i);
+        /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
 
-	    console.log(i)
-		return i;
-	}
-}
-                                    }
-                                     //console.log($('li:nth-child(' + (2)+ ')').css('width'));
-
-
-function gotoSlideByIndex(i)//TODO: not exactly centered - center the slide
-{
-	changeActiveSlideTo(i);
-    /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
-
-    slides.animateWithCss({
-                left: -(i * slides.children('li').css("width").replace("px","") - (($("body").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2))
-    }, settings.duration, 'easeOutQuart');
-    console.log("LEFT ::: " + slides.css('left'));
-    //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
-}
+        slides.animateWithCss({
+            left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2))
+        }, settings.duration, 'easeOutQuart');
+        console.log("LEFT ::: " + slides.css('left'));
+        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
+    }
 
 })(jQuery);

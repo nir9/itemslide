@@ -3,9 +3,9 @@ body{
 	text-align:center;
     
     
-    -webkit-user-select: none; /* Chrome/Safari */        
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
+    /*-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; */
 
 }
 li a{
@@ -21,12 +21,14 @@ li a{
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
 }
-ul {margin: 0;
+ul {
+    -webkit-user-select: none;
+    margin: 0;
     padding: 0;
     position: fixed;
     left:0;
     /*display: inline;*/
-    margin-top:6vh;
+    margin-top:4vh;
 	/*height: 80vh;*/
     height:80vh;
     /*width:10000px;*/
@@ -60,7 +62,7 @@ li {margin: 0;
     -moz-border-radius: 5px;
 	cursor: pointer;
     background: #555555;
-    -webkit-transform:  scale(0.95);/*rotateY(-60deg)*/
+    -webkit-transform:  scale(0.95);
 	-ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
 	transform: scale(0.95);
@@ -93,6 +95,14 @@ li {margin: 0;
 
     position:fixed;
     font-size:3vh;
-    bottom:2%;
-    width:100%;
+    bottom:1.5%;
+    right:0;left:0;
+
+}
+
+#docsbuttons
+{
+
+    font-size:3vh;
+
 }
