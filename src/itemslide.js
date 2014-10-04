@@ -108,12 +108,18 @@
 
     function gotoSlideByIndex(i) //TODO: not exactly centered - center the slide
     {
+        
         changeActiveSlideTo(i);
         /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
-
-        slides.animateWithCss({
-            left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2))
+        
+        
+        slides.animate({
+            left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)), 
+            useTranslate3d:true
         }, settings.duration, 'easeOutQuart');
+        //slides.css("left", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));
+        /*slides.css("-webkit-translate3d", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));*/
+        
         console.log("LEFT ::: " + slides.css('left'));
         //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
     }
