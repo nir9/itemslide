@@ -2,7 +2,7 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	text-align:center;
     
-    
+    -webkit-transform: translateZ(0);
     /*-webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none; */
@@ -43,7 +43,7 @@ ul {
   
     list-style-type: none;
 	overflow: hidden;
-	-webkit-transform: translateZ(0);
+	
 }
 
 li {margin: 0;
