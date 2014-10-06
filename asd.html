@@ -1,0 +1,44 @@
+
+<!DOCTYPE html><html class=''>
+<head><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="canonical" href="http://codepen.io/nseegmiller/pen/apBgx" />
+
+
+<style class="cp-pen-styles">body, html {
+  height: 100%;
+  width: 100%;
+}
+#full-page {
+  height: 100%;
+  width: 100%;
+  background-color: green;
+}</style></head><body>
+
+<div id="full-page"></div>
+<script src="dependencies/hammer.min.js"></script>
+<script>var el = document.getElementById('full-page');
+var hammer = Hammer(el, {
+  drag: true,
+  drag_block_horizontal: true,
+  drag_min_distance: 3,
+  hold: false,
+  release: true,
+  swipe: false,
+  tap: false,
+  touch: false,
+  transform: false
+});
+hammer.on("dragleft", function(event) {
+    console.log(event.gesture.deltaX);
+  console.log(event.gesture)
+});
+
+hammer.on("dragright", function(event) {
+    console.log(event.gesture.deltaX);
+});
+
+hammer.on("release", function() {
+    console.log('release');
+});//@ sourceURL=pen.js
+</script>
+<script src='http://codepen.io/assets/editor/live/css_live_reload_init.js'></script>
+</body></html>

@@ -47,6 +47,11 @@
                 disable = false;
             }
         });
+        mc.on("panend",function (ev){
+            console.log("SD");//PANNING HAS ENNDED
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
+            disable=true;
+        });//WORKS!
         mc.on("swipe", function (ev) { //Hammerjs Swipe (called when mouse realsed after mouse down)
 
 
