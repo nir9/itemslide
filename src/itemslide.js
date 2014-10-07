@@ -47,12 +47,12 @@
                 disable = false;
             }
         });
-        mc.on("panend",function (ev){
-            console.log("SD");//PANNING HAS ENNDED
+        mc.on("panend", function (ev) {
+            console.log("SD"); //PANNING HAS ENNDED
             gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
-            disable=true;
-        });//WORKS!
-        
+            disable = true;
+        }); //WORKS!
+
         getLandingSlideIndex(2300);
 
 
@@ -73,12 +73,12 @@
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
     }
 
-    function getLandingSlideIndex(x) {//Get slide that will be selected when silding occured
+    function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured
         console.log("Sup");
         for (var i = 0; i < slides.children('li').length; i++) {
             //console.log(slides.children(i).css("width").replace("px","")*i);
-            if (slides.children(i).css("width").replace("px", "") * i > x  /*&& slides.children(i).css("width").replace("px","")*(i+1) < x*/ ) {
-
+            if (slides.children(i).css("width").replace("px", "") * i + slides.children(i).css("width").replace("px", "") / 2 > x) { /*&& slides.children(i).css("width").replace("px","")*(i+1) < x*/
+                //YAY FIXED!!!
                 console.log(i)
                 return i;
 
@@ -92,18 +92,18 @@
 
     function gotoSlideByIndex(i) //TODO: not exactly centered - center the slide
     {
-        
+
         changeActiveSlideTo(i);
         /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
-        
-        
+
+
         slides.animate({
-            left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)), 
-            useTranslate3d:true
+            left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)),
+            useTranslate3d: true
         }, settings.duration, 'easeOutQuart');
         //slides.css("left", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));
         /*slides.css("-webkit-translate3d", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));*/
-        
+
         console.log("LEFT ::: " + slides.css('left'));
         //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
     }
