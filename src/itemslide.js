@@ -77,7 +77,7 @@
         console.log("Sup");
         for (var i = 0; i < slides.children('li').length; i++) {
             //console.log(slides.children(i).css("width").replace("px","")*i);
-            if (slides.children(i).css("width").replace("px", "") * i > x /* && slides.children(i).css("width").replace("px","")*i+slides.children(i).css("width").replace("px","") < x*/ ) {
+            if (slides.children(i).css("width").replace("px", "") * i > x  /*&& slides.children(i).css("width").replace("px","")*(i+1) < x*/ ) {
 
                 console.log(i)
                 return i;
