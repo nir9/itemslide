@@ -52,28 +52,7 @@
             gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
             disable=true;
         });//WORKS!
-        mc.on("swipe", function (ev) { //Hammerjs Swipe (called when mouse realsed after mouse down)
-
-
-            console.log(ev.velocityX);
-
-
-
-            /*slides.animate({
-                left: "-=" + (ev.velocityX * 250)
-            }, {
-                duration: speed,
-                easing: 'easeOutQuart' //Choose easing from easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
-            });*/
-
-            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
-            console.log(slides.css("left").replace("px", ""));
-            disable = true;
-
-        }, {
-            velocity: 0.000001, //minimum velocity
-            threshold: 0 //Minimum distance
-        });
+        
         getLandingSlideIndex(2300);
 
 
