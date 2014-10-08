@@ -24,6 +24,7 @@ li a{
 }
 
 ul {
+    -webkit-perspective: 1000;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -32,6 +33,7 @@ ul {
     -ms-user-select: none;
     user-select: none;
 transform-style: preserve-3d;/**/
+    -webkit-transform-style: preserve-3d;
     margin: 0;
     padding: 0;
     position: fixed;
@@ -72,7 +74,7 @@ li {margin: 0;
     /*background: #333;*/
     color: #FFF;
     text-align: center;
-
+-webkit-transform-style: preserve-3d;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
@@ -111,7 +113,7 @@ li {margin: 0;
 {
 
     position:fixed;
-    font-size:3vh;
+    font-size:2.7vh;
     bottom:1.5%;
     right:0;left:0;
 

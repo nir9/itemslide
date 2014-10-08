@@ -1,4 +1,23 @@
+//Vendor prefixes - ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform' ]
+
+var prefix = (function () {//get prefix of client browser
+  var styles = window.getComputedStyle(document.documentElement, ''),
+    pre = (Array.prototype.slice
+      .call(styles)
+      .join('')
+      .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+    )[1],
+    dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+  return pre[0].toUpperCase() + pre.substr(1) + "Transform";/*{
+    dom: dom,
+    lowercase: pre,
+    css: '-' + pre + '-',
+    js: pre[0].toUpperCase() + pre.substr(1)
+  };*/
+})();
+
 (function ($) {
+
     var accel = 0;
     var overallslide = 0;
     var sensitivity = 10;
@@ -7,15 +26,16 @@
     var settings;
     var initialLeft;
     var currentLandPos = 0;
+
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
 
 
         // (WIDTH of (this) - WIDTH of slide)/2
 
-
+        //alert(prefix);
         var defaults = {
-            duration: 300,
+            duration: 350,
             pan_sensitivity: 10,
             swipe_sensitivity: 250
         };
@@ -43,7 +63,7 @@
             console.log(ev.deltaX);
 
             console.log(slides.css("transform"));
-            matrix = matrixToArray(slides.css("transform"));
+            var matrix = matrixToArray(slides.css("transform"));
             var value = parseInt(matrix[4]);
             console.log(value);
 
@@ -51,7 +71,17 @@
             if (!disable) {
                 //slides.css("left", "-=" + ev.velocityX * settings.pan_sensitivity); //Change x of slides to velocity of drag
 //                slides.css("left", ev.deltaX + parseInt(slides.css("left")));
-                slides.css("left", ev.deltaX + currentLandPos);
+
+
+                //slides.css("left", ev.deltaX + currentLandPos);
+
+                slides.css(prefix, 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+
+                /*slides.css({
+				WebkitTransform: 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'
+				//msTransform
+			});*/
+
                 //slides.css("transform", "translateX(" + (ev.deltaX+parseInt(slides.css("left"))) + "px)");
             } else {
                 disable = false;
@@ -59,7 +89,10 @@
         });
         mc.on("panend", function (ev) {
             console.log("SD"); //PANNING HAS ENNDED
-            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - slides.css("left").replace("px", "")));
+            var matrix = matrixToArray(slides.css(prefix));
+            var value = parseInt(matrix[4]);
+            console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             disable = true;
         }); //WORKS!
 
@@ -106,17 +139,25 @@
         changeActiveSlideTo(i);
         /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
 
-
+//MUCH WOW!!!
         slides.animate({
             left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)),
-            useTranslate3d: true
+            useTranslate3d: true,leaveTransforms:true
         }, settings.duration, 'easeOutQuart');
-        currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+        currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));//HHMMMMMMMM
         console.log(currentLandPos +"ccc");
+
         //slides.css("left", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));
         /*slides.css("-webkit-translate3d", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));*/
+/*var matrix = matrixToArray(slides.css("transform"));
+        var value = parseInt(matrix[4]);
+            console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");*/
 
-        console.log("LEFT ::: " + slides.css('left'));
+        var matrix = matrixToArray(slides.css(prefix));
+            var value = parseInt(matrix[4]);
+        console.log("tranform3dx ::: " + value);
+        console.log("left ::: " + slides.css("left"));
+
         //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
     }
 
@@ -124,3 +165,4 @@
         return matrix.substr(7, matrix.length - 8).split(', ');
     }
 })(jQuery);
+
