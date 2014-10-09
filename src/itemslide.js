@@ -84,7 +84,7 @@ slides.css("-webkit-transition", "none");
             var matrix = matrixToArray(slides.css(prefix));
             var value = parseInt(matrix[4]);
             console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
-            //gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             disable = true;
         }); //WORKS!
 
@@ -138,12 +138,13 @@ slides.css("-webkit-transition", "none");
         }, settings.duration, 'easeOutQuart');*/
         var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
         slides.css({
-				WebkitTransform: 'translate3d(' + coordinate + 'px' + ',0px, 0px)',
+				transform: 'translate3d(' + coordinate + 'px' + ',0px, 0px)',
 				WebkitTransition : '0.3s ease-in-out',
                 MozTransition    : '0.3s ease-in-out',
                 MsTransition     : '0.3s ease-in-out',
                 OTransition      : '0.3s ease-in-out',
-                transition       : '0.3s ease-in-out'
+                transition       : '0.3s ease-in-out',
+
 			});
         currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));//HHMMMMMMMM
         console.log(currentLandPos +"ccc");
