@@ -31,9 +31,7 @@ var prefix = (function () {//get prefix of client browser
     $.fn.initslide = function (options) {
 
 
-        // (WIDTH of (this) - WIDTH of slide)/2
 
-        //alert(prefix);
         var defaults = {
             duration: 350,
             pan_sensitivity: 10,
@@ -42,17 +40,17 @@ var prefix = (function () {//get prefix of client browser
 
         settings = $.extend({}, defaults, options);
 
-        /*console.log(settings.duration);*/
+
         slides = $(this); //Saves the object given to the plugin in a variable
 
         initialLeft = slides.css("left").replace("px", "");
         console.log("initialLeft: " + initialLeft);
         console.log(slides.css("width"));
 
-        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2); //Centerize sliding area
+
         gotoSlideByIndex(0);
-        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
-        console.log(slides.css("left"));
+
+
 
 
         $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
@@ -69,20 +67,11 @@ var prefix = (function () {//get prefix of client browser
 
             //            console.log();
             if (!disable) {
-                //slides.css("left", "-=" + ev.velocityX * settings.pan_sensitivity); //Change x of slides to velocity of drag
-//                slides.css("left", ev.deltaX + parseInt(slides.css("left")));
 
-
-                //slides.css("left", ev.deltaX + currentLandPos);
 
                 slides.css(prefix, 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
-                /*slides.css({
-				WebkitTransform: 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'
-				//msTransform
-			});*/
 
-                //slides.css("transform", "translateX(" + (ev.deltaX+parseInt(slides.css("left"))) + "px)");
             } else {
                 disable = false;
             }
@@ -147,22 +136,17 @@ var prefix = (function () {//get prefix of client browser
         currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));//HHMMMMMMMM
         console.log(currentLandPos +"ccc");
 
-        //slides.css("left", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));
-        /*slides.css("-webkit-translate3d", -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)));*/
-/*var matrix = matrixToArray(slides.css("transform"));
-        var value = parseInt(matrix[4]);
-            console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");*/
+
 
         var matrix = matrixToArray(slides.css(prefix));
             var value = parseInt(matrix[4]);
         console.log("tranform3dx ::: " + value);
         console.log("left ::: " + slides.css("left"));
 
-        //slides.css("left", ($("body").css("width").replace("px", "") - slides.css("left").replace("px", "") - slides.children('li').css("width").replace("px", "")) / 2);
+
     }
 
     function matrixToArray(matrix) {
         return matrix.substr(7, matrix.length - 8).split(', ');
     }
 })(jQuery);
-
