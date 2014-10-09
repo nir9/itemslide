@@ -68,7 +68,10 @@ var prefix = (function () {//get prefix of client browser
             //            console.log();
             if (!disable) {
 
-
+slides.css("-webkit-transition", "none");
+    slides.css("-moz-transition", "none");
+    slides.css("-ms-transition", "none");
+    slides.css("transition", "none");
                 slides.css(prefix, 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
 
@@ -136,11 +139,11 @@ var prefix = (function () {//get prefix of client browser
         var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
         slides.css({
 				WebkitTransform: 'translate3d(' + coordinate + 'px' + ',0px, 0px)',
-				WebkitTransition : '1s ease-in-out',
-                MozTransition    : '1s ease-in-out',
-                MsTransition     : '1s ease-in-out',
-                OTransition      : '1s ease-in-out',
-                transition       : '1s ease-in-out'
+				WebkitTransition : '0.3s ease-in-out',
+                MozTransition    : '0.3s ease-in-out',
+                MsTransition     : '0.3s ease-in-out',
+                OTransition      : '0.3s ease-in-out',
+                transition       : '0.3s ease-in-out'
 			});
         currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));//HHMMMMMMMM
         console.log(currentLandPos +"ccc");
