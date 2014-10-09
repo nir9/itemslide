@@ -72,7 +72,7 @@ slides.css("-webkit-transition", "none");
     slides.css("-moz-transition", "none");
     slides.css("-ms-transition", "none");
     slides.css("transition", "none");
-                slides.css(prefix, 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+                slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
 
             } else {
@@ -84,7 +84,7 @@ slides.css("-webkit-transition", "none");
             var matrix = matrixToArray(slides.css(prefix));
             var value = parseInt(matrix[4]);
             console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
-            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            //gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             disable = true;
         }); //WORKS!
 
