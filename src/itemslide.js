@@ -1,14 +1,17 @@
 //Vendor prefixes - ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform' ]
+//about:flags
 
-var prefix = (function () {//get prefix of client browser
-  var styles = window.getComputedStyle(document.documentElement, ''),
-    pre = (Array.prototype.slice
-      .call(styles)
-      .join('')
-      .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-    )[1],
-    dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
-  return pre[0].toUpperCase() + pre.substr(1) + "Transform";/*{
+
+var prefix = (function () { //get prefix of client browser
+    var styles = window.getComputedStyle(document.documentElement, ''),
+        pre = (Array.prototype.slice
+            .call(styles)
+            .join('')
+            .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+        )[1],
+        dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+    return pre[0].toUpperCase() + pre.substr(1) + "Transform";
+    /*{
     dom: dom,
     lowercase: pre,
     css: '-' + pre + '-',
@@ -16,7 +19,26 @@ var prefix = (function () {//get prefix of client browser
   };*/
 })();
 
+
+
 (function ($) {
+
+
+    /*var globalID;
+
+function repeatOften() {
+  $("<div />").appendTo("body");
+  globalID = requestAnimationFrame(repeatOften);
+}
+
+$("#start").on("click", function() {
+  globalID = requestAnimationFrame(repeatOften);
+});
+
+$("#stop").on("click", function() {
+  cancelAnimationFrame(globalID);
+});*/
+
 
     var accel = 0;
     var overallslide = 0;
@@ -26,6 +48,18 @@ var prefix = (function () {//get prefix of client browser
     var settings;
     var initialLeft;
     var currentLandPos = 0;
+    var slidesGlobalID;
+
+
+
+    //Easing stuff
+
+    var currentPos = 0;
+    //    var increment=10;
+    //    var incrementer = .01;
+    var begin=0;
+    var targetFrame;
+    var countFrames = 0;
 
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
@@ -59,9 +93,9 @@ var prefix = (function () {//get prefix of client browser
         var disable = false;
 
         slides.css("-webkit-transition", "0s");
-    slides.css("-moz-transition", "0s");
-    slides.css("-ms-transition", "0s");
-    slides.css("transition", "0s");
+        slides.css("-moz-transition", "0s");
+        slides.css("-ms-transition", "0s");
+        slides.css("transition", "0s");
 
         mc.on("panleft panright", function (ev) { //Hammerjs pan(drag) event happens very fast
             console.log(ev.deltaX);
@@ -75,14 +109,15 @@ var prefix = (function () {//get prefix of client browser
             if (!disable) {
 
 
-                //slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
-                slides.css({x: (ev.deltaX + currentLandPos) + 'px'}); // transform according to vendor prefix
+                slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+
 
             } else {
-                slides.css("-webkit-transition", "0s");
+                /*slides.css("-webkit-transition", "0s");
     slides.css("-moz-transition", "0s");
     slides.css("-ms-transition", "0s");
-    slides.css("transition", "0s");
+    slides.css("transition", "0s");*/
+
                 disable = false;
             }
         });
@@ -91,7 +126,7 @@ var prefix = (function () {//get prefix of client browser
             var matrix = matrixToArray(slides.css(prefix));
             var value = parseInt(matrix[4]);
             console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
-            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            //gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             disable = true;
         }); //WORKS!
 
@@ -138,13 +173,14 @@ var prefix = (function () {//get prefix of client browser
         changeActiveSlideTo(i);
         /*slides.css("left","+="-i*slides.children('li').css("width").replace("px",""));*/
 
-//MUCH WOW!!!
+        //MUCH WOW!!!
         /*slides.animate({
             left: -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)),
             useTranslate3d: true,leaveTransforms:true
         }, settings.duration, 'easeOutQuart');*/
+
         var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
-        slides.transition({ x:coordinate});
+
         /*slides.css({
 				transform: 'translate3d(' + coordinate + 'px' + ',0px, 0px)',
 				WebkitTransition : '0.3s ease-in-out',
@@ -154,13 +190,23 @@ var prefix = (function () {//get prefix of client browser
                 transition       : '0.3s ease-in-out',
 
 			});*/
-        currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));//HHMMMMMMMM
-        console.log(currentLandPos +"ccc");
 
+
+
+        currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)); //HHMMMMMMMM
+        console.log(currentLandPos + "ccc");
+
+        targetFrame = i;
+        increment = 20;
+
+        //counter=0;
+        /*repeatOften();*/
+        begin = currentPos;
+        globalID = requestAnimationFrame(repeatOften);
 
 
         var matrix = matrixToArray(slides.css(prefix));
-            var value = parseInt(matrix[4]);
+        var value = parseInt(matrix[4]);
         console.log("tranform3dx ::: " + value);
         console.log("left ::: " + slides.css("left"));
 
@@ -170,4 +216,46 @@ var prefix = (function () {//get prefix of client browser
     function matrixToArray(matrix) {
         return matrix.substr(7, matrix.length - 8).split(', ');
     }
+
+
+    function repeatOften() {
+
+        countFrames++;
+        console.log("ASDASD");
+
+        if (increment > 0) //EaseOut
+        {
+
+            //incrementer -= 0.003;
+            currentPos -= easeOutQuart(countFrames,begin,currentPos-currentLandPos,settings.duration);//settings.duration
+            //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
+            if(currentPos == currentLandPos)
+            {
+                countFrames=0;
+            return; //out of recursion
+            }
+            console.log("So Animate!");
+            //            currentPos-=increment;
+            console.log("inc" + increment);
+            //time
+
+        } else {console.log("DONE!!!");
+            //cancelAnimationFrame(globalID);
+            countFrames=0;
+            return; //out of recursion
+        }
+
+        slides.css('transform', 'translate3d(' + (currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+        // Do whatever
+        requestAnimationFrame(repeatOften);
+    }
+
+
+
+    function easeOutQuart(t, b, c, d) {
+        t /= d;
+        t--;
+        return -c * (t * t * t * t - 1) + b;
+    }
+
 })(jQuery);
