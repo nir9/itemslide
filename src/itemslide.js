@@ -57,6 +57,12 @@ var prefix = (function () {//get prefix of client browser
 
         var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
         var disable = false;
+
+        slides.css("-webkit-transition", "0s");
+    slides.css("-moz-transition", "0s");
+    slides.css("-ms-transition", "0s");
+    slides.css("transition", "0s");
+
         mc.on("panleft panright", function (ev) { //Hammerjs pan(drag) event happens very fast
             console.log(ev.deltaX);
 
@@ -68,14 +74,15 @@ var prefix = (function () {//get prefix of client browser
             //            console.log();
             if (!disable) {
 
-slides.css("-webkit-transition", "none");
-    slides.css("-moz-transition", "none");
-    slides.css("-ms-transition", "none");
-    slides.css("transition", "none");
+
                 slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
 
             } else {
+                slides.css("-webkit-transition", "0s");
+    slides.css("-moz-transition", "0s");
+    slides.css("-ms-transition", "0s");
+    slides.css("transition", "0s");
                 disable = false;
             }
         });
