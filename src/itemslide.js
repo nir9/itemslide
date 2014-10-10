@@ -65,7 +65,7 @@ $("#stop").on("click", function() {
 
 
         var defaults = {
-            duration: 350,
+            duration: 300,
             pan_sensitivity: 10,
             swipe_sensitivity: 250
         };
@@ -98,29 +98,26 @@ $("#stop").on("click", function() {
         slides.css("transition", "0s");*/
 
         mc.on("panleft panright", function (ev) { //Hammerjs pan(drag) event happens very fast
-            console.log(ev.deltaX);
+            /*console.log(ev.deltaX);
 
             console.log(slides.css("transform"));
             var matrix = matrixToArray(slides.css("transform"));
             var value = parseInt(matrix[4]);
-            console.log(value);
+            console.log(value);*/
 
             //            console.log();
-            if (!disable) {
+            /*if (!disable) {*/
 
 
                 slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+cancelAnimationFrame(slidesGlobalID);
 
+            /*} else {
 
-            } else {
-                /*slides.css("-webkit-transition", "0s");
-    slides.css("-moz-transition", "0s");
-    slides.css("-ms-transition", "0s");
-    slides.css("transition", "0s");*/
                 console.log("AWDADASDASDASDASDASDASD");
-                cancelAnimationFrame(globalID);
+
                 disable = false;
-            }
+            }*/
         });
         mc.on("panend", function (ev) {
             console.log("SD"); //PANNING HAS ENNDED
@@ -206,8 +203,9 @@ currentPos=value;
 
         //counter=0;
         /*repeatOften();*/
-        begin = currentPos;
-        globalID = requestAnimationFrame(repeatOften);
+        //begin = currentPos;
+        countFrames=0;
+        slidesGlobalID = requestAnimationFrame(repeatOften);
 
 
 
@@ -248,7 +246,7 @@ currentPos=value;
 
         slides.css('transform', 'translate3d(' + (currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
-        requestAnimationFrame(repeatOften);
+        slidesGlobalID = requestAnimationFrame(repeatOften);
     }
 
 
