@@ -32,6 +32,7 @@ Itemslide.JS</div>
     <div id="docsbuttons">
     <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(7)">Methods</span>
     </div>
+    <div>
 <ul>
 <li>
 <br/>
@@ -43,6 +44,7 @@ Tested on:<br/>
     iPad Mini<br/>
     Nexus 4<br/>
     iPhone 4<br/>
+    LG G3
 </li>
 
 <li>
@@ -62,16 +64,19 @@ Sliding is Cool!
     <li>
         <div id="codetext">
     Options:<br>
-        duration - duration of swipe animation (default: 275)<br/>
-        pan_sensitivity - panning sensitivity (default: 10)<br/>
-        swipe_sensitivity - swiping sensitivity (default: 250)</div>
+        duration - duration of swipe animation (default: 250)<br/>
+        swipe_sensitivity - swiping sensitivity (default: 250)<br/>
+        disable_slide - disable swiping and panning (default: false)</div>
     </li>
     <li>
         <div id="codetext">
     Methods:<br>
+            Set:<br/>
         next() - goes to next slide<br/>
         previous() - goes to previous slide<br/>
-        gotoSlide(i) - goes to a specific slide by index</div>
+        gotoSlide(i) - goes to a specific slide by index<br/>
+            Get:<br/>
+        getActiveIndex() - get current active slide index</div>
     </li>
 
     <li>
@@ -114,6 +119,7 @@ Currently under development
 Currently under development
 </li>
 </ul>
+        </div>
 <div id="fotter" align="center">Created by Nir Lichtman <!--| <a target="_blank" href="https://github.com/itemslide/itemslide.github.io">Github</a>--><!-- | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span>--></div>
 </body>
 </html>
