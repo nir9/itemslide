@@ -55,8 +55,6 @@ $("#stop").on("click", function() {
     //Easing stuff
 
     var currentPos = 0;
-    //    var increment=10;
-    //    var incrementer = .01;
     var begin=0;
     var targetFrame;
     var countFrames = 0;
@@ -81,8 +79,10 @@ $("#stop").on("click", function() {
         console.log("initialLeft: " + initialLeft);
         console.log(slides.css("width"));
 
+        slides.css('transform', 'translate3d(0px,0px, 0px)'); // transform according to vendor prefix
 
         gotoSlideByIndex(0);
+
         console.log("prefix: " + prefix);
 
 
@@ -92,10 +92,10 @@ $("#stop").on("click", function() {
         var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
         var disable = false;
 
-        slides.css("-webkit-transition", "0s");
+        /*slides.css("-webkit-transition", "0s");
         slides.css("-moz-transition", "0s");
         slides.css("-ms-transition", "0s");
-        slides.css("transition", "0s");
+        slides.css("transition", "0s");*/
 
         mc.on("panleft panright", function (ev) { //Hammerjs pan(drag) event happens very fast
             console.log(ev.deltaX);
@@ -117,7 +117,8 @@ $("#stop").on("click", function() {
     slides.css("-moz-transition", "0s");
     slides.css("-ms-transition", "0s");
     slides.css("transition", "0s");*/
-
+                console.log("AWDADASDASDASDASDASDASD");
+                cancelAnimationFrame(globalID);
                 disable = false;
             }
         });
@@ -126,7 +127,8 @@ $("#stop").on("click", function() {
             var matrix = matrixToArray(slides.css(prefix));
             var value = parseInt(matrix[4]);
             console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
-            //gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+            gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));//HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             disable = true;
         }); //WORKS!
 
@@ -167,7 +169,7 @@ $("#stop").on("click", function() {
     //console.log($('li:nth-child(' + (2)+ ')').css('width'));
 
 
-    function gotoSlideByIndex(i) //TODO: not exactly centered - center the slide
+    function gotoSlideByIndex(i)
     {
 
         changeActiveSlideTo(i);
@@ -190,14 +192,17 @@ $("#stop").on("click", function() {
                 transition       : '0.3s ease-in-out',
 
 			});*/
+            var matrix = matrixToArray(slides.css("transform"));
+            var value = parseFloat(matrix[4]);
+            console.log(value);
 
-
+currentPos=value;
 
         currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)); //HHMMMMMMMM
         console.log(currentLandPos + "ccc");
 
-        targetFrame = i;
-        increment = 20;
+
+
 
         //counter=0;
         /*repeatOften();*/
@@ -205,10 +210,10 @@ $("#stop").on("click", function() {
         globalID = requestAnimationFrame(repeatOften);
 
 
-        var matrix = matrixToArray(slides.css(prefix));
-        var value = parseInt(matrix[4]);
+
+
         console.log("tranform3dx ::: " + value);
-        console.log("left ::: " + slides.css("left"));
+        //console.log("left ::: " + slides.css("left"));
 
 
     }
@@ -223,30 +228,26 @@ $("#stop").on("click", function() {
         countFrames++;
         console.log("ASDASD");
 
-        if (increment > 0) //EaseOut
-        {
+
 
             //incrementer -= 0.003;
-            currentPos -= easeOutQuart(countFrames,begin,currentPos-currentLandPos,settings.duration);//settings.duration
+            currentPos -= easeOutQuart(countFrames,0,currentPos-currentLandPos,settings.duration);//work!! BEGIN = 0
             //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if(currentPos == currentLandPos)
             {
+                console.log("out of loop");
                 countFrames=0;
             return; //out of recursion
             }
-            console.log("So Animate!");
+            //console.log("So Animate!");
             //            currentPos-=increment;
-            console.log("inc" + increment);
+//            console.log("inc" + increment);
             //time
 
-        } else {console.log("DONE!!!");
-            //cancelAnimationFrame(globalID);
-            countFrames=0;
-            return; //out of recursion
-        }
+
 
         slides.css('transform', 'translate3d(' + (currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
-        // Do whatever
+
         requestAnimationFrame(repeatOften);
     }
 
