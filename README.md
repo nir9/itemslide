@@ -12,7 +12,7 @@ How to initialize:
 
 $("ul").initslide();
 
-### Dependencies
+### Options
 
 - duration - duration of swipe animation {default: 250}
 - swipe_sensitivity - swiping sensitivity {default: 250}
