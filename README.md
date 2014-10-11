@@ -4,8 +4,8 @@ itemslide.github.io
 jQuery plugin for item sliding
 
 ### Dependencies
-[jQuery](http://jquery.com/)
-[Hammer.js](http://hammerjs.github.io/)
+- [jQuery](http://jquery.com/)
+- [Hammer.js](http://hammerjs.github.io/)
 
 
 How to initialize:
