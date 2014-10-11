@@ -118,7 +118,11 @@ $.fn.gotoSlide = function (i) {
 }
 
 $.fn.next = function () { //Next slide
-    changeActiveSlideTo(currentIndex + 1);
+    gotoSlideByIndex(currentIndex + 1);
+}
+
+$.fn.previous = function () { //Next slide
+    gotoSlideByIndex(currentIndex - 1);
 }
 
 $.fn.reload = function () {//Get index of active slide
