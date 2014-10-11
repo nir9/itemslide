@@ -46,13 +46,13 @@ ul {
     /*width:2300px;*/
     /*line-height: 250px;*/
 
-    display: flex;/*SEE: http://caniuse.com/#feat=flexbox*/
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-
-    display: -webkit-flex;     /* NEW - Chrome */
-
+    /*SEE: http://caniuse.com/#feat=flexbox*/
+    /*display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;*/
+    /*width:10000px*/
 
     list-style-type: none;
     overflow: hidden;

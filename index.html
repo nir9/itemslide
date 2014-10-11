@@ -30,7 +30,7 @@
 <div id="headertext">
 Itemslide.JS</div>
     <div id="docsbuttons">
-    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(7)">Methods</span>
+    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(7)">Methods</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(8)">Events</span>
     </div>
     <div>
 <ul>
@@ -75,12 +75,18 @@ Sliding is Cool!
         next() - goes to next slide<br/>
         previous() - goes to previous slide<br/>
         gotoSlide(i) - goes to a specific slide by index<br/>
+        reload() - recalculates width and center object (recommended to call when resize occures)<br/>
             Get:<br/>
-        getActiveIndex() - get current active slide index</div>
+        getActiveIndex() - get current active slide index<br/>
+        getCurrentPos() - get current position of carousel (pixels)
+        </div>
     </li>
 
-    <li>
-Currently under development
+    <li><div id="codetext">
+Events:<br>
+        pan - triggered when user pans<br/>
+        changeActiveIndex - triggered when the current active item has changed
+        </div>
 </li><li>
 Currently under development
 </li><li>

@@ -64,6 +64,9 @@ $.fn.initslide = function (options) {
 
     initialLeft = slides.css("left").replace("px", "");
     console.log("initialLeft: " + initialLeft);
+
+    slides.css("width",slides.children('li').length*slides.children('li').css("width").replace("px",""));//SET WIDTH
+
     console.log(slides.css("width"));
 
     slides.css('transform', 'translate3d(0px,0px, 0px)'); // transform according to vendor prefix
@@ -88,6 +91,7 @@ $.fn.initslide = function (options) {
 
         if (!settings.disable_slide) {
             slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+            slides.trigger('pan');
             cancelAnimationFrame(slidesGlobalID);
         }
 
@@ -117,9 +121,19 @@ $.fn.next = function () { //Next slide
     changeActiveSlideTo(currentIndex + 1);
 }
 
+$.fn.reload = function () {//Get index of active slide
+    slides.css("width",slides.children('li').length*slides.children('li').css("width").replace("px",""));//SET WIDTH
+    gotoSlideByIndex(currentIndex);
+}
+
 $.fn.getActiveIndex = function () {//Get index of active slide
     return currentIndex;
 }
+
+$.fn.getCurrentPos = function () {//Get index of active slide
+    return currentPos;
+}
+
 
 function changeActiveSlideTo(i) {
     $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', '');
@@ -171,6 +185,7 @@ function gotoSlideByIndex(i) {
 
     countFrames = 0;
     //MUCH WOW!!!
+    slides.trigger('changeActiveItem');
     slidesGlobalID = requestAnimationFrame(repeatOften);
 
 
