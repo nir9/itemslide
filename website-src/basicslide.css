@@ -12,21 +12,22 @@ body{
 #downloadarea{
     position:relative;
     top:20%;
-    
+    font-size:3vh;
+    line-height:10vh;
 }
 
 li a{
-    
+
     background-color: #535353;
     color:#fff;
-    padding: 10px;
+    padding: 1.5vh;/*10px*/
     font-size: 8vmin;
     text-decoration: none;
-    
-    border-radius: 25px;
-    -webkit-border-radius: 25px;
-    -o-border-radius: 25px;
-    -moz-border-radius: 25px;
+
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -o-border-radius: 30px;
+    -moz-border-radius: 30px;
 }
 
 ul {
@@ -45,9 +46,9 @@ ul {
     position: fixed;
     left:0;
     /*display: inline;*/
-    margin-top:2.5vh;
+    margin-top:6vh;
     /*height: 80vh;*/
-    height:75%;
+    height:67%;
     /*width:10000px;*/
     /*width:2300px;*/
     /*line-height: 250px;*/
@@ -68,7 +69,8 @@ ul {
 
 }
 
-li {margin: 0;
+li {
+    margin: 0;
     padding: 0;
     list-style-type: none;
     font-size:8vmin;/*cool*/
@@ -81,7 +83,6 @@ li {margin: 0;
     color: #000;
     font-weight: 300;
     text-align: center;
--webkit-transform-style: preserve-3d;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
@@ -103,7 +104,7 @@ li {margin: 0;
     -ms-transform:  scale(1);
     -moz-transform:  scale(1);
     transform: scale(1);
-    
+
 }
 
 #headertext
@@ -121,7 +122,7 @@ li {margin: 0;
 {
 
     position:fixed;
-    font-size:2.2vh;
+    font-size:2.5vh;
     bottom:1.5%;
     right:0;left:0;
 

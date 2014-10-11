@@ -1,50 +1,42 @@
 <html>
 <head>
 <title>ItemSlide.js</title>
+
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
-<!--Dependinces--->
 
+
+<!--Dependinces--->
 <script src="dependencies/hammer.min.js"></script>
 <script src="dependencies/jquery-1.11.1.min.js"></script>
 
-    <!--<script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>-->
-<!--<script src="dependencies/jquery.transit.min.js"></script>-->
-<!--<script src="plugins/jquery.easing.compatibility.js"></script>-->
-    <!--<script src="jquery.easing.1.3.js"></script>-->
 
-    <!--<script src="dependencies/cssforjquery.js"></script>-->
-
-
-    <!--<script src="dependencies/jquery.animate-enhanced.min.js"></script>-->
-
-
-
-<!--<script src="dependencies/ios-fix.js"></script>-->
-<link href="examples/basicslide.css" rel="stylesheet">
-<script src="examples/basicslide.js"></script>
-<script src="src/itemslide.js"></script>
+<link href="website-src/basicslide.css" rel="stylesheet">
+<script src="website-src/basicslide.js"></script>
+<script src="src/itemslide.min.js"></script>
 
 </head>
 <body>
     
 <div id="headertext">
-    ItemSlide<span style="font-size:3vh;">.js</span></div>
+    ItemSlide<span style="font-size:4vh;">.js</span></div>
     
     <div id="docsbuttons">
-    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span>
+    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span> &nbsp; <a style="text-decoration:none; color:#000;" href="https://github.com/itemslide/itemslide.github.io" target="_blank">Github</a>
     </div>
     
     <div id="scrolling">
 <ul>
 <li>
 To use simply write:<br/>
-    <span style="font-family:'Source Code Pro';">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span> 
+    <span style="font-family:'Source Code Pro';font-size:5vmin;">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span>
     <br/>
     <span id="downloadarea">
-    <a href="src/itemslide.js">DOWNLOAD</a>
+    <a href="src/itemslide.min.js">DOWNLOAD</a><br/>
+        3KB minified - Requires jQuery and Hammer.js
         </span>
     
+
 </li>
     
     
@@ -54,7 +46,9 @@ To use simply write:<br/>
     Options:<br>
         duration - duration of swipe animation {default: 250}<br/>
         swipe_sensitivity - swiping sensitivity {default: 250}<br/>
-        disable_slide - disable swiping and panning {default: false}</div>
+        disable_slide - disable swiping and panning {default: false}<br/>
+        disable_autowidth - disable calculation of width {default: false}<br/>
+        (if you want to do it manually)</div>
     </li>
     <li>
         <div id="codetext">
