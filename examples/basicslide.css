@@ -1,5 +1,5 @@
 body{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     text-align:center;
     /*padding:0;*/
     margin:0;
@@ -9,18 +9,24 @@ body{
     -webkit-transform:translate3d(0,0,0);
 }
 
-li a{
+#downloadarea{
+    position:relative;
+    top:20%;
+    
+}
 
-    background-color: blue;
+li a{
+    
+    background-color: #535353;
     color:#fff;
     padding: 10px;
-
+    font-size: 8vmin;
     text-decoration: none;
-
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -o-border-radius: 5px;
-    -moz-border-radius: 5px;
+    
+    border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -o-border-radius: 25px;
+    -moz-border-radius: 25px;
 }
 
 ul {
@@ -39,7 +45,7 @@ ul {
     position: fixed;
     left:0;
     /*display: inline;*/
-    margin-top:4vh;
+    margin-top:2.5vh;
     /*height: 80vh;*/
     height:75%;
     /*width:10000px;*/
@@ -65,14 +71,15 @@ ul {
 li {margin: 0;
     padding: 0;
     list-style-type: none;
-    font-size:9vh;
+    font-size:8vmin;/*cool*/
     float: left;
     width: 84vw;
     height: 100%;
     /*margin: 0 1px 0 0;*/
     /*padding: 0;*/
     /*background: #333;*/
-    color: #FFF;
+    color: #000;
+    font-weight: 300;
     text-align: center;
 -webkit-transform-style: preserve-3d;
     border-radius: 5px;
@@ -80,7 +87,7 @@ li {margin: 0;
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     cursor: pointer;
-    background: #555555;
+    background: #FFFFFD;
     -webkit-transform:  scale(0.95);
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
@@ -91,17 +98,18 @@ li {margin: 0;
 }
 
 #active
-{
+{/*applied to current active item*/
     -webkit-transform:  scale(1);/*rotateY(-60deg)*/
     -ms-transform:  scale(1);
     -moz-transform:  scale(1);
     transform: scale(1);
-    background-color:#F00;
+    
 }
 
 #headertext
 {
     font-size:6vh;
+    font-weight: 300;/*ask*/
 }
 
 #codetext
@@ -113,7 +121,7 @@ li {margin: 0;
 {
 
     position:fixed;
-    font-size:2.7vh;
+    font-size:2.2vh;
     bottom:1.5%;
     right:0;left:0;
 
@@ -140,4 +148,12 @@ ul.horizTranslate {
     -moz-transform: translateX(300px);
     -o-transform: translate3d(300px,0,0);
     -ms-transform: translateX(300px);*/
+}
+
+#scrolling{
+    top:15vh;
+    position:fixed;
+    background-color:#cccccc;
+    height:85vh;
+    width:100vw;
 }

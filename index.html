@@ -1,7 +1,8 @@
 <html>
 <head>
-<title>Itemslide.JS</title>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+<title>ItemSlide.js</title>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
 <!--Dependinces--->
 
 <script src="dependencies/hammer.min.js"></script>
@@ -28,104 +29,57 @@
 <body>
     
 <div id="headertext">
-Itemslide.JS</div>
+    ItemSlide<span style="font-size:3vh;">.js</span></div>
+    
     <div id="docsbuttons">
-    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(7)">Methods</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(8)">Events</span>
+    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span>
     </div>
-    <div>
+    
+    <div id="scrolling">
 <ul>
 <li>
-<br/>
-    <a href="src/itemslide.js">Download Now</a>
-
+To use simply write:<br/>
+    <span style="font-family:'Source Code Pro';">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span> 
+    <br/>
+    <span id="downloadarea">
+    <a href="src/itemslide.js">DOWNLOAD</a>
+        </span>
+    
 </li>
-<li>
-Tested on:<br/>
-    iPad Mini<br/>
-    Nexus 4<br/>
-    iPhone 4<br/>
-    LG G3
-</li>
-
-<li>
-Very light roughly 5kb
-
-</li>
-    <li>
-    To use simply write:<br>
-        $("ul").initslide();
-    </li>
-<li><br>
-Sliding is Cool!
-</li>
-    <li>
-    Enjoy!
-    </li>
+    
+    
+    
     <li>
         <div id="codetext">
     Options:<br>
-        duration - duration of swipe animation (default: 250)<br/>
-        swipe_sensitivity - swiping sensitivity (default: 250)<br/>
-        disable_slide - disable swiping and panning (default: false)</div>
+        duration - duration of swipe animation {default: 250}<br/>
+        swipe_sensitivity - swiping sensitivity {default: 250}<br/>
+        disable_slide - disable swiping and panning {default: false}</div>
     </li>
     <li>
         <div id="codetext">
     Methods:<br>
-            Set:<br/>
-        next() - goes to next slide<br/>
-        previous() - goes to previous slide<br/>
-        gotoSlide(i) - goes to a specific slide by index<br/>
-        reload() - recalculates width and center object (recommended to call when resize occures)<br/>
             Get:<br/>
         getActiveIndex() - get current active slide index<br/>
         getCurrentPos() - get current position of carousel (pixels)
         </div>
     </li>
-
+<li>
+    <div id="codetext">
+    Set:<br/>
+        next() - goes to next slide<br/>
+        previous() - goes to previous slide<br/>
+        gotoSlide(i) - goes to a specific slide by index<br/>
+        reload() - recalculates width and center object<br/>(recommended to call when resize occures)<br/>
+    </div></li>
     <li><div id="codetext">
 Events:<br>
         pan - triggered when user pans<br/>
         changeActiveIndex - triggered when the current active item has changed
         </div>
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
-</li><li>
-Currently under development
 </li>
 </ul>
         </div>
-<div id="fotter" align="center">Created by Nir Lichtman <!--| <a target="_blank" href="https://github.com/itemslide/itemslide.github.io">Github</a>--><!-- | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(3)">Init</span> | <span style="cursor:pointer;" onclick="$('ul').gotoSlide(6)">Options</span>--></div>
+<div id="fotter" align="center">Created by Nir Lichtman. Design by Idan Abarbanel.</div>
 </body>
 </html>
