@@ -43,12 +43,12 @@ ul {
     -webkit-transform-style: preserve-3d;*/
     margin: 0;
     padding: 0;
-    position: fixed;
+    position: absolute;
     left:0;
     /*display: inline;*/
-    margin-top:6vh;
+    margin-top:7vh;
     /*height: 80vh;*/
-    height:67%;
+    height:77%;
     /*width:10000px;*/
     /*width:2300px;*/
     /*line-height: 250px;*/
@@ -83,10 +83,10 @@ li {
     color: #000;
     font-weight: 300;
     text-align: center;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -o-border-radius: 5px;
-    -moz-border-radius: 5px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -o-border-radius: 30px;
+    -moz-border-radius: 30px;
     cursor: pointer;
     background: #FFFFFD;
     -webkit-transform:  scale(0.95);

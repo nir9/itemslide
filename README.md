@@ -1,7 +1,14 @@
 itemslide.github.io
 ===================
 
-jQuery plugin for item sliding
+jQuery plugin for a touch enabled carousel
+
+### Tested on
+- iPhone 4
+- iPad Mini
+- Nexus 4
+- LG G3
+
 
 ### Dependencies
 - [jQuery](http://jquery.com/)
