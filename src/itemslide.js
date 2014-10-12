@@ -42,7 +42,8 @@
             duration: 250,
             swipe_sensitivity: 250,
             disable_slide: false,
-            disable_autowidth: false
+            disable_autowidth: false,
+            start: 0
         };
 
         settings = $.extend({}, defaults, options);
@@ -60,13 +61,13 @@
 
         slides.css('transform', 'translate3d(0px,0px, 0px)'); // transform according to vendor prefix
 
-        gotoSlideByIndex(0);
+        gotoSlideByIndex(settings.start);
+        // ON iPad Doesn't want to change attr att1
 
 
 
 
 
-        $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
 
         var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
         var disable = false;
@@ -121,7 +122,7 @@
 
         });
 
-        getLandingSlideIndex(2300);
+
 
 
     }
@@ -155,10 +156,15 @@
 
 
     function changeActiveSlideTo(i) {
-        $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', '');
+
+        slides.children(':nth-child(' + (currentIndex + 1) + ')').attr('id','');//WORKS!!
+
+
         currentIndex = i;
         //console.log("new index: " + currentIndex);
-        $('li:nth-child(' + (currentIndex + 1) + ')').attr('id', 'active');
+        slides.children(':nth-child(' + (currentIndex + 1) + ')').attr('id','active');
+
+
     }
 
     function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured - by position
@@ -237,7 +243,7 @@
 
 
         //incrementer -= 0.003;
-        console.log(currentPos + "CPPP" + countFrames);
+        //console.log(currentPos + "CPPP" + countFrames);
         currentPos -= easeOutQuart(countFrames, 0, currentPos - currentLandPos, settings.duration); //work!! BEGIN = 0
         //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
         if (currentPos == currentLandPos) {

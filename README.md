@@ -30,6 +30,7 @@ $("ul").initslide();
 - disable_slide - disable swiping and panning {default: false}
 - disable_autowidth - disable calculation of width {default: false} 
 (if you want to do it manually)
+- start - index of slide that appears when initializing {default: 0}
 
 ### Methods
 ##### Get
