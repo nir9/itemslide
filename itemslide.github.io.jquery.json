@@ -22,5 +22,6 @@
         "slide",
         "swipe"
     ],
-    "description": "jQuery plugin for a touch enabled carousel"
+    "description": "jQuery plugin for a touch enabled carousel",
+    "homepage": "http://jqueryboilerplate.com"
 }
