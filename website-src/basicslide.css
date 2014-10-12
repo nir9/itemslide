@@ -8,15 +8,40 @@ body{
     -ms-user-select: none; */
     -webkit-transform:translate3d(0,0,0);
 }
+header{
+    width:100vw;
+    position:fixed;
+    left:0;
+    height: 19vh;
+}
+#tested {
+            max-height: 15vh;
+            width: 21.484375vw;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 1vw;
+            margin: auto;
+            z-index:1000;
+}
+
+@media (max-width: 1000px) {/*cool*/
+    #tested {
+    display: none;
+  }
+}
+
 
 #downloadarea{
     position:relative;
     top:20%;
     font-size:3vh;
     line-height:10vh;
+
 }
 
-li a{
+
+#download{
 
     background-color: #535353;
     color:#fff;
@@ -29,6 +54,11 @@ li a{
     -o-border-radius: 30px;
     -moz-border-radius: 30px;
 }
+
+
+
+
+
 
 ul {
     -webkit-perspective: 1000;
@@ -47,7 +77,7 @@ ul {
     position: absolute;
     left:0;
     /*display: inline;*/
-    margin-top:7vh;
+    margin-top:5vh;
     /*height: 80vh;*/
     height:77%;
     /*width:10000px;*/
@@ -110,7 +140,7 @@ li {
 
 #headertext
 {
-    font-size:6vh;
+    font-size:8vh;
     font-weight: 300;/*ask*/
 }
 
@@ -153,7 +183,7 @@ ul.horizTranslate {
 }
 
 #scrolling{
-    top:15vh;
+    top:19vh;
     position:fixed;
     background-color:#cccccc;
     height:85vh;

@@ -1,9 +1,10 @@
-itemslide.github.io
+ItemSlide.js
 ===================
 
 jQuery plugin for a touch enabled carousel
 
 [Website](http://itemslide.github.io/)
+
 [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
 
 ### Tested on

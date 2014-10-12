@@ -17,14 +17,20 @@
 
 </head>
 <body>
+<header>
+    <img id="tested" src="website-src/Tested.svg"/>
     
-<div id="headertext">
-    ItemSlide<span style="font-size:4vh;">.js</span></div>
+    <div id="headertext">ItemSlide<span style="font-size:4vh;">.js</span></div>
     
     <div id="docsbuttons">
     <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span> &nbsp; <a style="text-decoration:none; color:#000;" href="https://github.com/itemslide/itemslide.github.io" target="_blank">Github</a>
     </div>
     
+
+
+</header>
+
+
     <div id="scrolling">
 <ul>
 <li>
@@ -32,7 +38,7 @@ To use simply write:<br/>
     <span style="font-family:'Source Code Pro';font-size:5vmin;">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span>
     <br/>
     <span id="downloadarea">
-    <a href="src/itemslide.min.js">DOWNLOAD</a><br/>
+    <a href="src/itemslide.min.js" id="download">DOWNLOAD</a><br/>
         3KB minified - Requires jQuery and Hammer.js
         </span>
     
