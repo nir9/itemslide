@@ -3,6 +3,9 @@ itemslide.github.io
 
 jQuery plugin for a touch enabled carousel
 
+[Website](http://itemslide.github.io/)
+[Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
+
 ### Tested on
 - iPhone 4
 - iPad Mini
@@ -15,7 +18,7 @@ jQuery plugin for a touch enabled carousel
 - [Hammer.js](http://hammerjs.github.io/)
 
 
-How to initialize:
+### Initialize
 
 $("ul").initslide();
 
@@ -28,11 +31,11 @@ $("ul").initslide();
 (if you want to do it manually)
 
 ### Methods
-##### Get:
+##### Get
 - getActiveIndex() - get current active slide index
 - getCurrentPos() - get current position of carousel (pixels)
 
-##### Set:
+##### Set
 - next() - goes to next slide
 - previous() - goes to previous slide
 - gotoSlide(i) - goes to a specific slide by index

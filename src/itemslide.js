@@ -53,7 +53,7 @@
         initialLeft = slides.css("left").replace("px", "");
 
 
-        if(!settings.disable_autowidth)
+        if (!settings.disable_autowidth)
             slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 1); //SET WIDTH
 
 
@@ -78,6 +78,9 @@
 
 
 
+
+
+
             if (!settings.disable_slide) {
                 slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
                 slides.trigger('pan');
@@ -98,8 +101,20 @@
         }); //WORKS!
 
         slides.children('li').mousedown(function (e) {
-            if($(this).index()!=currentIndex)
-            {
+
+
+            if (window.getSelection) {//CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
+                if (window.getSelection().empty) { // Chrome
+                    window.getSelection().empty();
+                } else if (window.getSelection().removeAllRanges) { // Firefox
+                    window.getSelection().removeAllRanges();
+                }
+            } else if (document.selection) { // IE?
+                document.selection.empty();
+            }
+
+
+            if ($(this).index() != currentIndex) {
                 //console.log("ASD");
                 gotoSlideByIndex($(this).index());
             }
@@ -160,7 +175,7 @@
         }
         //console.log(x);
         //return currentIndex;
-        return slides.children('li').length-1;
+        return slides.children('li').length - 1;
     }
     ////console.log($('li:nth-child(' + (2)+ ')').css('width'));
 
@@ -182,14 +197,14 @@
         var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
 
 
-        var matrix = matrixToArray(slides.css("transform"));
-        var value = parseFloat(matrix[4]);
+        matrix = matrixToArray(slides.css("transform"));
+        value = parseFloat(matrix[4]);
         //console.log(value);
 
         currentPos = value;
 
         currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - initialLeft - slides.children('li').css("width").replace("px", "")) / 2)); //HHMMMMMMMM
-        //console.log(currentLandPos + "ccc");
+        console.log(currentLandPos + "ccc");
 
 
 
@@ -216,12 +231,13 @@
 
     function repeatOften() {
 
-        countFrames++;
+
         //console.log("ASDASD");
 
 
 
         //incrementer -= 0.003;
+        console.log(currentPos + "CPPP" + countFrames);
         currentPos -= easeOutQuart(countFrames, 0, currentPos - currentLandPos, settings.duration); //work!! BEGIN = 0
         //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
         if (currentPos == currentLandPos) {
@@ -235,7 +251,7 @@
 
 
         slides.css('transform', 'translate3d(' + (currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
-
+        countFrames++;
         slidesGlobalID = requestAnimationFrame(repeatOften);
     }
 
