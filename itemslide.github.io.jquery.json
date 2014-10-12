@@ -1,0 +1,26 @@
+{
+    "name": "itemslide.github.io",
+    "version": "1.0.0",
+    "title": "ItemSlide",
+    "author": {
+        "name": "Nir Lichtman"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://opensource.org/licenses/MIT"
+        }
+    ],
+    "dependencies": {
+		"jquery": ">=1.7",
+        "hammer": ">=2.0.4"
+	},
+    "keywords": [
+        "carousel",
+        "touch",
+        "mobile",
+        "slide",
+        "swipe"
+    ],
+    "description": "jQuery plugin for a touch enabled carousel"
+}
