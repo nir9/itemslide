@@ -1,9 +1,0 @@
-#blackcover{
-    height:100vh;
-    width:100vw;
-    position:absolute;
-    background-color: #000000;
-    z-index:1;
-    opacity: 0.33;
-    display:block;
-}
