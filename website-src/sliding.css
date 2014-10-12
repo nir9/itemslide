@@ -1,0 +1,56 @@
+ul {
+    /*-webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;*/
+
+    /*Add if you want to disable the option of selecting the text while sliding*/
+    -webkit-user-select: none;/*optional*/
+    -moz-user-select: none;/*optional*/
+    -ms-user-select: none;/*optional*/
+    user-select: none;/*optional*/
+
+
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left:0;
+    margin-top:5vh;
+    height:77%;
+
+
+    list-style-type: none;
+    overflow: hidden;
+
+
+}
+
+li {
+
+    font-size:8vmin;/*cool*/
+    float: left;
+    width: 84vw;
+    height: 100%;
+    color: #000;
+    font-weight: 300;
+    text-align: center;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -o-border-radius: 30px;
+    -moz-border-radius: 30px;
+    cursor: pointer;
+    background: #FFFFFD;
+    -webkit-transform:  scale(0.95);
+    -ms-transform:  scale(0.95);
+    -moz-transform:  scale(0.95);
+    transform: scale(0.95);
+
+
+}
+
+#active
+{/*applied to current active item*/
+    -webkit-transform:  scale(1);
+    -ms-transform:  scale(1);
+    -moz-transform:  scale(1);
+    transform: scale(1);
+
+}

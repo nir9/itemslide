@@ -1,0 +1,106 @@
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+    text-align:center;
+    /*padding:0;*/
+    margin:0;
+    /*-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; */
+    -webkit-transform:translate3d(0,0,0);
+}
+header{
+    width:100vw;
+    position:fixed;
+    left:0;
+    height: 19vh;
+}
+#tested {
+            max-height: 15vh;
+            width: 21.484375vw;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 1vw;
+            margin: auto;
+            z-index:1000;
+}
+
+@media (max-width: 1000px) {/*cool*/
+    #tested {
+    display: none;
+  }
+}
+
+
+#downloadarea{
+    position:relative;
+    top:20%;
+    font-size:3vh;
+    line-height:10vh;
+
+}
+
+
+#download{
+
+    background-color: #535353;
+    color:#fff;
+    padding: 1.5vh;/*10px*/
+    font-size: 8vmin;
+    text-decoration: none;
+
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -o-border-radius: 30px;
+    -moz-border-radius: 30px;
+}
+#download:hover{
+
+    background-color: #787878;
+
+}
+
+
+
+
+
+
+
+#headertext
+{
+    font-size:8vh;
+    font-weight: 200;/*ask*/
+}
+
+#codetext
+{
+    font-size:4vh;
+}
+
+#fotter
+{
+
+    position:fixed;
+    font-size:2.5vh;
+    bottom:1.5%;
+    right:0;left:0;
+
+}
+
+#docsbuttons
+{
+
+    font-size:3vh;
+
+}
+
+
+
+
+#scrolling{
+    top:19vh;
+    position:fixed;
+    background-color:#cccccc;
+    height:85vh;
+    width:100vw;
+}

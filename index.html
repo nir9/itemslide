@@ -1,85 +1,97 @@
 <html>
+
 <head>
-<title>ItemSlide.js</title>
+    <title>ItemSlide.js</title>
 
-<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
-
-
-<!--Dependinces--->
-<script src="dependencies/hammer.min.js"></script>
-<script src="dependencies/jquery-1.11.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
 
 
-<link href="website-src/basicslide.css" rel="stylesheet">
-<script src="website-src/basicslide.js"></script>
-<script src="src/itemslide.min.js"></script>
+    <!--Dependinces--->
+    <script src="dependencies/hammer.min.js"></script>
+    <script src="dependencies/jquery-1.11.1.min.js"></script>
+
+    <!--Website Files-->
+    <link href="website-src/layout.css" rel="stylesheet" />
+    <link href="website-src/sliding.css" rel="stylesheet" />
+
+    <script src="website-src/sliding.js"></script>
+
+    <script src="src/itemslide.min.js"></script>
 
 </head>
+
 <body>
-<header>
-    <img id="tested" src="website-src/Tested.svg"/>
-    
-    <div id="headertext">ItemSlide<span style="font-size:4vh;">.js</span></div>
-    
-    <div id="docsbuttons">
-    <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span> &nbsp; <a style="text-decoration:none; color:#000;" href="https://github.com/itemslide/itemslide.github.io" target="_blank">Github</a>
-    </div>
-    
+    <header>
+        <img id="tested" src="website-src/Tested.svg" />
+
+        <div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span>
+        </div>
+
+        <div id="docsbuttons">
+            <span style="cursor:pointer;" onclick="$('ul').gotoSlide(0)">Init</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(1)">Options</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(2)">Methods</span> &nbsp; <span style="cursor:pointer;" onclick="$('ul').gotoSlide(4)">Events</span> &nbsp; <a style="text-decoration:none; color:#000;" href="https://github.com/itemslide/itemslide.github.io" target="_blank">Github</a>
+        </div>
 
 
-</header>
+
+    </header>
 
 
     <div id="scrolling">
-<ul>
-<li>
-To use simply write:<br/>
-    <span style="font-family:'Source Code Pro';font-size:5vmin;">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span>
-    <br/>
-    <span id="downloadarea">
+        <ul>
+            <li>
+                To use simply write:
+                <br/>
+                <span style="font-family:'Source Code Pro';font-size:5vmin;">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#662d91;">initslide</span>();</span>
+                <br/>
+                <span id="downloadarea">
     <a href="src/itemslide.min.js" id="download">DOWNLOAD</a><br/>
         3KB minified - Requires jQuery and Hammer.js
         </span>
-    
 
-</li>
-    
-    
-    
-    <li>
-        <div id="codetext">
-    Options:<br>
-        duration - duration of swipe animation {default: 250}<br/>
-        swipe_sensitivity - swiping sensitivity {default: 250}<br/>
-        disable_slide - disable swiping and panning {default: false}<br/>
-        disable_autowidth - disable calculation of width {default: false}<br/>
-        (if you want to do it manually)</div>
-    </li>
-    <li>
-        <div id="codetext">
-    Methods:<br>
-            Get:<br/>
-        getActiveIndex() - get current active slide index<br/>
-        getCurrentPos() - get current position of carousel (pixels)
-        </div>
-    </li>
-<li>
-    <div id="codetext">
-    Set:<br/>
-        next() - goes to next slide<br/>
-        previous() - goes to previous slide<br/>
-        gotoSlide(i) - goes to a specific slide by index<br/>
-        reload() - recalculates width and center object<br/>(recommended to call when resize occures)<br/>
-    </div></li>
-    <li><div id="codetext">
-Events:<br>
-        pan - triggered when user pans<br/>
-        changeActiveIndex - triggered when the current active item has changed
-        </div>
-</li>
-</ul>
-        </div>
-<div id="fotter" align="center">Created by Nir Lichtman. Design by Idan Abarbanel.</div>
+
+            </li>
+
+
+
+            <li>
+                <div id="codetext">
+                    Options:
+                    <br>duration - duration of swipe animation {default: 250}
+                    <br/>swipe_sensitivity - swiping sensitivity {default: 250}
+                    <br/>disable_slide - disable swiping and panning {default: false}
+                    <br/>disable_autowidth - disable calculation of width {default: false}
+                    <br/>(if you want to do it manually)</div>
+            </li>
+            <li>
+                <div id="codetext">
+                    Methods:
+                    <br>Get:
+                    <br/>getActiveIndex() - get current active slide index
+                    <br/>getCurrentPos() - get current position of carousel (pixels)
+                </div>
+            </li>
+            <li>
+                <div id="codetext">
+                    Set:
+                    <br/>next() - goes to next slide
+                    <br/>previous() - goes to previous slide
+                    <br/>gotoSlide(i) - goes to a specific slide by index
+                    <br/>reload() - recalculates width and center object
+                    <br/>(recommended to call when resize occures)
+                    <br/>
+                </div>
+            </li>
+            <li>
+                <div id="codetext">
+                    Events:
+                    <br>pan - triggered when user pans
+                    <br/>changeActiveIndex - triggered when the current active item has changed
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="fotter" align="center">Created by Nir Lichtman. Design by Idan Abarbanel.</div>
 </body>
+
 </html>
