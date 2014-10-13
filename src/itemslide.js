@@ -55,9 +55,9 @@
 
 
         if (!settings.disable_autowidth)
-            slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 1); //SET WIDTH
+            slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
 
-
+        console.log("WIDTH: " + slides.css("width"));
 
         slides.css('transform', 'translate3d(0px,0px, 0px)'); // transform according to vendor prefix
 
@@ -141,7 +141,7 @@
     }
 
     $.fn.reload = function () { //Get index of active slide
-        slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 1); //SET WIDTH
+        slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
         gotoSlideByIndex(currentIndex);
     }
 

@@ -15,6 +15,7 @@ $(document).ready(function (){
     });
 
     $( window ).resize(function() {
-  $("ul").reload();
-});
+        $("ul").reload();
+
+    });
 });
