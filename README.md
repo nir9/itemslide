@@ -8,7 +8,7 @@ jQuery plugin for a touch enabled carousel
 [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
 
 <br/>
-<img src="http://itemslide.github.io/website-src/Tested.svg" style="height:250px;"/>
+<img src="http://itemslide.github.io/website-src/Tested.svg" style="height:175px;"/>
 <br/>
 
 
