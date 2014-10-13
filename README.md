@@ -7,11 +7,9 @@ jQuery plugin for a touch enabled carousel
 
 [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
 
-### Tested on
-- iPhone 4
-- iPad Mini
-- Nexus 4
-- LG G3
+<br/>
+<img src="http://itemslide.github.io/website-src/Tested.svg" style="height:250px;"/>
+<br/>
 
 
 ### Dependencies
@@ -34,7 +32,9 @@ Slide #2
 
 ### Initialize
 
+```js
 $("ul").initslide();
+```
 
 ### Options
 
@@ -60,6 +60,9 @@ $("ul").initslide(
 - getActiveIndex() - get current active slide index
 - getCurrentPos() - get current position of carousel (pixels)
 
+```js
+console.log($("ul").getActiveIndex());
+```
 
 ##### Set
 - next() - goes to next slide
@@ -68,7 +71,6 @@ $("ul").initslide(
 - reload() - recalculates width and center object (recommended to call when resize occures)
 
 ```js
-console.log($("ul").getActiveIndex());
 $("ul").next();
 ```
 
