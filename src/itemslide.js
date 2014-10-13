@@ -85,6 +85,7 @@
             if (!settings.disable_slide) {
                 slides.css('transform', 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
                 slides.trigger('pan');
+                slides.trigger('changePos');
                 cancelAnimationFrame(slidesGlobalID);
             }
 
@@ -93,7 +94,7 @@
             if (!settings.disable_slide) {
 
                 matrix = matrixToArray(slides.css("transform")); //prefix
-                value = parseInt(matrix[4]);
+                value = parseFloat(matrix[4]);
                 ////console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
 
                 gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value)); //HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
@@ -149,8 +150,10 @@
         return currentIndex;
     }
 
-    $.fn.getCurrentPos = function () { //Get index of active slide
-        return currentPos;
+    $.fn.getCurrentPos = function () { //Get current position of carousel
+        matrix = matrixToArray(slides.css("transform"));
+        value = parseFloat(matrix[4]);
+        return value;
     }
 
 
@@ -238,20 +241,18 @@
     function repeatOften() {
 
 
-        //console.log("ASDASD");
 
 
+        slides.trigger('changePos');
 
-        //incrementer -= 0.003;
-        //console.log(currentPos + "CPPP" + countFrames);
         currentPos -= easeOutQuart(countFrames, 0, currentPos - currentLandPos, settings.duration); //work!! BEGIN = 0
         //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
         if (currentPos == currentLandPos) {
-            //console.log("out of loop");
+
             countFrames = 0;
             return; //out of recursion
         }
-        ////console.log("So Animate!");
+
 
 
 

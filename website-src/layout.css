@@ -33,10 +33,11 @@ header{
 
 
 #downloadarea{
+
     position:relative;
     top:20%;
     font-size:3vh;
-    line-height:10vh;
+    line-height:3.8vh;
 
 }
 
