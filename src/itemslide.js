@@ -11,7 +11,7 @@
 
 
 
-    //extract values from transform position
+
 
 
 
@@ -124,10 +124,10 @@
 
         });
 
-        $(this).on('gotoSlide', function(e , i) //triggered when object method is called
-        {
-            gotoSlideByIndex(i);
-        });
+        $(this).on('gotoSlide', function (e, i) //triggered when object method is called
+            {
+                gotoSlideByIndex(i);
+            });
 
 
 
@@ -197,7 +197,8 @@
             slides.data("settings").countFrames = 0;
             //MUCH WOW!!!
             slides.trigger('changeActiveItem');
-            slides.data("settings").slidesGlobalID = requestAnimationFrame(repeatOften);
+            cancelAnimationFrame(slides.data("settings").slidesGlobalID);
+            slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
 
 
 
@@ -211,14 +212,13 @@
 
 
 
-        function repeatOften() {
-
+        function animationRepeat() {
 
 
 
             slides.trigger('changePos');
 
-            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration); //work!! BEGIN = 0
+            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration); //work!!
             //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {
 
@@ -232,7 +232,7 @@
 
             slides.css('transform', 'translate3d(' + (slides.data("settings").currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
             slides.data("settings").countFrames++;
-            slides.data("settings").slidesGlobalID = requestAnimationFrame(repeatOften);
+            slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
 
 
         }
