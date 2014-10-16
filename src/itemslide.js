@@ -2,7 +2,7 @@
 //about:flags
 
 
-//Dependencies - jQuery and Hammer.js
+//Dependencies - jQuery, Hammer.js and Hammer.js jQuery Extension (~0.5KB)
 
 
 (function ($) {
@@ -37,7 +37,8 @@
             countFrames: 0,
             currentLandPos: 0,
             initialLeft: 0,
-            slidesGlobalID: 0
+            slidesGlobalID: 0,
+
 
         };
 
@@ -103,26 +104,26 @@
             }
         }); //WORKS!
 
-        slides.children('li').mousedown(function (e) {
 
 
-            if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
-                if (window.getSelection().empty) { // Chrome
-                    window.getSelection().empty();
-                } else if (window.getSelection().removeAllRanges) { // Firefox
-                    window.getSelection().removeAllRanges();
-                }
-            } else if (document.selection) { // IE?
-                document.selection.empty();
-            }
 
-            //console.log(slides.data("settings").currentIndex);
+
+
+        try {//If someone forgot/didn't know that you need the hammer jquery plugin
+
+        slides.children('li').hammer().bind("tap", function (e){
             if ($(this).index() != slides.data("settings").currentIndex) {
-                //console.log("ASD");
                 gotoSlideByIndex($(this).index());
             }
-
         });
+
+        }
+        catch(e)
+        {
+            console.log("Please include the Hammer jQuery plugin (http://itemslide.github.io/dependencies/hammer.jquery.min.js) (~0.5KB) for all the features to work properly.");
+        }
+
+
 
         $(this).on('gotoSlide', function (e, i) //triggered when object method is called
             {

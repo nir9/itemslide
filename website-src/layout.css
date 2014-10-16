@@ -69,6 +69,7 @@ header{
 
 #headertext
 {
+    margin-top:1vh;
     font-size:8vh;
     font-weight: 200;/*ask*/
 }
@@ -102,6 +103,6 @@ header{
     top:19vh;
     position:fixed;
     background-color:#cccccc;
-    height:85vh;
+    height:85%;
     width:100vw;
 }
