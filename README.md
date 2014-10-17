@@ -15,7 +15,10 @@ jQuery plugin for a touch enabled carousel
 ### Dependencies
 - [jQuery](http://jquery.com/)
 - [Hammer.js](http://hammerjs.github.io/)
-- [Hammer jQuery Extension (~0.5KB)](http://itemslide.github.io/dependencies/hammer.jquery.min.js)
+
+#### Optional (adds features)
+- [Hammer jQuery Extension (Adds click to slide) (~0.5KB)](http://itemslide.github.io/dependencies/hammer.jquery.min.js)
+- [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
 
 ### Markup

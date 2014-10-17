@@ -37,7 +37,7 @@
             countFrames: 0,
             currentLandPos: 0,
             initialLeft: 0,
-            slidesGlobalID: 0,
+            slidesGlobalID: 0
 
 
         };
@@ -97,9 +97,9 @@
 
                 var matrix = matrixToArray(slides.css("transform")); //prefix
                 var value = parseFloat(matrix[4]);
-                ////console.log(value + "YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
 
-                gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value)); //HHEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+                gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));
                 disable = true;
             }
         }); //WORKS!
@@ -107,25 +107,43 @@
 
 
 
-
-
-        try {//If someone forgot/didn't know that you need the hammer jquery plugin
-
-        slides.children('li').hammer().bind("tap", function (e){
-            if ($(this).index() != slides.data("settings").currentIndex) {
-                gotoSlideByIndex($(this).index());
+        slides.children('li').mousedown(function (e) {
+            if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
+                if (window.getSelection().empty) { // Chrome
+                    window.getSelection().empty();
+                } else if (window.getSelection().removeAllRanges) { // Firefox
+                    window.getSelection().removeAllRanges();
+                }
+            } else if (document.selection) { // IE?
+                document.selection.empty();
             }
         });
 
+
+
+        try { //If someone forgot/didn't know that you need the hammer jquery plugin
+            slides.children('li').hammer().bind("tap", function (e) {
+                if ($(this).index() != slides.data("settings").currentIndex) {
+                    gotoSlideByIndex($(this).index());
+                }
+            });
+        } catch (e) {
+            //optional
         }
-        catch(e)
-        {
-            console.log("Please include the Hammer jQuery plugin (http://itemslide.github.io/dependencies/hammer.jquery.min.js) (~0.5KB) for all the features to work properly.");
+
+
+        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/brandonaaron/jquery-mousewheel
+        try {
+            slides.mousewheel(function (event) {
+                //console.log(event.deltaX, event.deltaY, event.deltaFactor);
+                gotoSlideByIndex(slides.data("settings").currentIndex+event.deltaY);
+            });
+        } catch (e) {
         }
+        //UNTILL HERE MOUSEWHEEL
 
 
-
-        $(this).on('gotoSlide', function (e, i) //triggered when object method is called
+        slides.on('gotoSlide', function (e, i) //triggered when object method is called
             {
                 gotoSlideByIndex(i);
             });
@@ -170,6 +188,8 @@
 
         function gotoSlideByIndex(i) {
 
+            if (i >= slides.children('li').length || i < 0) //If exceeds boundaries dont goto slide
+                return;
 
             changeActiveSlideTo(i);
 
@@ -263,13 +283,14 @@
     }
 
     $.fn.previous = function () { //Next slide
-        //        gotoSlideByIndex(this.data("settings").currentIndex - 1);
+
         this.gotoSlide(this.data("settings").currentIndex - 1);
     }
 
     $.fn.reload = function () { //Get index of active slide
-        this.css("width", this.children('li').length * this.children('li').css("width").replace("px", "") + 10); //SET WIDTH
-        //gotoSlideByIndex(this.data("settings").currentIndex);
+        if (!this.data("settings").disable_autowidth)
+            this.css("width", this.children('li').length * this.children('li').css("width").replace("px", "") + 10); //SET WIDTH
+
         this.gotoSlide(this.data("settings").currentIndex);
     }
 
