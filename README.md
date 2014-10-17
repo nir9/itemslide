@@ -16,7 +16,7 @@ jQuery plugin for a touch enabled carousel
 - [jQuery](http://jquery.com/)
 - [Hammer.js](http://hammerjs.github.io/)
 
-#### Optional (adds features)
+#### Optional Dependencies (adds features)
 - [Hammer jQuery Extension (Adds click to slide) (~0.5KB)](http://itemslide.github.io/dependencies/hammer.jquery.min.js)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
@@ -47,7 +47,9 @@ $("ul").initslide();
 - disable_slide - disable swiping and panning {default: false}
 - disable_autowidth - disable calculation of width {default: false} 
 (if you want to do it manually)
+- disable_scroll - disable scrolling {default: false}
 - start - index of slide that appears when initializing {default: 0}
+
 
 ##### Example implementation
 ```js

@@ -27,6 +27,7 @@
             swipe_sensitivity: 250,
             disable_slide: false,
             disable_autowidth: false,
+            disable_scroll: false,
             start: 0, //Until here options
 
 
@@ -136,7 +137,8 @@
         try {
             slides.mousewheel(function (event) {
                 //console.log(event.deltaX, event.deltaY, event.deltaFactor);
-                gotoSlideByIndex(slides.data("settings").currentIndex+event.deltaY);
+                if(!slides.data("settings").disable_scroll)
+                    gotoSlideByIndex(slides.data("settings").currentIndex+event.deltaY);
             });
         } catch (e) {
         }
