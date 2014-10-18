@@ -20,6 +20,20 @@ jQuery plugin for a touch enabled carousel
 - [Hammer jQuery Extension (Adds click to slide) (~0.5KB)](http://itemslide.github.io/dependencies/hammer.jquery.min.js)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
+### CSS
+
+You can use our exisiting css and change the sizes or just make your own but make sure that its based upon:
+
+```css
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+li {
+    float: left;
+}
+```
 
 ### Markup
 

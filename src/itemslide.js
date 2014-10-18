@@ -138,7 +138,7 @@
             slides.mousewheel(function (event) {
                 //console.log(event.deltaX, event.deltaY, event.deltaFactor);
                 if(!slides.data("settings").disable_scroll)
-                    gotoSlideByIndex(slides.data("settings").currentIndex+event.deltaY);
+                    gotoSlideByIndex(slides.data("settings").currentIndex-event.deltaY);
             });
         } catch (e) {
         }
