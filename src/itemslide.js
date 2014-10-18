@@ -122,15 +122,7 @@
 
 
 
-        try { //If someone forgot/didn't know that you need the hammer jquery plugin
-            slides.children('li').hammer().bind("tap", function (e) {
-                if ($(this).index() != slides.data("settings").currentIndex) {
-                    gotoSlideByIndex($(this).index());
-                }
-            });
-        } catch (e) {
-            //optional
-        }
+        slides.tapEvent();//ADD TAP EVENT
 
 
         //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/brandonaaron/jquery-mousewheel
@@ -296,6 +288,11 @@
         this.gotoSlide(this.data("settings").currentIndex);
     }
 
+    $.fn.add = function (data) {
+        this.append(data);
+        this.tapEvent();
+    }
+
 
     //GET
     $.fn.getActiveIndex = function () { //Get index of active slide
@@ -308,6 +305,26 @@
         return value;
     }
 
+
+
+
+
+
+
+
+    $.fn.tapEvent = function()//Activate tap event on current slides
+    {
+        var slides=this;
+        try { //If someone forgot/didn't know that you need the hammer jquery plugin
+            slides.children('li').hammer().bind("tap", function (e) {
+                if ($(this).index() != slides.data("settings").currentIndex) {
+                    slides.gotoSlide($(this).index());
+                }
+            });
+        } catch (e) {
+            //optional
+        }
+    }
 
 
 
