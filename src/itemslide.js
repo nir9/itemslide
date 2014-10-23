@@ -54,7 +54,7 @@
 
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
-        console.log(slides.data("settings").initialLeft);
+        //console.log(slides.data("settings").initialLeft);
 
         if (!settings.disable_autowidth)
             slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
