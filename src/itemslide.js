@@ -8,11 +8,10 @@
 (function ($) {
     "use strict";
 
+    var isExplorer = false;
 
 
-
-
-
+    isExplorer = msieversion(); //Check if browser is ie
 
 
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
@@ -55,7 +54,7 @@
 
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
-        //console.log(slides.data("settings").initialLeft);
+        console.log(slides.data("settings").initialLeft);
 
         if (!settings.disable_autowidth)
             slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
@@ -97,7 +96,12 @@
             if (!settings.disable_slide) {
 
                 var matrix = matrixToArray(slides.css("transform")); //prefix
-                var value = parseFloat(matrix[4]);
+                var value;
+                if (!isExplorer) {
+                    value = parseFloat(matrix[4]);
+                } else {
+                    value = parseFloat(matrix[12]);
+                }
 
 
                 gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));
@@ -122,18 +126,17 @@
 
 
 
-        slides.tapEvent();//ADD TAP EVENT
+        slides.tapEvent(); //ADD TAP EVENT
 
 
         //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/brandonaaron/jquery-mousewheel
         try {
             slides.mousewheel(function (event) {
                 //console.log(event.deltaX, event.deltaY, event.deltaFactor);
-                if(!slides.data("settings").disable_scroll)
-                    gotoSlideByIndex(slides.data("settings").currentIndex-event.deltaY);
+                if (!slides.data("settings").disable_scroll)
+                    gotoSlideByIndex(slides.data("settings").currentIndex - event.deltaY);
             });
-        } catch (e) {
-        }
+        } catch (e) {}
         //UNTILL HERE MOUSEWHEEL
 
 
@@ -191,16 +194,24 @@
 
 
 
-            var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+            //var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+
+
+
 
 
             var matrix = matrixToArray(slides.css("transform"));
-            var value = parseFloat(matrix[4]);
+            var value;
+            if (!isExplorer) {
+                value = parseFloat(matrix[4]);
+            } else { //IE 11 - transform x is in a different position
+                value = parseFloat(matrix[12]);
+            }
 
 
             slides.data("settings").currentPos = value;
-
-            slides.data("settings").currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+            //$("html").css("width").replace("px", "")
+            slides.data("settings").currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - ((slides.parent().css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
 
 
             //console.log(slides.data("settings").currentLandPos + "ccc");
@@ -286,6 +297,7 @@
             this.css("width", this.children('li').length * this.children('li').css("width").replace("px", "") + 10); //SET WIDTH
 
         this.gotoSlide(this.data("settings").currentIndex);
+        //console.log(this.data("settings").currentIndex);//TESTING
     }
 
     $.fn.add = function (data) {
@@ -312,9 +324,9 @@
 
 
 
-    $.fn.tapEvent = function()//Activate tap event on current slides
+    $.fn.tapEvent = function () //Activate tap event on current slides
     {
-        var slides=this;
+        var slides = this;
         try { //If someone forgot/didn't know that you need the hammer jquery plugin
             slides.children('li').hammer().bind("tap", function (e) {
                 if ($(this).index() != slides.data("settings").currentIndex) {
@@ -338,6 +350,18 @@
         t /= d;
         t--;
         return -c * (t * t * t * t - 1) + b;
+    }
+
+    function msieversion() {
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer, return version number
+            return true;
+        else // If another browser, return 0
+            return false;
+
     }
 
 })(jQuery);
