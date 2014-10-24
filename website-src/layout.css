@@ -25,20 +25,49 @@ header{
             z-index:1000;
 }
 
-@media (max-width: 1000px) {/*cool*/
+@media (max-width: 1200px) {/*cool*/
     #tested {
     display: none;
   }
 }
 
 
-#downloadarea{
+#touse
+{
+   position:relative;
+    top:10vh;
+}
+
+#initcode
+{
+    position:relative;top:4.5vmin;left:3px;
+    font-family:'Source Code Pro';font-size:6.2vmin;background-color:#333;color:white;padding:2.5vmin;border-radius: 2vmin;
+}
+
+/*#downloadarea{
 
     position:relative;
     top:20%;
     font-size:3.6vh;
     line-height:4.5vh;
 
+}*/
+
+#downloadarea{
+
+
+    position:absolute;
+    top:6vh;
+    right:1vw;
+    font-size:2.1vh;
+    line-height:3.5vh;
+
+}
+
+@media (max-width: 1200px) {/*cool*/
+    #downloadarea {
+    display: none;
+  }
 }
 
 
@@ -47,13 +76,15 @@ header{
     background-color: #535353;
     color:#fff;
     padding: 1.5vh;/*10px*/
-    font-size: 8vmin;
+    font-size: 6.5vmin;
+
     text-decoration: none;
 
     border-radius: 30px;
     -webkit-border-radius: 30px;
     -o-border-radius: 30px;
     -moz-border-radius: 30px;
+    transition: background-color 0.25s;
 }
 #download:hover{
 
@@ -111,7 +142,9 @@ header{
 #scrolling{
     top:19vh;
     position:fixed;
-    background-color:#777;
+    background-color:#666;
     height:85%;
     width:100vw;
 }
+
+
