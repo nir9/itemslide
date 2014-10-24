@@ -114,6 +114,9 @@ $("ul").on('changePos', function(event) {
 });
 ```
 
+### Classes
+The current active slide gets the 'active' class.
+
 ### Easings
 
 Currently the only (and default) easing is easeOutQuart.

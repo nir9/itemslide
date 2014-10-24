@@ -69,7 +69,7 @@ header{
 
 #headertext
 {
-    margin-top:1vh;
+    margin-top:1.2vh;
     font-size:8vh;
     font-weight: 200;/*ask*/
 }
@@ -85,6 +85,7 @@ header{
     position:fixed;
     font-size:2.5vh;
     bottom:1.5%;
+    color:white;
     right:0;left:0;
 
 }
@@ -94,15 +95,28 @@ header{
 
     font-size:3vh;
 
+
 }
 
+#docsbuttons *
+{
+    cursor:pointer;
+    text-decoration: none;
+    color:#000;
+}
+#docsbuttons a:hover
+{ text-decoration:  underline;
+}
+#docsbuttons span:hover
+{ text-decoration:  underline;
+}
 
 
 
 #scrolling{
     top:19vh;
     position:fixed;
-    background-color:#cccccc;
+    background-color:#777;
     height:85%;
     width:100vw;
 }

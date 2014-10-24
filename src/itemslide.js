@@ -2,7 +2,8 @@
 //about:flags
 
 
-//Dependencies - jQuery, Hammer.js and Hammer.js jQuery Extension (~0.5KB)
+//Dependencies - jQuery, Hammer.js.
+//Optional Dependencies - Hammer.js jQuery Extension (~0.5KB) , jQuery Mousewheel (~2.5KB)
 
 
 (function ($) {
@@ -46,15 +47,13 @@
 
 
         this.data("settings", settings);
-        //console.log(settings);
-        //calling an object stored through data method
-        //$(this).data("object").duration-=23;
+
 
         var slides = $(this); //Saves the object given to the plugin in a variable
 
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
-        //console.log(slides.data("settings").initialLeft);
+
 
         if (!settings.disable_autowidth)
             slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
@@ -64,15 +63,12 @@
         slides.css('transform', 'translate3d(0px,0px, 0px)'); // transform according to vendor prefix
 
         gotoSlideByIndex(settings.start);
-        // ON iPad Doesn't want to change attr att1
-
-
 
 
 
 
         var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
-        var disable = false;
+
 
 
 
@@ -84,11 +80,11 @@
 
 
 
-            if (!settings.disable_slide) {
+            if (!settings.disable_slide) {//Check if user disabled slide - if didn't than go to position according to distance from when the panning started
                 slides.css('transform', 'translate3d(' + (ev.deltaX + slides.data("settings").currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
                 slides.trigger('pan');
                 slides.trigger('changePos');
-                cancelAnimationFrame(slides.data("settings").slidesGlobalID);
+                cancelAnimationFrame(slides.data("settings").slidesGlobalID);//STOP animation of sliding because if not then it will not reposition according to panning
             }
 
         });
@@ -97,7 +93,7 @@
 
                 var matrix = matrixToArray(slides.css("transform")); //prefix
                 var value;
-                if (!isExplorer) {
+                if (!isExplorer) {//YES in explorer its different :)
                     value = parseFloat(matrix[4]);
                 } else {
                     value = parseFloat(matrix[12]);
@@ -105,7 +101,7 @@
 
 
                 gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));
-                disable = true;
+
             }
         }); //WORKS!
 
@@ -158,29 +154,29 @@
 
 
             settings.currentIndex = i;
+
             //console.log("new index: " + slides.data("settings").currentIndex);
+
             slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
 
 
         }
 
         function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured - by position
-            //console.log("Sup");
+
             for (var i = 0; i < slides.children('li').length; i++) {
-                ////console.log(slides.children(i).css("width").replace("px","")*i);
+
                 if (slides.children(i).css("width").replace("px", "") * i + slides.children(i).css("width").replace("px", "") / 2 > x) { /*&& slides.children(i).css("width").replace("px","")*(i+1) < x*/
-                    //YAY FIXED!!!
-                    //console.log(i)
+
                     return i;
 
                 }
 
             }
-            //console.log(x);
-            //return slides.data("settings").currentIndex;
+
             return slides.children('li').length - 1;
         }
-        ////console.log($('li:nth-child(' + (2)+ ')').css('width'));
+
 
 
         function gotoSlideByIndex(i) {
@@ -194,7 +190,7 @@
 
 
 
-            //var coordinate = -(i * slides.children('li').css("width").replace("px", "") - (($("html").css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+
 
 
 
@@ -210,7 +206,7 @@
 
 
             slides.data("settings").currentPos = value;
-            //$("html").css("width").replace("px", "")
+
             slides.data("settings").currentLandPos = -(i * slides.children('li').css("width").replace("px", "") - ((slides.parent().css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
 
 
@@ -221,7 +217,7 @@
 
 
             slides.data("settings").countFrames = 0;
-            //MUCH WOW!!!
+
             slides.trigger('changeActiveItem');
             cancelAnimationFrame(slides.data("settings").slidesGlobalID);
             slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
@@ -229,8 +225,7 @@
 
 
 
-            //console.log("tranform3dx ::: " + value);
-            ////console.log("left ::: " + slides.css("left"));
+
 
 
         }
@@ -245,7 +240,7 @@
             slides.trigger('changePos');
 
             slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration); //work!!
-            //to understand easing refer to: http://upshots.org/actionscript/jsas-understanding-easing
+            //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {
 
                 slides.data("settings").countFrames = 0;
@@ -312,8 +307,13 @@
     }
 
     $.fn.getCurrentPos = function () { //Get current position of carousel
-        var matrix = matrixToArray(this.css("transform"));
-        var value = parseFloat(matrix[4]);
+        var matrix = matrixToArray(slides.css("transform"));
+            var value;
+            if (!isExplorer) {
+                value = parseFloat(matrix[4]);
+            } else { //IE 11 - transform x is in a different position
+                value = parseFloat(matrix[12]);
+        }
         return value;
     }
 
