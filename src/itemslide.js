@@ -315,7 +315,7 @@
     }
 
     $.fn.getCurrentPos = function () { //Get current position of carousel
-        var matrix = matrixToArray(slides.css("transform"));
+        var matrix = matrixToArray(this.css("transform"));
         var value;
         if (!isExplorer) {
             value = parseFloat(matrix[4]);
