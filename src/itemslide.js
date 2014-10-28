@@ -18,7 +18,7 @@
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
 
-
+        var direction = 0;//Panning Direction
 
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
@@ -28,8 +28,9 @@
             disable_slide: false,
             disable_autowidth: false,
             disable_scroll: false,
-            start: 0, //Until here options
-
+            start: 0,
+            pan_threshold: 0.3,//Precentage of slide width
+            //Until here options
 
             currentIndex: 0,
             currentPos: 0,
@@ -77,14 +78,21 @@
 
 
 
+            if(ev.type=="panleft")
+            {
+                direction=1;
+            }
+            else
+            {
+                direction=-1;
+            }
 
 
-
-            if (!settings.disable_slide) {//Check if user disabled slide - if didn't than go to position according to distance from when the panning started
+            if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
                 slides.css('transform', 'translate3d(' + (ev.deltaX + slides.data("settings").currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
                 slides.trigger('pan');
                 slides.trigger('changePos');
-                cancelAnimationFrame(slides.data("settings").slidesGlobalID);//STOP animation of sliding because if not then it will not reposition according to panning
+                cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning
             }
 
         });
@@ -93,7 +101,7 @@
 
                 var matrix = matrixToArray(slides.css("transform")); //prefix
                 var value;
-                if (!isExplorer) {//YES in explorer its different :)
+                if (!isExplorer) { //YES in explorer its different :)
                     value = parseFloat(matrix[4]);
                 } else {
                     value = parseFloat(matrix[12]);
@@ -166,7 +174,9 @@
 
             for (var i = 0; i < slides.children('li').length; i++) {
 
-                if (slides.children(i).css("width").replace("px", "") * i + slides.children(i).css("width").replace("px", "") / 2 > x) { /*&& slides.children(i).css("width").replace("px","")*(i+1) < x*/
+                if (slides.children(i).css("width").replace("px", "") * i + slides.children(i).css("width").replace("px", "") / 2 -
+
+                    slides.children(i).css("width").replace("px", "") * slides.data("settings").pan_threshold*direction > x) {
 
                     return i;
 
@@ -185,8 +195,6 @@
                 return;
 
             changeActiveSlideTo(i);
-
-
 
 
 
@@ -308,11 +316,11 @@
 
     $.fn.getCurrentPos = function () { //Get current position of carousel
         var matrix = matrixToArray(slides.css("transform"));
-            var value;
-            if (!isExplorer) {
-                value = parseFloat(matrix[4]);
-            } else { //IE 11 - transform x is in a different position
-                value = parseFloat(matrix[12]);
+        var value;
+        if (!isExplorer) {
+            value = parseFloat(matrix[4]);
+        } else { //IE 11 - transform x is in a different position
+            value = parseFloat(matrix[12]);
         }
         return value;
     }

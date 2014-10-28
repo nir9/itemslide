@@ -84,7 +84,7 @@ header{
     -webkit-border-radius: 30px;
     -o-border-radius: 30px;
     -moz-border-radius: 30px;
-    transition: background-color 0.25s;
+    transition: background-color 0.2s;
 }
 #download:hover{
 

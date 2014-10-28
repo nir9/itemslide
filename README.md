@@ -70,6 +70,7 @@ $("ul").initslide();
 (if you want to do it manually)
 - disable_scroll - disable scrolling {default: false}
 - start - index of slide that appears when initializing {default: 0}
+- pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)
 
 
 ##### Example implementation
@@ -114,8 +115,8 @@ $("ul").on('changePos', function(event) {
 });
 ```
 
-### Classes
-The current active slide gets the 'active' class.
+### Id's
+The current active slide gets the 'active' id.
 
 ### Easings
 
