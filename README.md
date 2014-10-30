@@ -32,10 +32,15 @@ $ npm install itemslide
 You can use our exisiting css and change the sizes or just make your own but make sure that its based upon:
 
 ```css
+#frame {
+    overflow: hidden;
+}
+
 ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
+    position: absolute;
 }
 li {
     float: left;
@@ -45,6 +50,7 @@ li {
 ### Markup
 
 ```html
+<div id="frame">
 <ul>
 <li>
 Slide #1
@@ -53,6 +59,7 @@ Slide #1
 Slide #2
 </li>
 </ul>
+</div>
 ```
 
 ### Initialize
