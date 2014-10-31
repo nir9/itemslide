@@ -4,11 +4,17 @@ body {
 
 }
 
+#frame
+{
+        position:fixed;
+        height:100vh;/*150vh*/
+        width:100vw;
+        overflow-x: scroll;
+        overflow-y: hidden;
+}
 
 /*sliding navigation between the slides*/
 ul {
-    -webkit-perspective: 1000;
-    -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -18,14 +24,14 @@ ul {
 
     margin: 0;
     padding: 0;
-    position: fixed;
+    position: absolute;
     left:0;
 
     height:100vh;
 
 
     list-style-type: none;
-    overflow: hidden;
+
 
     -webkit-perspective: 1000;
     -webkit-backface-visibility: hidden;
