@@ -316,7 +316,7 @@
     }
 
     $.fn.getCurrentPos = function () { //Get current position of carousel
-        var value = slides.parent().scrollLeft();
+        var value = this.parent().scrollLeft();
 
         return value;
     }

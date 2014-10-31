@@ -29,7 +29,7 @@ $ npm install itemslide
 
 ### CSS
 
-You can use our exisiting css and change the sizes or just make your own but make sure that its based upon:
+You can use [our exisiting css](http://itemslide.github.io/website-src/sliding.css) and change the sizes or just make your own but make sure that its based upon:
 
 ```css
 #frame {
@@ -107,7 +107,7 @@ console.log($("ul").getActiveIndex());
 - reload() - recalculates width and center object (recommended to call when resize occures)
 - addSlide(data) - adds in the end of the carousel a new item.
 - removeSlide(index) - removes a specific slide by index.
-NOTE: after calling addSlide you need to call reload in order to see the new slides.
+- NOTE: after calling addSlide you need to call reload in order to see the new slides.
 
 ```js
 $("ul").next();
@@ -125,6 +125,7 @@ $("ul").on('changePos', function(event) {
 ```
 
 ### Id's
+
 The current active slide gets the 'active' id.
 
 ### Easings

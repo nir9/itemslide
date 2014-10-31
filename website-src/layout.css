@@ -31,17 +31,24 @@ header{
   }
 }
 
+#headertext
+{
+    margin-top:1.4vh;
+    font-size:8vh;
+    font-weight: 200;/*ask*/
+}
+
 
 #touse
 {
    position:relative;
-    top:10vh;
+    top:13.5vh;
 }
 
 #initcode
 {
-    position:relative;top:4.5vmin;left:3px;
-    font-family:'Source Code Pro';font-size:6.2vmin;background-color:#333;color:white;padding:2.5vmin;border-radius: 2vmin;
+    position:relative;top:5.2vmin;left:3px;
+    font-family:'Source Code Pro';font-size:6.2vmin;background-color:#333;color:white;padding:2.7vmin;border-radius: 2vmin;
 }
 
 /*#downloadarea{
@@ -88,7 +95,7 @@ header{
 }
 #download:hover{
 
-    background-color: #787878;
+    background-color: #666;
 
 }
 
@@ -98,12 +105,6 @@ header{
 
 
 
-#headertext
-{
-    margin-top:1.2vh;
-    font-size:8vh;
-    font-weight: 200;/*ask*/
-}
 
 #codetext
 {
