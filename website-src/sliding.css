@@ -4,9 +4,9 @@
     background-color:#666;
     height:85%;
     width:100vw;
-    overflow: hidden;
-    /*overflow-x: scroll;
-    overflow-y: hidden;*/
+
+    overflow-x: scroll;/*hmmm doesn't work quite good with overflow:hidden*/
+    overflow-y: hidden;
 }
 
 ul {

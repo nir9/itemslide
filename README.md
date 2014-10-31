@@ -33,7 +33,8 @@ You can use our exisiting css and change the sizes or just make your own but mak
 
 ```css
 #frame {
-    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
 ul {
@@ -104,8 +105,9 @@ console.log($("ul").getActiveIndex());
 - previous() - goes to previous slide
 - gotoSlide(i) - goes to a specific slide by index
 - reload() - recalculates width and center object (recommended to call when resize occures)
-- add(data) - adds in the end of the carousel a new item.
-NOTE: after calling add you need to call reload in order to see the new slides.
+- addSlide(data) - adds in the end of the carousel a new item.
+- removeSlide(index) - removes a specific slide by index.
+NOTE: after calling addSlide you need to call reload in order to see the new slides.
 
 ```js
 $("ul").next();

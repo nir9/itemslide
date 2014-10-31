@@ -301,11 +301,14 @@
         //console.log(this.data("settings").currentIndex);//TESTING
     }
 
-    $.fn.add = function (data) {
+    $.fn.addSlide = function (data) {
         this.append(data);
         this.tapEvent();
     }
 
+    $.fn.removeSlide = function (index) {
+        this.children(':nth-child('+(index+1)+')').remove();
+    }
 
     //GET
     $.fn.getActiveIndex = function () { //Get index of active slide
