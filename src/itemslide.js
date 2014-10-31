@@ -212,7 +212,7 @@
             slides.data("settings").currentLandPos = -(i * slides.children('li').width() - ((slides.parent().width() - slides.data("settings").initialLeft  - slides.children('li').width()) / 2)) - slides.children('li').width();
 
 
-            console.log(slides.data("settings").currentLandPos);
+
 
 
 
