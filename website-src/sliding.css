@@ -1,3 +1,7 @@
+body
+{font-family: 'Source Sans Pro', sans-serif;
+    padding:0;margin:0;
+}
 #scrolling{/*frame*/
     top:19vh;
     position:fixed;
@@ -5,7 +9,7 @@
     height:85%;
     width:100vw;
 
-    overflow-x: scroll;/*hmmm doesn't work quite good with overflow:hidden*/
+    overflow-x: hidden;/*hmmm doesn't work quite good with overflow:hidden*/
     overflow-y: hidden;
 }
 
@@ -38,7 +42,7 @@ li {
 
     font-size:8vmin;/*cool*/
     float: left;
-    width: 84vw;
+    width:40vw;
     height: 100%;
     color: #000;
     font-weight: 300;
@@ -53,6 +57,7 @@ li {
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
     transform: scale(0.95);
+    /*transition: transform 0.5s;*/
 
 
 }

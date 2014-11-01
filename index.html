@@ -1,15 +1,10 @@
 <html>
-
 <head>
-    <title>ItemSlide.js</title>
-
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
-
-
     <!--Dependinces--->
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="dependencies/hammer.min.js"></script>
+
     <!--Optional--->
     <script src="dependencies/hammer.jquery.min.js"></script>
     <script src="dependencies/jquery.mousewheel.min.js"></script>
@@ -20,18 +15,17 @@
 
     <script src="website-src/sliding.js"></script>
     <script src="src/itemslide.min.js"></script>
-</head>
-
+    </head>
 <body>
     <header>
-        <img id="tested" src="website-src/Tested.svg" />
+
 
         <div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span>
         </div>
-
-        <div id="docsbuttons">
-            <span onclick="$('ul').gotoSlide(0)">Init</span> &nbsp; <span onclick="$('ul').gotoSlide(1)">Options</span> &nbsp; <span onclick="$('ul').gotoSlide(2)">Methods</span> &nbsp; <span onclick="$('ul').gotoSlide(4)">Events</span> &nbsp; <a href="https://github.com/itemslide/itemslide.github.io" target="_blank">Github</a>
+ <div id="docsbuttons">
+            <a href="https://github.com/itemslide/itemslide.github.io/blob/master/README.md">Docs</a> &nbsp; <a href="https://github.com/itemslide/itemslide.github.io">Github</a>
         </div>
+
 
         <span id="downloadarea">
     <a href="src/itemslide.min.js" id="download">DOWNLOAD</a><br/><br/>
@@ -40,19 +34,11 @@
 
     </header>
 
-
-    <div id="scrolling">
+<div id="scrolling">
         <ul>
-            <li><span id="touse">
-                To use simply write
-                <br/>
-                <span id="initcode">$(<span style="color:#ff931e;">"ul"</span>).<span style="color:#4791DA;">initslide</span>();</span><!--662d91--->
-                <br/>
-                <!--<span id="downloadarea">
-    <a href="src/itemslide.min.js" id="download">DOWNLOAD</a><br/><br/>
-        4KB minified<br/>Requires jQuery and Hammer.js
-        </span>-->
-</span>
+            <li>
+                Welcome
+
 
             </li>
 
@@ -61,50 +47,23 @@
             <li>
 
 
-                <div id="codetext">
-                    Options
-                    <br>duration - duration of swipe animation {default: 250}
-                    <br/>swipe_sensitivity - swiping sensitivity {default: 250}
-                    <br/>disable_slide - disable swiping and panning {default: false}
-                    <br/>disable_autowidth - disable calculation of width {default: false}
-                    <br/>(if you want to do it manually)
-                    <br/>disable_scroll - disable scrolling {default: false}
-
-                </div>
+                Scroll
 
 
 
             </li>
             <li>
-                <div id="codetext">
-                    Methods
-                    <br>Get:
-                    <br/>getActiveIndex() - get current active slide index
-                    <br/>getCurrentPos() - get current position of carousel (pixels)
-                </div>
+                Swipe
             </li>
             <li>
-                <div id="codetext">
-                    Set
-                    <br/>next() - goes to next slide
-                    <br/>previous() - goes to previous slide
-                    <br/>gotoSlide(i) - goes to a specific slide by index
-                    <br/>reload() - recalculates width and center object
-                    <br/>(recommended to call when resize occures)
-                    <br/>
-                </div>
+                Click to Slide
             </li>
             <li>
-                <div id="codetext">
-                    Events
-                    <br/>changePos - triggered when the position of the carousel is changed
-                    <br>pan - triggered when user pans
-                    <br/>changeActiveIndex - triggered when the current active item has changed
-                </div>
+                Tested on iPhone 4, iPad mini<br/>
+                Nexus 4 and LG G3
             </li>
         </ul>
     </div>
     <div id="fotter" align="center">Created by Nir Lichtman. Design by Idan Abarbanel.</div>
-</body>
-
+    </body>
 </html>
