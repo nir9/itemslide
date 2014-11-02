@@ -9,8 +9,9 @@ body
     height:85%;
     width:100vw;
 
-    overflow-x: hidden;/*hmmm doesn't work quite good with overflow:hidden*/
-    overflow-y: hidden;
+
+
+
 }
 
 ul {
@@ -32,8 +33,17 @@ ul {
     height:77%;
 
 
+    transform: none;
+    -moz-transform: none;
+    -webkit-transform: none;
+    /*-moz-transform: none;
+    -webkit-transform: none;*/
+
     list-style-type: none;
-    overflow: hidden;
+
+    -webkit-transform-style: preserve-3d;/*YAY lag is fixed on firefox*/
+	-ms-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 
 
 }

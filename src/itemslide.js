@@ -17,7 +17,6 @@
 
 
 
-
     //Waypoints check position relative to waypoint and decide if to scroll to or not...
     $.fn.initslide = function (options) {
 
@@ -66,7 +65,7 @@
 
         slides.css('transform', 'translate3d(0px, 0px, 0px)'); // transform according to vendor prefix
 
-         /*slides.css({
+        /*slides.css({
 				WebkitTransform: 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'
 				//msTransform
 			});*/
@@ -312,7 +311,7 @@
 
     $.fn.reload = function () { //Get index of active slide
         if (!this.data("settings").disable_autowidth)
-            this.css("width", this.children('li').length * this.children('li').css("width").replace("px", "") + 10); //SET WIDTH
+            this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
 
         this.gotoSlide(this.data("settings").currentIndex);
         //console.log(this.data("settings").currentIndex);//TESTING

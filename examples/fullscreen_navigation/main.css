@@ -9,7 +9,7 @@ body {
         position:fixed;
         height:100vh;/*150vh*/
         width:100vw;
-        overflow-x: scroll;
+        overflow-x: hidden;
         overflow-y: hidden;
 }
 
