@@ -31,9 +31,11 @@ ul {
 
 
     list-style-type: none;
--webkit-transform-style: preserve-3d;/*YAY lag is fixed on firefox*/
+    -webkit-transform-style: preserve-3d;/*YAY lag is fixed on firefox*/
 	-ms-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
 	transform-style: preserve-3d;
+
 
 
 

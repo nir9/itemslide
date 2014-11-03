@@ -29,8 +29,8 @@ ul {
     padding: 0;
     position: absolute;
     left:0;
-    margin-top:5vh;
-    height:77%;
+    margin-top:7vh;
+    height:73%;
 
 
     transform: none;
@@ -52,7 +52,8 @@ li {
 
     font-size:8vmin;/*cool*/
     float: left;
-    width:40vw;
+    width:35vw;
+    min-width: 250px;
     height: 100%;
     color: #000;
     font-weight: 300;

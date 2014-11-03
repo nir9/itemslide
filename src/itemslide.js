@@ -1,4 +1,3 @@
-//Vendor prefixes - ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform' ]
 //about:flags
 
 
@@ -9,15 +8,12 @@
 (function ($) {
     "use strict";
 
-    var isExplorer = false;
-
-
-    isExplorer = msieversion(); //Check if browser is ie
+    var isExplorer = false || !!document.documentMode; // At least IE6
 
 
 
 
-    //Waypoints check position relative to waypoint and decide if to scroll to or not...
+
     $.fn.initslide = function (options) {
 
         var direction = 0; //Panning Direction
@@ -59,16 +55,13 @@
 
 
         if (!settings.disable_autowidth)
-            slides.css("width", slides.children('li').length * slides.children('li').css("width").replace("px", "") + 10); //SET WIDTH
+            slides.css("width", slides.children('li').length * slides.children('li').width() + 10); //SET WIDTH
 
         //console.log("WIDTH: " + slides.css("width"));
 
-        slides.css('transform', 'translate3d(0px, 0px, 0px)'); // transform according to vendor prefix
 
-        /*slides.css({
-				WebkitTransform: 'translate3d(' + (ev.deltaX + currentLandPos) + 'px' + ',0px, 0px)'
-				//msTransform
-			});*/
+        slides.translate3d(0);
+
 
         gotoSlideByIndex(settings.start);
 
@@ -93,7 +86,8 @@
 
 
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
-                slides.css('transform', 'translate3d(' + (ev.deltaX + slides.data("settings").currentLandPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
+
+                slides.translate3d(ev.deltaX + slides.data("settings").currentLandPos);
                 slides.trigger('pan');
                 slides.trigger('changePos');
                 cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning
@@ -103,13 +97,9 @@
         mc.on("panend", function (ev) {
             if (!settings.disable_slide) {
 
-                var matrix = matrixToArray(slides.css("transform")); //prefix
-                var value;
-                if (!isExplorer) { //YES in explorer its different :)
-                    value = parseFloat(matrix[4]);
-                } else {
-                    value = parseFloat(matrix[12]);
-                }
+
+                var value = slides.translate3d();
+
 
 
                 gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));
@@ -142,7 +132,10 @@
             slides.mousewheel(function (event) {
                 //console.log(event.deltaX, event.deltaY, event.deltaFactor);
                 if (!slides.data("settings").disable_scroll)
+                {
                     gotoSlideByIndex(slides.data("settings").currentIndex - event.deltaY);
+                    event.preventDefault();
+                }
             });
         } catch (e) {}
         //UNTILL HERE MOUSEWHEEL
@@ -196,7 +189,7 @@
 
 
         function getPositionByIndex(i) {
-            return -(i * slides.children('li').css("width").replace("px", "") - ((slides.parent().css("width").replace("px", "") - slides.data("settings").initialLeft - slides.children('li').css("width").replace("px", "")) / 2));
+            return -(i * slides.children('li').width() - ((slides.parent().width() - slides.data("settings").initialLeft - slides.children('li').width()) / 2));
         }
 
 
@@ -216,21 +209,13 @@
 
 
 
-            var matrix = matrixToArray(slides.css("transform"));
-            var value;
-            if (!isExplorer) {
-                value = parseFloat(matrix[4]);
-            } else { //IE 11 - transform x is in a different position
-                value = parseFloat(matrix[12]);
-            }
 
 
-            slides.data("settings").currentPos = value;
+
+
+            slides.data("settings").currentPos = slides.translate3d();
 
             slides.data("settings").currentLandPos = getPositionByIndex(i);
-
-
-            //console.log(slides.data("settings").currentLandPos + "ccc");
 
 
 
@@ -253,13 +238,14 @@
 
 
 
-        function animationRepeat() {
+        function animationRepeat() { //Repeats using requestAnimationFrame
 
 
 
             slides.trigger('changePos');
 
-            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration); //work!!
+            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration);
+
             //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {
 
@@ -271,9 +257,9 @@
 
 
 
-            slides.css('transform', 'translate3d(' + (slides.data("settings").currentPos) + 'px' + ',0px, 0px)'); // transform according to vendor prefix
 
-            //slides.css('left', (slides.data("settings").currentPos) ); // transform according to vendor prefix
+            slides.translate3d(slides.data("settings").currentPos);
+
             slides.data("settings").countFrames++;
             slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
 
@@ -297,11 +283,11 @@
     }
 
     $.fn.next = function () { //Next slide
-        //gotoSlideByIndex(this.data("settings").this.data("settings").currentIndex + 1);
+
 
         this.gotoSlide(this.data("settings").currentIndex + 1);
 
-        //this.data("settings",settings);
+
     }
 
     $.fn.previous = function () { //Next slide
@@ -314,7 +300,7 @@
             this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
 
         this.gotoSlide(this.data("settings").currentIndex);
-        //console.log(this.data("settings").currentIndex);//TESTING
+
     }
 
     $.fn.add = function (data) {
@@ -329,14 +315,8 @@
     }
 
     $.fn.getCurrentPos = function () { //Get current position of carousel
-        var matrix = matrixToArray(this.css("transform"));
-        var value;
-        if (!isExplorer) {
-            value = parseFloat(matrix[4]);
-        } else { //IE 11 - transform x is in a different position
-            value = parseFloat(matrix[12]);
-        }
-        return value;
+
+        return this.translate3d();
     }
 
 
@@ -361,6 +341,17 @@
     }
 
 
+    $.fn.translate3d = function (x) //Translates the x of an object or returns the x translate value
+    {
+        if (x == null) {
+            var matrix = matrixToArray(this.css("transform"));
+            return isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4]); //Returns the x value
+        } else {
+            this.css('transform', 'translate3d(' + x + 'px' + ',0px, 0px)');
+        }
+    }
+
+
 
 
 
@@ -372,18 +363,6 @@
         t /= d;
         t--;
         return -c * (t * t * t * t - 1) + b;
-    }
-
-    function msieversion() {
-
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
-
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer, return version number
-            return true;
-        else // If another browser, return 0
-            return false;
-
     }
 
 })(jQuery);

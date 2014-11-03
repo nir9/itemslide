@@ -1,11 +1,9 @@
 body{
     font-family: 'Source Sans Pro', sans-serif;
     text-align:center;
-    /*padding:0;*/
+
     margin:0;
-    /*-webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none; */
+
     -webkit-transform:translate3d(0,0,0);
 }
 header{
@@ -14,51 +12,16 @@ header{
     left:0;
     height: 19vh;
 }
-#tested {
-            max-height: 15vh;
-            width: 21.484375vw;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 1vw;
-            margin: auto;
-            z-index:1000;
-}
-
-@media (max-width: 1200px) {/*cool*/
-    #tested {
-    display: none;
-  }
-}
 
 #headertext
 {
-    margin-top:1.4vh;
+    margin-top:1.7vh;
     font-size:8vh;
-    font-weight: 200;/*ask*/
+    font-weight: 200;
 }
 
 
-#touse
-{
-   position:relative;
-    top:13.5vh;
-}
 
-#initcode
-{
-    position:relative;top:5.2vmin;left:3px;
-    font-family:'Source Code Pro';font-size:6.2vmin;background-color:#333;color:white;padding:2.7vmin;border-radius: 2vmin;
-}
-
-/*#downloadarea{
-
-    position:relative;
-    top:20%;
-    font-size:3.6vh;
-    line-height:4.5vh;
-
-}*/
 
 #downloadarea{
 
@@ -106,10 +69,6 @@ header{
 
 
 
-#codetext
-{
-    font-size:4vh;
-}
 
 #fotter
 {
