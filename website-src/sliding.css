@@ -5,11 +5,11 @@ body
 #scrolling{/*frame*/
     top:19vh;
     position:fixed;
-    background-color:#666;
+    background-color:#E0E0E0;
     height:85%;
     width:100vw;
 
-
+    overflow: hidden;
 
 
 }
@@ -36,8 +36,7 @@ ul {
     transform: none;
     -moz-transform: none;
     -webkit-transform: none;
-    /*-moz-transform: none;
-    -webkit-transform: none;*/
+
 
     list-style-type: none;
 
@@ -63,7 +62,7 @@ li {
     -o-border-radius: 30px;
     -moz-border-radius: 30px;
     cursor: pointer;
-    background: #FFFFFD;
+    background: #FFF;
     -webkit-transform:  scale(0.95);
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);

@@ -28,6 +28,7 @@
             disable_scroll: false,
             start: 0,
             pan_threshold: 0.3, //Precentage of slide width
+
             //Until here options
 
             currentIndex: 0,
@@ -94,6 +95,9 @@
             }
 
         });
+
+
+
         mc.on("panend", function (ev) {
             if (!settings.disable_slide) {
 
@@ -131,8 +135,7 @@
         try {
             slides.mousewheel(function (event) {
                 //console.log(event.deltaX, event.deltaY, event.deltaFactor);
-                if (!slides.data("settings").disable_scroll)
-                {
+                if (!slides.data("settings").disable_scroll) {
                     gotoSlideByIndex(slides.data("settings").currentIndex - event.deltaY);
                     event.preventDefault();
                 }
@@ -200,10 +203,6 @@
                 return;
 
             changeActiveSlideTo(i);
-
-
-
-
 
 
 
