@@ -1,8 +1,8 @@
 //about:flags
 
 
-//Dependencies - jQuery, Hammer.js.
-//Optional Dependencies - Hammer.js jQuery Extension (~0.5KB) , jQuery Mousewheel (~2.5KB)
+//Dependencies - jQuery.
+//Optional Dependencies - jQuery Mousewheel (~2.5KB)
 
 
 (function ($) {
@@ -17,7 +17,7 @@
     $.fn.initslide = function (options) {
 
         var direction = 0; //Panning Direction
-
+        var touch;
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
@@ -69,47 +69,102 @@
 
 
 
-        var mc = new Hammer(slides.get(0)); //Retrieve DOM Elements to create hammer.js object
 
 
 
 
-        mc.on("panleft panright", function (ev) { //Hammerjs pan(drag) event happens very fast
+        /*Swiping and panning events FROM HERE*/
+        var isDown = false;
+        var startPoint = 0;
+        var startTime = 0;
+
+        slides.on('mousedown touchstart', function (e) {
+            if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
+
+                if (e.type == 'touchstart') //Check for touch event or mousemove
+                    touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                else
+                    touch = e;
 
 
+                startTime = Date.now();
+                isDown = true;
 
+                startPoint = touch.pageX;
+                cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
-            if (ev.type == "panleft") {
-                direction = 1;
-            } else {
-                direction = -1;
             }
+        });
+
+        $(window).on('mousemove touchmove', function (e) { /*PAN*/
+
+
 
 
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
+                if (isDown) {
 
-                slides.translate3d(ev.deltaX + slides.data("settings").currentLandPos);
-                slides.trigger('pan');
-                slides.trigger('changePos');
-                cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning
+                    if (e.type == 'touchmove') //Check for touch event or mousemove
+                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                    else
+                        touch = e;
+
+                    slides.translate3d(touch.pageX - startPoint + slides.data("settings").currentLandPos);
+
+                }
+
             }
 
         });
 
+        $(window).on('mouseup touchend',/*Pan End*/
+
+            function (e) {
+                if (!settings.disable_slide) {
+
+                    if (e.type == 'touchend') //Check for touch event or mousemove
+                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                    else
+                        touch = e;
+
+                    isDown = false;
 
 
-        mc.on("panend", function (ev) {
-            if (!settings.disable_slide) {
 
+                    var value = slides.translate3d();
 
-                var value = slides.translate3d();
+                    //Calculate deltaTime for calculation of velocity
+                    var deltaTime = (Date.now() - startTime);
+                    var velocity = -(touch.pageX - startPoint) / deltaTime;
 
+                    if (velocity > 0) { //Set direction
+                        direction = 1;
+                    } else {
+                        direction = -1;
+                    }
 
+                    if (!(touch.pageX - startPoint == 0)) //TO let tapping activate gotoSlide also
+                        gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - value));
+                }
 
-                gotoSlideByIndex(getLandingSlideIndex(ev.velocityX * settings.swipe_sensitivity - value));
 
             }
-        }); //WORKS!
+        );
+
+        slides.on("mouseup touchend", "li", function () {//TAP EVENT
+            if (isDown) {
+
+                if ($(this).index() != slides.data("settings").currentIndex) {
+
+                    slides.gotoSlide($(this).index());
+                }
+            }
+        });
+
+        /*UNTIL HERE - swiping and panning events*/
+
+
+
 
 
 
@@ -128,7 +183,7 @@
 
 
 
-        slides.tapEvent(); //ADD TAP EVENT
+
 
 
         //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/brandonaaron/jquery-mousewheel
@@ -152,10 +207,6 @@
 
 
 
-
-
-
-
         function changeActiveSlideTo(i) {
 
             slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
@@ -163,7 +214,6 @@
 
             settings.currentIndex = i;
 
-            //console.log("new index: " + slides.data("settings").currentIndex);
 
             slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
 
@@ -302,9 +352,12 @@
 
     }
 
-    $.fn.add = function (data) {
-        this.append(data);
-        this.tapEvent();
+    $.fn.addSlide = function (data) {
+        this.append("<li>"+data+"</li>");
+    }
+
+    $.fn.removeSlide = function (index) {
+        this.children(':nth-child(' + (index + 1) + ')').remove();
     }
 
 
@@ -318,26 +371,6 @@
         return this.translate3d();
     }
 
-
-
-
-
-
-
-
-    $.fn.tapEvent = function () //Activate tap event on current slides
-    {
-        var slides = this;
-        try { //If someone forgot/didn't know that you need the hammer jquery plugin
-            slides.children('li').hammer().bind("tap", function (e) {
-                if ($(this).index() != slides.data("settings").currentIndex) {
-                    slides.gotoSlide($(this).index());
-                }
-            });
-        } catch (e) {
-            //optional
-        }
-    }
 
 
     $.fn.translate3d = function (x) //Translates the x of an object or returns the x translate value

@@ -28,10 +28,10 @@ header{
 #github
 {
     position:relative;/**/
-    top:5vh;
+    top:3.5vh;
     left:25vw;
     font-weight: 300;
-    font-size:2.1vh;
+    font-size:2.9vh;
     text-decoration: none;
     color: #FFF;
 }
@@ -47,10 +47,10 @@ header{
 
 
     position:absolute;
-    top:4vh;
+    top:2.8vh;
     right:1vw;
     font-weight: 200;
-    font-size:2.1vh;
+    font-size:4vh;
 
 
 }

@@ -14,10 +14,8 @@ jQuery plugin for a touch enabled carousel
 
 ### Dependencies
 - [jQuery](http://jquery.com/)
-- [Hammer.js](http://hammerjs.github.io/)
 
 #### Optional Dependencies (adds features)
-- [Hammer jQuery Extension (Adds click to slide) (~0.5KB)](http://itemslide.github.io/dependencies/hammer.jquery.min.js)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
 
@@ -105,7 +103,7 @@ console.log($("ul").getActiveIndex());
 - reload() - recalculates width and center object (recommended to call when resize occures)
 - addSlide(data) - adds in the end of the carousel a new item.
 - removeSlide(index) - removes a specific slide by index.
-- NOTE: after calling addSlide you need to call reload in order to see the new slides.
+- NOTE: after calling addSlide you need to call reload in order to see the new slides. addSlide automatically adds <li></li>.
 
 ```js
 $("ul").next();
