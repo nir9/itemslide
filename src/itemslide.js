@@ -54,6 +54,13 @@
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
 
+        slides.css({
+            'touch-action': 'pan-y',
+            '-webkit-user-select': 'none',
+            '-webkit-touch-callout': 'none',
+            '-webkit-user-drag': 'none',
+            '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
+        });
 
         if (!settings.disable_autowidth)
             slides.css("width", slides.children('li').length * slides.children('li').width() + 10); //SET WIDTH
@@ -72,15 +79,15 @@
 
 
 
-
         /*Swiping and panning events FROM HERE*/
         var isDown = false;
         var startPoint = 0;
         var startTime = 0;
+        var savedSlide;
 
-        slides.on('mousedown touchstart', function (e) {
+        slides.on('mousedown touchstart', 'li', function (e) {
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
-
+                e.preventDefault();
                 if (e.type == 'touchstart') //Check for touch event or mousemove
                     touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                 else
@@ -91,7 +98,11 @@
                 isDown = true;
 
                 startPoint = touch.pageX;
-                cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+                savedSlide = $(this);
+
+
+
+
 
             }
         });
@@ -103,7 +114,7 @@
 
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
                 if (isDown) {
-
+                    e.preventDefault();
                     if (e.type == 'touchmove') //Check for touch event or mousemove
                         touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                     else
@@ -111,17 +122,19 @@
 
                     slides.translate3d(touch.pageX - startPoint + slides.data("settings").currentLandPos);
 
+                    cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+
                 }
 
             }
 
         });
 
-        $(window).on('mouseup touchend',/*Pan End*/
+        $(window).on('mouseup touchend', /*Pan End*/
 
             function (e) {
                 if (!settings.disable_slide) {
-
+                    e.preventDefault();
                     if (e.type == 'touchend') //Check for touch event or mousemove
                         touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                     else
@@ -143,23 +156,19 @@
                         direction = -1;
                     }
 
-                    if (!(touch.pageX - startPoint == 0)) //TO let tapping activate gotoSlide also
+
+                    if (!(touch.pageX - startPoint == 0)) //If distance from startpoint is zero than its a tap
                         gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - value));
+
+                    else {
+                        if (savedSlide.index() != slides.data("settings").currentIndex) {
+                            gotoSlideByIndex(savedSlide.index());
+                        }
+
+                    }
                 }
-
-
             }
         );
-
-        slides.on("mouseup touchend", "li", function () {//TAP EVENT
-            if (isDown) {
-
-                if ($(this).index() != slides.data("settings").currentIndex) {
-
-                    slides.gotoSlide($(this).index());
-                }
-            }
-        });
 
         /*UNTIL HERE - swiping and panning events*/
 
@@ -353,7 +362,8 @@
     }
 
     $.fn.addSlide = function (data) {
-        this.append("<li>"+data+"</li>");
+        this.append("<li>" + data + "</li>");
+        this.reload();
     }
 
     $.fn.removeSlide = function (index) {
