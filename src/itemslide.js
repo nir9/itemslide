@@ -1,8 +1,7 @@
-//about:flags
-
-
 //Dependencies - jQuery.
 //Optional Dependencies - jQuery Mousewheel (~2.5KB)
+
+//about:flags
 
 
 (function ($) {
@@ -17,7 +16,7 @@
     $.fn.initslide = function (options) {
 
         var direction = 0; //Panning Direction
-        var touch;
+
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
@@ -84,6 +83,8 @@
         var startPoint = 0;
         var startTime = 0;
         var savedSlide;
+        var touch;
+
 
         slides.on('mousedown touchstart', 'li', function (e) {
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
@@ -102,10 +103,23 @@
 
 
 
+                /*Clear Selections*/
+                if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
+                    if (window.getSelection().empty) { // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) { // Firefox
+                        window.getSelection().removeAllRanges();
+                    }
+                } else if (document.selection) { // IE?
+                    document.selection.empty();
+                }
+                /*Clear Selections Until Here*/
+
 
 
             }
         });
+
 
         $(window).on('mousemove touchmove', function (e) { /*PAN*/
 
@@ -120,9 +134,23 @@
                     else
                         touch = e;
 
+                    slides.trigger('changePos');
+
                     slides.translate3d(touch.pageX - startPoint + slides.data("settings").currentLandPos);
 
-                    cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+
+
+                    var deltaX = -(touch.pageX - startPoint);
+
+                    if (deltaX > 0) { //Set direction
+                        direction = 1;
+                    } else {
+                        direction = -1;
+                    }
+
+
+                    if ((touch.pageX - startPoint)*direction < 12*(-1))//Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+                        cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
                 }
 
@@ -134,7 +162,11 @@
 
             function (e) {
                 if (!settings.disable_slide) {
-                    e.preventDefault();
+
+                    //TODO: CHECK IS DOWN
+
+                    //e.preventDefault();
+
                     if (e.type == 'touchend') //Check for touch event or mousemove
                         touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                     else
@@ -156,15 +188,18 @@
                         direction = -1;
                     }
 
+                    //TAP is when deltaX is less or equal to 12px
 
-                    if (!(touch.pageX - startPoint == 0)) //If distance from startpoint is zero than its a tap
+                    //TODO: 12 NOW, Relative to screen width
+                    if ((touch.pageX - startPoint)*direction < 12*(-1))//Check distance to see if the event is a tap
+                    {
                         gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - value));
+                        //NOT HERE - remove before commit
+                    }
 
-                    else {
-                        if (savedSlide.index() != slides.data("settings").currentIndex) {
+                    else {//If this occurs then its a tap
+                        if (savedSlide.index() != slides.data("settings").currentIndex)
                             gotoSlideByIndex(savedSlide.index());
-                        }
-
                     }
                 }
             }
@@ -178,27 +213,10 @@
 
 
 
-        slides.children('li').mousedown(function (e) {
-            if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
-                if (window.getSelection().empty) { // Chrome
-                    window.getSelection().empty();
-                } else if (window.getSelection().removeAllRanges) { // Firefox
-                    window.getSelection().removeAllRanges();
-                }
-            } else if (document.selection) { // IE?
-                document.selection.empty();
-            }
-        });
-
-
-
-
-
-
-        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/brandonaaron/jquery-mousewheel
+        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
         try {
             slides.mousewheel(function (event) {
-                //console.log(event.deltaX, event.deltaY, event.deltaFactor);
+
                 if (!slides.data("settings").disable_scroll) {
                     gotoSlideByIndex(slides.data("settings").currentIndex - event.deltaY);
                     event.preventDefault();
@@ -298,6 +316,8 @@
 
         function animationRepeat() { //Repeats using requestAnimationFrame
 
+
+            //alert($.easing['swing'](3, 4, 2, 2, 1));
 
 
             slides.trigger('changePos');
