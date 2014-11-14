@@ -53,7 +53,7 @@
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
 
-        slides.css({
+        slides.css({//Setting some css to avoid problems on touch devices
             'touch-action': 'pan-y',
             '-webkit-user-select': 'none',
             '-webkit-touch-callout': 'none',
@@ -312,12 +312,12 @@
         }
 
 
-
-
         function animationRepeat() { //Repeats using requestAnimationFrame
 
 
             //alert($.easing['swing'](3, 4, 2, 2, 1));
+
+
 
 
             slides.trigger('changePos');

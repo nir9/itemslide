@@ -6,11 +6,13 @@ body{
 
     -webkit-transform:translate3d(0,0,0);
 }
+
+/*Header*/
 header{
     width:100vw;
     position:fixed;
     left:0;
-    height: 19vh;
+    height: 15.5vh;
     background-color: #FF3B30;
 
     color:#FFF;
@@ -19,17 +21,17 @@ header{
 #headertext
 {
     position:absolute;
-    margin-top:4.1vh;
+    margin-top:3.1vh;
     font-size:8vh;
-    left:1vw;
+    left:1.5vw;
     font-weight: 200;
 }
 
 #github
 {
     position:relative;/**/
-    top:3.5vh;
-    left:25vw;
+    top:1.7vh;
+    left:27vw;
     font-weight: 300;
     font-size:2.9vh;
     text-decoration: none;
@@ -47,7 +49,7 @@ header{
 
 
     position:absolute;
-    top:2.8vh;
+    top:1vh;
     right:1vw;
     font-weight: 200;
     font-size:4vh;
@@ -77,12 +79,6 @@ header{
     -moz-border-radius: 30px;
     transition: background-color 0.2s;
 }
-
-
-
-
-
-
 
 
 
