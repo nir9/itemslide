@@ -75,6 +75,7 @@ $("ul").initslide();
 - disable_scroll - disable scrolling {default: false}
 - start - index of slide that appears when initializing {default: 0}
 - pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)
+- one_item - set this to true if the navigation is full screen or one slide every time. (checkout the [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/))
 
 
 ##### Example implementation

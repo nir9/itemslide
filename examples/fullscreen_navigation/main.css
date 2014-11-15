@@ -12,15 +12,13 @@ body {
         overflow-x: hidden;
         overflow-y: hidden;
 }
+a{
 
+    color: #FFF;
+}
 /*sliding navigation between the slides*/
 ul {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+
 
     margin: 0;
     padding: 0;
@@ -49,20 +47,11 @@ li {
     float: left;
     width: 100vw;
     height: 100%;
-    color: #000;
+    color: #FFF;
     text-align: center;
 
 }
 
-#blackcover{
-    height:100vh;
-    width:100vw;
-    position:absolute;
-    background-color: #000000;
-    z-index:1;
-	color:#FFF;
-    opacity: 0.33;
-    display:block;
-}
+
 /*end of sliding navigation between the slides*/
 

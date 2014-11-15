@@ -26,6 +26,7 @@
             disable_autowidth: false,
             disable_scroll: false,
             start: 0,
+            one_item: false, //Set true for full screen navigation or navigation with one item every time
             pan_threshold: 0.3, //Precentage of slide width
 
             //Until here options
@@ -53,7 +54,7 @@
         slides.data("settings").initialLeft = parseInt(slides.css("left").replace("px", ""));
 
 
-        slides.css({//Setting some css to avoid problems on touch devices
+        slides.css({ //Setting some css to avoid problems on touch devices
             'touch-action': 'pan-y',
             '-webkit-user-select': 'none',
             '-webkit-touch-callout': 'none',
@@ -88,7 +89,7 @@
 
         slides.on('mousedown touchstart', 'li', function (e) {
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
-                e.preventDefault();
+                //e.preventDefault();
                 if (e.type == 'touchstart') //Check for touch event or mousemove
                     touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                 else
@@ -149,7 +150,7 @@
                     }
 
 
-                    if ((touch.pageX - startPoint)*direction < 12*(-1))//Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+                    if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
                         cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
                 }
@@ -191,13 +192,11 @@
                     //TAP is when deltaX is less or equal to 12px
 
                     //TODO: 12 NOW, Relative to screen width
-                    if ((touch.pageX - startPoint)*direction < 12*(-1))//Check distance to see if the event is a tap
+                    if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check distance to see if the event is a tap
                     {
                         gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - value));
                         //NOT HERE - remove before commit
-                    }
-
-                    else {//If this occurs then its a tap
+                    } else { //If this occurs then its a tap
                         if (savedSlide.index() != slides.data("settings").currentIndex)
                             gotoSlideByIndex(savedSlide.index());
                     }
@@ -218,7 +217,14 @@
             slides.mousewheel(function (event) {
 
                 if (!slides.data("settings").disable_scroll) {
-                    gotoSlideByIndex(slides.data("settings").currentIndex - event.deltaY);
+
+                    var mouseLandingIndex = slides.data("settings").currentIndex - event.deltaY;
+
+                    if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
+                        return;
+
+                    gotoSlideByIndex(mouseLandingIndex);
+
                     event.preventDefault();
                 }
             });
@@ -251,19 +257,31 @@
 
 
 
-            for (var i = 0; i < slides.children('li').length; i++) {
+                for (var i = 0; i < slides.children('li').length; i++) {
 
-                if (slides.children(i).width() * i + slides.children(i).width() / 2 -
+                    if (slides.children(i).width() * i + slides.children(i).width() / 2 -
 
-                    slides.children(i).width() * slides.data("settings").pan_threshold * direction - getPositionByIndex(0) > x) {
+                        slides.children(i).width() * slides.data("settings").pan_threshold * direction - getPositionByIndex(0) > x) {
 
-                    return i;
+
+                        if (!settings.one_item)
+                            return i;
+
+                        else //If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
+                        {
+                            if(i!=slides.data("settings").currentIndex)
+                                return slides.data("settings").currentIndex+1*direction//Return 0 or more
+                            else
+                                return slides.data("settings").currentIndex;
+                        }
+
+
+                    }
 
                 }
 
-            }
+                return settings.one_item ? slides.data("settings").currentIndex+1 : slides.children('li').length - 1;//If one item enabled than just go one slide forward and not until the end.
 
-            return slides.children('li').length - 1;
         }
 
 
@@ -276,8 +294,10 @@
 
         function gotoSlideByIndex(i) {
 
+
+
             if (i >= slides.children('li').length || i < 0) //If exceeds boundaries dont goto slide
-                return;
+                i = Math.min(Math.max(i,0),slides.children('li').length-1);//Put in between boundaries
 
             changeActiveSlideTo(i);
 
