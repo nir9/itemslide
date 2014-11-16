@@ -31,7 +31,7 @@
 
             //Until here options
 
-            currentIndex: -1,
+            currentIndex: 0,
             currentPos: 0,
             begin: 0,
             targetFrame: 0,
@@ -162,42 +162,44 @@
         $(window).on('mouseup touchend', /*Pan End*/
 
             function (e) {
+
                 if (!settings.disable_slide) {
 
-                    //TODO: CHECK IS DOWN
+
+
+                    if (isDown) {
+
+                        if (e.type == 'touchend') //Check for touch event or mousemove
+                            touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                        else
+                            touch = e;
+
+                        isDown = false;
 
 
 
-                    if (e.type == 'touchend') //Check for touch event or mousemove
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-                    else
-                        touch = e;
 
-                    isDown = false;
+                        //Calculate deltaTime for calculation of velocity
+                        var deltaTime = (Date.now() - startTime);
+                        var velocity = -(touch.pageX - startPoint) / deltaTime;
+
+                        if (velocity > 0) { //Set direction
+                            direction = 1;
+                        } else {
+                            direction = -1;
+                        }
+
+                        //TAP is when deltaX is less or equal to 12px
 
 
-
-
-                    //Calculate deltaTime for calculation of velocity
-                    var deltaTime = (Date.now() - startTime);
-                    var velocity = -(touch.pageX - startPoint) / deltaTime;
-
-                    if (velocity > 0) { //Set direction
-                        direction = 1;
-                    } else {
-                        direction = -1;
-                    }
-
-                    //TAP is when deltaX is less or equal to 12px
-
-                    //TODO: 12 NOW, Relative to screen width
-                    if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check distance to see if the event is a tap
-                    {
-                        gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
-                        //NOT HERE - remove before commit
-                    } else { //If this occurs then its a tap
-                        if (savedSlide.index() != slides.data("settings").currentIndex)
-                            gotoSlideByIndex(savedSlide.index());
+                        if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check distance to see if the event is a tap
+                        {
+                            gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
+                            //NOT HERE - remove before commit
+                        } else { //If this occurs then its a tap
+                            if (savedSlide.index() != slides.data("settings").currentIndex)
+                                gotoSlideByIndex(savedSlide.index());
+                        }
                     }
                 }
             }
@@ -240,17 +242,21 @@
 
 
         function changeActiveSlideTo(i) {
-            if(i!=settings.currentIndex)//Check if landingIndex is different from currentIndex
+
+            if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
             {
-
-                slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
-
-
-                settings.currentIndex = i;
                 slides.trigger('changeActiveItem');
-
-                slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
             }
+
+
+            slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
+
+
+            settings.currentIndex = i;
+
+
+            slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
+
 
         }
 
@@ -258,30 +264,30 @@
 
 
 
-                for (var i = 0; i < slides.children('li').length; i++) {
+            for (var i = 0; i < slides.children('li').length; i++) {
 
-                    if (slides.children(i).width() * i + slides.children(i).width() / 2 -
+                if (slides.children(i).width() * i + slides.children(i).width() / 2 -
 
-                        slides.children(i).width() * slides.data("settings").pan_threshold * direction - getPositionByIndex(0) > x) {
-
-
-                        if (!settings.one_item)
-                            return i;
-
-                        else //If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
-                        {
-                            if(i!=slides.data("settings").currentIndex)
-                                return slides.data("settings").currentIndex+1*direction//Return 0 or more
-                            else
-                                return slides.data("settings").currentIndex;
-                        }
+                    slides.children(i).width() * slides.data("settings").pan_threshold * direction - getPositionByIndex(0) > x) {
 
 
+                    if (!settings.one_item)
+                        return i;
+
+                    else //If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
+                    {
+                        if (i != slides.data("settings").currentIndex)
+                            return slides.data("settings").currentIndex + 1 * direction //Return 0 or more
+                        else
+                            return slides.data("settings").currentIndex;
                     }
+
 
                 }
 
-                return settings.one_item ? slides.data("settings").currentIndex+1 : slides.children('li').length - 1;//If one item enabled than just go one slide forward and not until the end.
+            }
+
+            return settings.one_item ? slides.data("settings").currentIndex + 1 : slides.children('li').length - 1; //If one item enabled than just go one slide forward and not until the end.
 
         }
 
@@ -298,7 +304,7 @@
 
 
             if (i >= slides.children('li').length || i < 0) //If exceeds boundaries dont goto slide
-                i = Math.min(Math.max(i,0),slides.children('li').length-1);//Put in between boundaries
+                i = Math.min(Math.max(i, 0), slides.children('li').length - 1); //Put in between boundaries
 
 
             changeActiveSlideTo(i);
