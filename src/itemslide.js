@@ -20,7 +20,7 @@
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
-            duration: 250,
+            duration: 230,
             swipe_sensitivity: 250,
             disable_slide: false,
             disable_autowidth: false,
@@ -31,7 +31,7 @@
 
             //Until here options
 
-            currentIndex: 0,
+            currentIndex: -1,
             currentPos: 0,
             begin: 0,
             targetFrame: 0,
@@ -89,7 +89,7 @@
 
         slides.on('mousedown touchstart', 'li', function (e) {
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
-                //e.preventDefault();
+
                 if (e.type == 'touchstart') //Check for touch event or mousemove
                     touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                 else
@@ -141,9 +141,9 @@
 
 
 
-                    var deltaX = -(touch.pageX - startPoint);
 
-                    if (deltaX > 0) { //Set direction
+
+                    if ((-(touch.pageX - startPoint)) > 0) { //Set direction
                         direction = 1;
                     } else {
                         direction = -1;
@@ -166,7 +166,7 @@
 
                     //TODO: CHECK IS DOWN
 
-                    //e.preventDefault();
+
 
                     if (e.type == 'touchend') //Check for touch event or mousemove
                         touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -177,7 +177,6 @@
 
 
 
-                    var value = slides.translate3d();
 
                     //Calculate deltaTime for calculation of velocity
                     var deltaTime = (Date.now() - startTime);
@@ -194,7 +193,7 @@
                     //TODO: 12 NOW, Relative to screen width
                     if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check distance to see if the event is a tap
                     {
-                        gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - value));
+                        gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
                         //NOT HERE - remove before commit
                     } else { //If this occurs then its a tap
                         if (savedSlide.index() != slides.data("settings").currentIndex)
@@ -241,15 +240,17 @@
 
 
         function changeActiveSlideTo(i) {
+            if(i!=settings.currentIndex)//Check if landingIndex is different from currentIndex
+            {
 
-            slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
+                slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
 
 
-            settings.currentIndex = i;
+                settings.currentIndex = i;
+                slides.trigger('changeActiveItem');
 
-
-            slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
-
+                slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
+            }
 
         }
 
@@ -299,6 +300,7 @@
             if (i >= slides.children('li').length || i < 0) //If exceeds boundaries dont goto slide
                 i = Math.min(Math.max(i,0),slides.children('li').length-1);//Put in between boundaries
 
+
             changeActiveSlideTo(i);
 
 
@@ -319,7 +321,7 @@
 
             slides.data("settings").countFrames = 0;
 
-            slides.trigger('changeActiveItem');
+
             cancelAnimationFrame(slides.data("settings").slidesGlobalID);
             slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
 

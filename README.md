@@ -67,7 +67,7 @@ $("ul").initslide();
 
 ### Options
 
-- duration - duration of swipe animation {default: 250}
+- duration - duration of swipe animation {default: 230}
 - swipe_sensitivity - swiping sensitivity {default: 250}
 - disable_slide - disable swiping and panning {default: false}
 - disable_autowidth - disable calculation of width {default: false} 
@@ -75,7 +75,7 @@ $("ul").initslide();
 - disable_scroll - disable scrolling {default: false}
 - start - index of slide that appears when initializing {default: 0}
 - pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)
-- one_item - set this to true if the navigation is full screen or one slide every time. (checkout the [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/))
+- one_item - set this to true if the navigation is full screen or one slide every time. ([Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/))
 
 
 ##### Example implementation
