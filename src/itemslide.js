@@ -365,7 +365,7 @@
 
 
 
-            slides.translate3d(parseInt(slides.data("settings").currentPos));
+            slides.translate3d(slides.data("settings").currentPos);
 
 
             slides.data("settings").countFrames++;
