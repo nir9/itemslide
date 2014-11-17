@@ -38,6 +38,7 @@ header{
     font-size:2.9vh;
     text-decoration: none;
     color: #FFF;
+
 }
 
 #github img
@@ -62,8 +63,12 @@ header{
 @media (max-width: 1200px) {/*cool*/
     #downloadarea {
     display: none;
-  }
+    }
+
+
 }
+
+
 
 
 #download{
@@ -80,6 +85,31 @@ header{
     -o-border-radius: 30px;
     -moz-border-radius: 30px;
     transition: background-color 0.2s;
+}
+
+
+#welcome
+{
+    position:fixed;
+    top:15.5vh;
+    height:45.5vh;
+    width:100vw;
+    background-color:#F2F2F2;
+
+}
+
+#welcome span
+{
+    position:relative;
+    top:7vh;
+    font-size:7vh;
+}
+
+#welcome a
+{
+
+    color:black;
+    font-size:2.5vh;
 }
 
 

@@ -197,7 +197,7 @@
                             gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
                             //NOT HERE - remove before commit
                         } else { //If this occurs then its a tap
-                            if (savedSlide.index() != slides.data("settings").currentIndex)
+                            if (savedSlide.index() != slides.data("settings").currentIndex)//TODO: SOLVE MINOR ISSUE HERE
                                 gotoSlideByIndex(savedSlide.index());
                         }
                     }
@@ -243,19 +243,20 @@
 
         function changeActiveSlideTo(i) {
 
-            if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
-            {
-                slides.trigger('changeActiveItem');
-            }
+
 
 
             slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
 
 
-            settings.currentIndex = i;
+            slides.children(':nth-child(' + (i + 1) + ')').attr('id', 'active'); //Change destination index to active
 
+            if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
+            {
+                slides.trigger('changeActiveItem');
+            }
 
-            slides.children(':nth-child(' + (slides.data("settings").currentIndex + 1) + ')').attr('id', 'active');
+            settings.currentIndex = i; //Set current index to landing index
 
 
         }
@@ -364,7 +365,8 @@
 
 
 
-            slides.translate3d(slides.data("settings").currentPos);
+            slides.translate3d(parseInt(slides.data("settings").currentPos));
+
 
             slides.data("settings").countFrames++;
             slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
