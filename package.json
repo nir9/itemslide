@@ -1,6 +1,6 @@
 {
   "name": "itemslide",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "jQuery plugin for a touch enabled carousel",
   "main": "index.js",
   "directories": {

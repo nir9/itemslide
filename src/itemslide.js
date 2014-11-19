@@ -21,7 +21,7 @@
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
             duration: 230,
-            swipe_sensitivity: 250,
+            swipe_sensitivity: 150,
             disable_slide: false,
             disable_autowidth: false,
             disable_scroll: false,
@@ -158,6 +158,7 @@
             }
 
         });
+        var velocity=0;
 
         $(window).on('mouseup touchend', /*Pan End*/
 
@@ -181,7 +182,7 @@
 
                         //Calculate deltaTime for calculation of velocity
                         var deltaTime = (Date.now() - startTime);
-                        var velocity = -(touch.pageX - startPoint) / deltaTime;
+                        velocity = -(touch.pageX - startPoint) / deltaTime;
 
                         if (velocity > 0) { //Set direction
                             direction = 1;
@@ -189,10 +190,12 @@
                             direction = -1;
                         }
 
+
+
                         //TAP is when deltaX is less or equal to 12px
 
 
-                        if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check distance to see if the event is a tap
+                        if ((touch.pageX - startPoint) * direction < 6 * (-1)) //Check distance to see if the event is a tap
                         {
                             gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
                             //NOT HERE - remove before commit
@@ -218,7 +221,7 @@
             slides.mousewheel(function (event) {
 
                 if (!slides.data("settings").disable_scroll) {
-
+                    velocity=0;
                     var mouseLandingIndex = slides.data("settings").currentIndex - event.deltaY;
 
                     if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
@@ -253,10 +256,12 @@
 
             if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
             {
+                settings.currentIndex = i; //Set current index to landing index
                 slides.trigger('changeActiveItem');
             }
 
-            settings.currentIndex = i; //Set current index to landing index
+
+            // ci = i WAS HERE
 
 
         }
@@ -351,7 +356,16 @@
 
             slides.trigger('changePos');
 
-            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, slides.data("settings").duration);
+            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos,
+                                                               //Duration Part
+                                                               Math.max(
+                                                               slides.data("settings").duration
+                                                              -((1920/$(window).width())*Math.abs(velocity)*
+                                                                7*(slides.data("settings").duration/230)
+                                                               ),10)//Minimum duration is 10
+
+
+                                                              );
 
             //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {

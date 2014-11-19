@@ -68,7 +68,7 @@ $("ul").initslide();
 ### Options
 
 - duration - duration of swipe animation {default: 230}
-- swipe_sensitivity - swiping sensitivity {default: 250}
+- swipe_sensitivity - swiping sensitivity {default: 150}
 - disable_slide - disable swiping and panning {default: false}
 - disable_autowidth - disable calculation of width {default: false} 
 (if you want to do it manually)
