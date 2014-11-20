@@ -166,7 +166,7 @@
 
                 if (!settings.disable_slide) {
 
-
+                    //e.preventDefault();
 
                     if (isDown) {
 
@@ -199,9 +199,12 @@
                         {
                             gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
                             //NOT HERE - remove before commit
-                        } else { //If this occurs then its a tap
+                        } else {
                             if (savedSlide.index() != slides.data("settings").currentIndex)//TODO: SOLVE MINOR ISSUE HERE
+                            {//If this occurs then its a tap
+                                e.preventDefault();//FIXED
                                 gotoSlideByIndex(savedSlide.index());
+                            }
                         }
                     }
                 }
