@@ -16,7 +16,7 @@
     $.fn.initslide = function (options) {
 
         var direction = 0; //Panning Direction
-
+        var isBoundary = false; //Is current slide the first or last one
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
@@ -137,14 +137,18 @@
 
                     slides.trigger('changePos');
 
-                    slides.translate3d(touch.pageX - startPoint + slides.data("settings").currentLandPos);
+                    slides.translate3d((touch.pageX - startPoint) / (( isBoundary&&direction==( (slides.getActiveIndex()>0) ? 1 : (-1) ) ) ? 4 : 1)
+                                       //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
 
+                                       + slides.data("settings").currentLandPos);
+
+                    console.log(isBoundary);
 
 
 
 
                     if ((-(touch.pageX - startPoint)) > 0) { //Set direction
-                        direction = 1;
+                        direction = 1; //PAN LEFT
                     } else {
                         direction = -1;
                     }
@@ -312,8 +316,15 @@
 
 
 
-            if (i >= slides.children('li').length || i < 0) //If exceeds boundaries dont goto slide
+            if (i >= slides.children('li').length-1 || i <= 0) //If exceeds boundaries dont goto slide
+            {
+                isBoundary = true;
                 i = Math.min(Math.max(i, 0), slides.children('li').length - 1); //Put in between boundaries
+            }
+            else
+            {
+                isBoundary = false;
+            }
 
 
             changeActiveSlideTo(i);
