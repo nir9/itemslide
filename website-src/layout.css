@@ -98,17 +98,18 @@ header{
     height:45.5vh;
     width:100vw;
     background-color:#F2F2F2;
+    font-size:7vh;
 
 }
 
-#welcome span
+#welcome .content
 {
     position:relative;
     top:7vh;
-    font-size:7vh;
+
 }
 
-#welcome a
+#welcome .menu a
 {
 
     color:black;

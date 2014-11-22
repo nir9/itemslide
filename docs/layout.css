@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Liberation Mono';
+    src: url(LiberationMono-Regular.ttf);
+}
+
+
+/*#nav-links
+{
+    position:fixed;
+    top:15.5vh;
+    height:6vh;
+    width:100vw;
+
+}*/
+
+
+#welcome
+{
+    /*top:21.5vh;*/
+    top:15.5vh;
+    /*height:74.5vh;*/
+    height:80.5vh; overflow-y: scroll;font-size:3vh;
+
+}
+
+
+#welcome .title
+{
+    font-size:6vh;
+}
+
+#welcome .sub-title
+{
+    font-size:4vh;
+}
+
+
+#welcome .code
+{
+
+
+    overflow-x: auto;
+    text-align: left;
+    width:70vw;
+    min-width:300px;
+    /*max-width:700px;*/
+    margin:auto;
+    background-color: #e1e1e1;
+}
+
+#welcome .code.list
+{
+    /*max-width: 1500px;*/
+    background: none;
+}
+
+
+#welcome .code pre
+{
+
+    padding:10px;
+    font-size:2.2vh;
+    word-break: normal;
+    font-family: 'Liberation Mono', sans-serif;
+}
+
+#welcome .code .bl{color:#3385D6;}
+#welcome .code .or{color:#ff931e;}
+#welcome .code .pu{color:#A55FA7;}
+#welcome .code .gr{color:#618409;}

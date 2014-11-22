@@ -17,6 +17,7 @@
 
         var direction = 0; //Panning Direction
         var isBoundary = false; //Is current slide the first or last one
+        var distanceFromStart = 0;
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
@@ -137,12 +138,12 @@
 
                     slides.trigger('changePos');
 
-                    slides.translate3d((touch.pageX - startPoint) / (( isBoundary&&direction==( (slides.getActiveIndex()>0) ? 1 : (-1) ) ) ? 4 : 1)
+                    slides.translate3d((touch.pageX - startPoint) / (isOutBoundaries()?4:1)
                                        //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
 
                                        + slides.data("settings").currentLandPos);
 
-                    console.log(isBoundary);
+
 
 
 
@@ -193,6 +194,10 @@
                         } else {
                             direction = -1;
                         }
+
+
+                        distanceFromStart = (touch.pageX - startPoint) * direction * -1;
+
 
 
 
@@ -275,8 +280,6 @@
 
         function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured - by position
 
-
-
             for (var i = 0; i < slides.children('li').length; i++) {
 
                 if (slides.children(i).width() * i + slides.children(i).width() / 2 -
@@ -311,6 +314,9 @@
         }
 
 
+        function isOutBoundaries(){//Return if user is panning out of boundaries
+            return (isBoundary&&direction==( (slides.getActiveIndex()>0) ? 1 : (-1) ) )
+        }
 
         function gotoSlideByIndex(i) {
 
@@ -373,10 +379,17 @@
             slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos,
                                                                //Duration Part
                                                                Math.max(
+
                                                                slides.data("settings").duration
+
                                                               -((1920/$(window).width())*Math.abs(velocity)*
-                                                                7*(slides.data("settings").duration/230)
-                                                               ),10)//Minimum duration is 10
+                                                                7*(slides.data("settings").duration/230) //Velocity Cut
+
+                                                               )
+
+                                                                - (isOutBoundaries()?(distanceFromStart/15):0) // Boundaries Spring cut
+
+                                                               ,10)//Minimum duration is 10
 
 
                                                               );

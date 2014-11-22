@@ -1,0 +1,1 @@
+Check out the docs [here](http://itemslide.github.io/docs/).
