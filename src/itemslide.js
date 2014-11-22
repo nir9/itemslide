@@ -387,7 +387,8 @@
 
                                                                )
 
-                                                                - (isOutBoundaries()?(distanceFromStart/15):0) // Boundaries Spring cut
+                                                                - (isOutBoundaries()?(distanceFromStart/15):0)// Boundaries Spring cut
+                                                                *(slides.data("settings").duration/230) //Relative to chosen duration
 
                                                                ,10)//Minimum duration is 10
 
