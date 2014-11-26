@@ -19,9 +19,18 @@
     /*top:21.5vh;*/
     top:15.5vh;
     /*height:74.5vh;*/
+    /*width:80vw;right:10vw;*/
     height:80.5vh; overflow-y: scroll;font-size:3vh;
+text-align:left;background: none;
+}
+
+#docs-content
+{
+    width:80vw;
+    left:10vw;
 
 }
+
 
 
 #welcome .title
@@ -34,6 +43,9 @@
     font-size:4vh;
 }
 
+/*#move{
+    padding-left:2vw;
+}*/
 
 #welcome .code
 {
@@ -61,7 +73,7 @@
     padding:10px;
     font-size:2.2vh;
     word-break: normal;
-    font-family: 'Liberation Mono', sans-serif;
+    font-family: 'Droid Sans Mono', sans-serif;
 }
 
 #welcome .code .bl{color:#3385D6;}

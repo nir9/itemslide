@@ -105,6 +105,15 @@
 
 
 
+
+
+                //Turn on mousemove event when mousedown
+
+                $(window).on('mousemove touchmove', mousemove);//When mousedown start the handler for mousemove event
+
+
+
+
                 /*Clear Selections*/
                 if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
                     if (window.getSelection().empty) { // Chrome
@@ -123,46 +132,38 @@
         });
 
 
-        $(window).on('mousemove touchmove', function (e) { /*PAN*/
+        function mousemove(e) //Called by mousemove event (inside the mousedown event)
+        {
+            e.preventDefault();
+            if (e.type == 'touchmove') //Check for touch event or mousemove
+                touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            else
+                touch = e;
 
+            slides.trigger('changePos');
 
+            slides.translate3d((touch.pageX - startPoint) / (isOutBoundaries()?4:1)
+                               //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
 
-
-            if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
-                if (isDown) {
-                    e.preventDefault();
-                    if (e.type == 'touchmove') //Check for touch event or mousemove
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-                    else
-                        touch = e;
-
-                    slides.trigger('changePos');
-
-                    slides.translate3d((touch.pageX - startPoint) / (isOutBoundaries()?4:1)
-                                       //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
-
-                                       + slides.data("settings").currentLandPos);
+                               + slides.data("settings").currentLandPos);
 
 
 
 
 
 
-                    if ((-(touch.pageX - startPoint)) > 0) { //Set direction
-                        direction = 1; //PAN LEFT
-                    } else {
-                        direction = -1;
-                    }
-
-
-                    if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
-                        cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
-
-                }
-
+            if ((-(touch.pageX - startPoint)) > 0) { //Set direction
+                direction = 1; //PAN LEFT
+            } else {
+                direction = -1;
             }
 
-        });
+
+            if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+                cancelAnimationFrame(slides.data("settings").slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+        }
+
+
         var velocity=0;
 
         $(window).on('mouseup touchend', /*Pan End*/
@@ -200,6 +201,7 @@
 
 
 
+                        $(window).off('mousemove touchmove');//Stop listening for the mousemove event
 
                         //TAP is when deltaX is less or equal to 12px
 
@@ -354,6 +356,24 @@
             slides.data("settings").countFrames = 0;
 
 
+            //SET DURATION
+
+            total_duration = Math.max( slides.data("settings").duration
+
+                                                              -((1920/$(window).width())*Math.abs(velocity)*
+                                                                7*(slides.data("settings").duration/230) //Velocity Cut
+
+                                                               )
+
+                                                                - (isOutBoundaries()?(distanceFromStart/15):0)// Boundaries Spring cut
+                                                                *(slides.data("settings").duration/230) //Relative to chosen duration
+
+                                                               ,10
+            ); //Minimum duration is 10
+
+            //SET DURATION UNTILL HERE
+
+
             cancelAnimationFrame(slides.data("settings").slidesGlobalID);
             slides.data("settings").slidesGlobalID = requestAnimationFrame(animationRepeat);
 
@@ -363,8 +383,11 @@
 
 
 
+
+
         }
 
+        var total_duration = slides.data("settings").duration;
 
         function animationRepeat() { //Repeats using requestAnimationFrame
 
@@ -376,24 +399,7 @@
 
             slides.trigger('changePos');
 
-            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos,
-                                                               //Duration Part
-                                                               Math.max(
-
-                                                               slides.data("settings").duration
-
-                                                              -((1920/$(window).width())*Math.abs(velocity)*
-                                                                7*(slides.data("settings").duration/230) //Velocity Cut
-
-                                                               )
-
-                                                                - (isOutBoundaries()?(distanceFromStart/15):0)// Boundaries Spring cut
-                                                                *(slides.data("settings").duration/230) //Relative to chosen duration
-
-                                                               ,10)//Minimum duration is 10
-
-
-                                                              );
+            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, total_duration );
 
             //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
             if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {

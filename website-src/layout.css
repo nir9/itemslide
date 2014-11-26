@@ -31,35 +31,62 @@ header{
 }
 
 
-
-#github
+#buttons-menu
 {
-    position:relative;/**/
-    top:1.7vh;
-    left:27vw;
-    font-weight: 300;
+    position:absolute;/**/
+    top:1.6vh;
+    left:68vw;
+
     font-size:2.9vh;
-    text-decoration: none;
     color: #FFF;
+
+
 
 }
 
-#github img
+table /*overide defaults*/
+{
+    border-collapse: collapse;
+	border-spacing: 0;
+}
+
+#buttons-menu a
+{
+    text-decoration: none;
+
+
+}
+
+#buttons-menu td
+{
+    font-weight: 300;
+    font-size:2.9vh;
+    text-align: center;
+    padding-left:0.8vw;
+}
+
+
+#buttons-menu .button-text
+{
+    color:#FFF;
+    /*margin-right:0.45vh;*/
+}
+
+#buttons-menu img
 {
     height:9vh;
 }
-
 
 
 #downloadarea{
 
 
     position:absolute;
-    top:1vh;
-    right:1vw;
+    top:2vh;
+    right:2vw;
     font-weight: 200;
-    font-size:4vh;
-
+    font-size:4.5vh;
+    line-height: 6vh;
 
 }
 
@@ -79,15 +106,10 @@ header{
 
 
     color:#FFF;
-    font-size: 6.5vmin;
+    font-size: 6vh;
     font-weight: 600;
     text-decoration: none;
 
-    border-radius: 30px;
-    -webkit-border-radius: 30px;
-    -o-border-radius: 30px;
-    -moz-border-radius: 30px;
-    transition: background-color 0.2s;
 }
 
 
@@ -109,14 +131,41 @@ header{
 
 }
 
-#welcome .menu a
+#welcome .content #maintitle
 {
-
-    color:black;
-    font-size:2.5vh;
+    font-weight: 300;
 }
 
+#welcome .menu a
+{
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -o-border-radius: 15px;
+    -moz-border-radius: 15px;
 
+
+
+    padding: 10px 30px 10px 30px;
+
+    background-color: #888;
+
+    /*border-style: solid;
+    border-width: 4px;
+    border-color: grey;*/
+
+
+    text-decoration: none;
+    /*padding:2vh;*/
+
+    color:#FFF;
+    font-size:2.5vh;
+    transition: background-color 0.25s;
+}
+
+#welcome .menu a:hover
+{
+    background-color: #444;
+}
 
 
 #fotter
