@@ -145,7 +145,7 @@ table /*overide defaults*/
 
 
 
-    padding: 10px 30px 10px 30px;
+    padding: 1.5vh 3vh 1.5vh 3vh;
 
     background-color: #888;
 
@@ -158,7 +158,7 @@ table /*overide defaults*/
     /*padding:2vh;*/
 
     color:#FFF;
-    font-size:2.5vh;
+    font-size:3vh;
     transition: background-color 0.25s;
 }
 

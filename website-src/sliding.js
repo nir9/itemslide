@@ -11,8 +11,8 @@ $(document).ready(function (){
         console.log("PANNING OCCURED!!");
     }); //triggered when user pans
 
-    $("ul").on('changeActiveItem', function(event) {
-        console.log("changeActiveItem OCCURED!!");
+    $("ul").on('changeActiveIndex', function(event) {
+        console.log("changeActiveIndex OCCURED!!");
     }); //triggered when current active item has changed
     */
 

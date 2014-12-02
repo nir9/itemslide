@@ -21,7 +21,7 @@
 
         //Includes ItemSlide variables so that they will be individual to each object that is applied with itemslide.
         var defaults = {
-            duration: 230,
+            duration: 200,
             swipe_sensitivity: 150,
             disable_slide: false,
             disable_autowidth: false,
@@ -109,7 +109,7 @@
 
                 //Turn on mousemove event when mousedown
 
-                $(window).on('mousemove touchmove', mousemove);//When mousedown start the handler for mousemove event
+                $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
 
 
 
@@ -140,12 +140,15 @@
             else
                 touch = e;
 
+            //Triggers
             slides.trigger('changePos');
+            slides.trigger('pan');
 
-            slides.translate3d((touch.pageX - startPoint) / (isOutBoundaries()?4:1)
-                               //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
 
-                               + slides.data("settings").currentLandPos);
+            slides.translate3d((touch.pageX - startPoint) / (isOutBoundaries() ? 4 : 1)
+                //The shorthand ifs are to check if on one of the boundaries and if yes than check which direction is out of range to apply 1/4 of pan.
+
+                + slides.data("settings").currentLandPos);
 
 
 
@@ -164,7 +167,7 @@
         }
 
 
-        var velocity=0;
+        var velocity = 0;
 
         $(window).on('mouseup touchend', /*Pan End*/
 
@@ -201,7 +204,7 @@
 
 
 
-                        $(window).off('mousemove touchmove');//Stop listening for the mousemove event
+                        $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
 
                         //TAP is when deltaX is less or equal to 12px
 
@@ -211,9 +214,9 @@
                             gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
                             //NOT HERE - remove before commit
                         } else {
-                            if (savedSlide.index() != slides.data("settings").currentIndex)//TODO: SOLVE MINOR ISSUE HERE
-                            {//If this occurs then its a tap
-                                e.preventDefault();//FIXED
+                            if (savedSlide.index() != slides.data("settings").currentIndex) //TODO: SOLVE MINOR ISSUE HERE
+                            { //If this occurs then its a tap
+                                e.preventDefault(); //FIXED
                                 gotoSlideByIndex(savedSlide.index());
                             }
                         }
@@ -235,7 +238,7 @@
             slides.mousewheel(function (event) {
 
                 if (!slides.data("settings").disable_scroll) {
-                    velocity=0;
+                    velocity = 0;
                     var mouseLandingIndex = slides.data("settings").currentIndex - event.deltaY;
 
                     if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
@@ -271,7 +274,7 @@
             if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
             {
                 settings.currentIndex = i; //Set current index to landing index
-                slides.trigger('changeActiveItem');
+                slides.trigger('changeActiveIndex');
             }
 
 
@@ -316,21 +319,19 @@
         }
 
 
-        function isOutBoundaries(){//Return if user is panning out of boundaries
-            return (isBoundary&&direction==( (slides.getActiveIndex()>0) ? 1 : (-1) ) )
+        function isOutBoundaries() { //Return if user is panning out of boundaries
+            return (isBoundary && direction == ((slides.getActiveIndex() > 0) ? 1 : (-1)))
         }
 
         function gotoSlideByIndex(i) {
 
 
 
-            if (i >= slides.children('li').length-1 || i <= 0) //If exceeds boundaries dont goto slide
+            if (i >= slides.children('li').length - 1 || i <= 0) //If exceeds boundaries dont goto slide
             {
                 isBoundary = true;
                 i = Math.min(Math.max(i, 0), slides.children('li').length - 1); //Put in between boundaries
-            }
-            else
-            {
+            } else {
                 isBoundary = false;
             }
 
@@ -358,17 +359,17 @@
 
             //SET DURATION
 
-            total_duration = Math.max( slides.data("settings").duration
+            total_duration = Math.max(slides.data("settings").duration
 
-                                                              -((1920/$(window).width())*Math.abs(velocity)*
-                                                                7*(slides.data("settings").duration/230) //Velocity Cut
+                - ((1920 / $(window).width()) * Math.abs(velocity) *
+                    7 * (slides.data("settings").duration / 230) //Velocity Cut
 
-                                                               )
+                )
 
-                                                                - (isOutBoundaries()?(distanceFromStart/15):0)// Boundaries Spring cut
-                                                                *(slides.data("settings").duration/230) //Relative to chosen duration
+                - (isOutBoundaries() ? (distanceFromStart / 15) : 0) // Boundaries Spring cut
+                * (slides.data("settings").duration / 230) //Relative to chosen duration
 
-                                                               ,10
+                , 10
             ); //Minimum duration is 10
 
             //SET DURATION UNTILL HERE
@@ -399,10 +400,14 @@
 
             slides.trigger('changePos');
 
-            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, total_duration );
+
+            slides.data("settings").currentPos -= easeOutQuart(slides.data("settings").countFrames, 0, slides.data("settings").currentPos - slides.data("settings").currentLandPos, total_duration);
+
+
 
             //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
-            if (slides.data("settings").currentPos == slides.data("settings").currentLandPos) {
+
+            if (Math.round(slides.data("settings").currentPos) == slides.data("settings").currentLandPos) {
 
                 slides.data("settings").countFrames = 0;
                 return; //out of recursion
