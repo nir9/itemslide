@@ -1,1 +1,1 @@
-Check out the docs [here](http://itemslide.github.io/docs/).
+#### Check out the docs [here](http://itemslide.github.io/docs)

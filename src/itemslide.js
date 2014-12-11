@@ -82,13 +82,17 @@
 
         /*Swiping and panning events FROM HERE*/
         var isDown = false;
+
         var startPoint = 0;
+        var prevent = false;
+
         var startTime = 0;
         var savedSlide;
         var touch;
 
 
         slides.on('mousedown touchstart', 'li', function (e) {
+
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
 
                 if (e.type == 'touchstart') //Check for touch event or mousemove
@@ -98,9 +102,13 @@
 
 
                 startTime = Date.now();
-                isDown = true;
+
+                isDown = 1;
+
+                prevent = 0;//to know when to start prevent default
 
                 startPoint = touch.pageX;
+
                 savedSlide = $(this);
 
 
@@ -134,11 +142,24 @@
 
         function mousemove(e) //Called by mousemove event (inside the mousedown event)
         {
-            e.preventDefault();
+
+
+
             if (e.type == 'touchmove') //Check for touch event or mousemove
                 touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
             else
                 touch = e;
+
+
+
+
+            if(touch.pageX - startPoint > 10 || touch.pageX - startPoint < -10)//These are for the preventDefault
+                prevent=1;
+
+            if(prevent)
+                e.preventDefault();
+
+
 
             //Triggers
             slides.trigger('changePos');
