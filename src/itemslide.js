@@ -145,8 +145,8 @@
 
         //MouseMove related variables
         var firstTime = true;
-        var secondStartPt = 0;
-        var savedpos = 0;
+        var savedStartPt = 0;
+
 
         function mousemove(e) //Called by mousemove event (inside the mousedown event)
         {
@@ -198,20 +198,29 @@
             {
 
                 if(firstTime){
-                    secondStartPt = touch.pageX;
-                    savedpos = (touch.pageX - startPoint);
+                    savedStartPt = touch.pageX;
+
                     firstTime = 0;
+                    console.log("Entered: " + slides.translate3d());
+
                 }
 
             }
             else{
+
+                if(!firstTime){//Reset Values
+                    currentLandPos = slides.translate3d();
+                    startPoint=touch.pageX;
+                }
+
                 firstTime = 1;
+
             }
 
             //Reposition according to current deltaX
             slides.translate3d(
 
-                    ((firstTime==0) ? (savedpos + (touch.pageX - secondStartPt) / 4) : (touch.pageX - startPoint) ) //Check if out of boundaries - if true than add springy panning effect
+                    ((firstTime==0) ? (savedStartPt-startPoint + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPoint) ) //Check if out of boundaries - if true than add springy panning effect
 
                                    + currentLandPos);
 
