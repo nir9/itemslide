@@ -17,8 +17,9 @@
 
         var initialLeft = 0;
 
+
+
         //Animation variables
-        var countFrames = 0;
         var currentPos = 0;
         var currentLandPos = 0;
         var slidesGlobalID = 0; //rAf id
@@ -31,7 +32,7 @@
 
 
         var defaults = { //Options
-            duration: 200,
+            duration: 350,
             swipe_sensitivity: 150,
             disable_slide: false,
             disable_scroll: false,
@@ -48,7 +49,8 @@
         this.data("vars", //Variables that can be accessed publicly
             {
                 currentIndex: 0,
-                disable_autowidth: settings.disable_autowidth
+                disable_autowidth: settings.disable_autowidth,
+                velocity: 0
             });
 
 
@@ -90,7 +92,7 @@
         var startPoint = 0;
         var prevent = false;
 
-        var startTime = 0;
+        var swipeStartTime = 0;
         var savedSlide;
         var touch;
 
@@ -99,13 +101,14 @@
 
             if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
 
+
                 if (e.type == 'touchstart') //Check for touch event or mousemove
                     touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                 else
                     touch = e;
 
 
-                startTime = Date.now();
+                swipeStartTime = Date.now();
 
                 isDown = 1;
 
@@ -117,7 +120,7 @@
 
 
 
-
+                //currentPos = currentLandPos;
 
                 //Turn on mousemove event when mousedown
 
@@ -175,7 +178,6 @@
 
 
 
-
             //Triggers
             slides.trigger('changePos');
             slides.trigger('pan');
@@ -201,7 +203,6 @@
                     savedStartPt = touch.pageX;
 
                     firstTime = 0;
-                    console.log("Entered: " + slides.translate3d());
 
                 }
 
@@ -218,24 +219,28 @@
             }
 
             //Reposition according to current deltaX
-            slides.translate3d(
+
+
+
+
+
+
+
+            if ((touch.pageX - startPoint) * direction < 6 * (-1)) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+            {
+                cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+
+                slides.translate3d(
 
                     ((firstTime==0) ? (savedStartPt-startPoint + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPoint) ) //Check if out of boundaries - if true than add springy panning effect
 
                                    + currentLandPos);
 
-
-
-
-
-
-
-            if ((touch.pageX - startPoint) * direction < 12 * (-1)) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
-                cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+            }
         }
 
 
-        var velocity = 0;
+
 
         $(window).on('mouseup touchend', /*Pan End*/
 
@@ -258,17 +263,18 @@
 
 
                         //Calculate deltaTime for calculation of velocity
-                        var deltaTime = (Date.now() - startTime);
-                        velocity = -(touch.pageX - startPoint) / deltaTime;
+                        var deltaTime = (Date.now() - swipeStartTime);
+                        slides.data("vars").velocity = -(touch.pageX - startPoint) / deltaTime;
 
-                        if (velocity > 0) { //Set direction
+                        if (slides.data("vars").velocity > 0) { //Set direction
                             direction = 1; //PAN LEFT
                         } else {
                             direction = -1;
                         }
 
 
-                        distanceFromStart = (touch.pageX - startPoint) * direction * -1;
+                        distanceFromStart = (touch.pageX - startPoint) * direction * -1;//Yaaa SOOO
+
 
 
 
@@ -279,13 +285,17 @@
 
                         if ((touch.pageX - startPoint) * direction < 6 * (-1)) //Check distance to see if the event is a tap
                         {
-                            gotoSlideByIndex(getLandingSlideIndex(velocity * settings.swipe_sensitivity - slides.translate3d()));
+
+                            gotoSlideByIndex(getLandingSlideIndex(slides.data("vars").velocity * settings.swipe_sensitivity - slides.translate3d()));
                             //NOT HERE - remove before commit
                         } else {
                             if (savedSlide.index() != slides.data("vars").currentIndex) //TODO: SOLVE MINOR ISSUE HERE
                             { //If this occurs then its a tap
                                 e.preventDefault(); //FIXED
                                 gotoSlideByIndex(savedSlide.index());
+                            }
+                            else{
+
                             }
                         }
                     }
@@ -306,7 +316,7 @@
             slides.mousewheel(function (event) {
 
                 if (!settings.disable_scroll) {
-                    velocity = 0;
+                    slides.data("vars").velocity = 0;
                     var mouseLandingIndex = slides.data("vars").currentIndex - event.deltaY;
 
                     if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
@@ -408,8 +418,24 @@
 
 
 
+            //SET DURATION
 
+            total_duration = Math.max(settings.duration
 
+                - ((1920 / $(window).width()) * Math.abs(slides.data("vars").velocity) *
+                    9 * (settings.duration / 230) //Velocity Cut
+
+                )
+
+                - (isOutBoundaries() ? (distanceFromStart / 15) : 0) // Boundaries Spring cut
+                * (settings.duration / 230) //Relative to chosen duration
+
+                , 50
+            ); //Minimum duration is 10
+
+            //SET DURATION UNTILL HERE
+
+            total_back = (isBoundary ? ((Math.abs(slides.data("vars").velocity)*250)/$(window).width()) : 0 );
 
 
 
@@ -422,41 +448,26 @@
 
 
 
-            countFrames = 0;
 
 
-            //SET DURATION
 
-            total_duration = Math.max(settings.duration
 
-                - ((1920 / $(window).width()) * Math.abs(velocity) *
-                    7 * (settings.duration / 230) //Velocity Cut
 
-                )
 
-                - (isOutBoundaries() ? (distanceFromStart / 15) : 0) // Boundaries Spring cut
-                * (settings.duration / 230) //Relative to chosen duration
-
-                , 10
-            ); //Minimum duration is 10
-
-            //SET DURATION UNTILL HERE
+            //Reset
 
 
             cancelAnimationFrame(slidesGlobalID);
+            startTime = Date.now();
             slidesGlobalID = requestAnimationFrame(animationRepeat);
-
-
-
-
-
-
 
 
 
         }
 
+        var total_back = 0;
         var total_duration = settings.duration;
+        var startTime = Date.now();//For the animation
 
         function animationRepeat() { //Repeats using requestAnimationFrame
 
@@ -464,20 +475,29 @@
             //alert($.easing['swing'](3, 4, 2, 2, 1));
 
 
-
+            var currentTime = Date.now() - startTime;
 
             slides.trigger('changePos');
 
 
-            currentPos -= easeOutQuart(countFrames, 0, currentPos - currentLandPos, total_duration);
+
+
+
+
+
+            slides.translate3d( currentPos - easeOutBack(currentTime, 0, currentPos - currentLandPos, total_duration, total_back));
+
 
 
 
             //to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
 
-            if (Math.round(currentPos) == currentLandPos) {
 
-                countFrames = 0;
+
+            if (currentTime >= total_duration){//Check if easing time has reached total duration
+                //Animation Ended
+                slides.translate3d(currentLandPos);
+
                 return; //out of recursion
             }
 
@@ -486,10 +506,8 @@
 
 
 
-            slides.translate3d(currentPos);
 
 
-            countFrames++;
             slidesGlobalID = requestAnimationFrame(animationRepeat);
 
 
@@ -528,6 +546,7 @@
         if (!this.data("vars").disable_autowidth)
             this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
 
+        this.data("vars").velocity = 0;//Set panning veloicity to zero
         this.gotoSlide(this.data("vars").currentIndex);
 
     }
@@ -572,10 +591,13 @@
         return matrix.substr(7, matrix.length - 8).split(', ');
     }
 
-    function easeOutQuart(t, b, c, d) {
-        t /= d;
-        t--;
-        return -c * (t * t * t * t - 1) + b;
+
+    function easeOutBack(t, b, c, d, s) {
+        //s - controls how forward will it go beyond goal
+    if (s == undefined) s = 1.70158;
+
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
     }
+
 
 })(jQuery);

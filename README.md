@@ -1,7 +1,7 @@
 ItemSlide.js
 ===================
 
-jQuery plugin for a touch enabled carousel
+jQuery plugin for a touch carousel
 
 [Website](http://itemslide.github.io/)
 

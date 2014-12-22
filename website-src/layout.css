@@ -24,10 +24,10 @@ header{
 #headertext
 {
     position:absolute;
-    margin-top:3vh;
+    margin-top:2.9vh;
     font-size:8vh;
     left:1.5vw;
-    font-weight: 200;
+    font-weight: 300;
 }
 
 
@@ -82,7 +82,7 @@ table /*overide defaults*/
 
 
     position:absolute;
-    top:2vh;
+    top:2.15vh;
     right:2vw;
     font-weight: 200;
     font-size:4.5vh;
@@ -120,21 +120,21 @@ table /*overide defaults*/
     height:45.5vh;
     width:100vw;
     background-color:#F2F2F2;
-    font-size:7vh;
+    font-size:6.5vh;
 
 }
 
 #welcome .content
 {
     position:relative;
-    top:7vh;
+    top:8vh;
 
 }
 
-#welcome .content #maintitle
+/*#welcome .content #maintitle
 {
     font-weight: 300;
-}
+}*/
 
 #welcome .menu a
 {
@@ -145,7 +145,7 @@ table /*overide defaults*/
 
 
 
-    padding: 1.5vh 3vh 1.5vh 3vh;
+    padding: 1.7vh 3vh 1.7vh 3vh;
 
     background-color: #888;
 
