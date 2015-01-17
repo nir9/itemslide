@@ -2,7 +2,7 @@
   "name": "itemslide",
   "version": "0.2.6",
   "description": "jQuery plugin for a touch enabled carousel",
-  "main": "index.js",
+  "main": "src/itemslide.js",
   "directories": {
     "example": "examples"
   },
@@ -21,6 +21,10 @@
     "slide",
     "swipe"
   ],
+  "dependencies": {
+    'jquery': '*',
+    'jquery-mousewheel': '*'
+  },
   "author": "Nir Lichtman",
   "license": "MIT",
   "bugs": {
