@@ -1,7 +1,4 @@
-@font-face {
-    font-family: 'Liberation Mono';
-    src: url(LiberationMono-Regular.ttf);
-}
+
 
 
 /*#nav-links
@@ -17,11 +14,11 @@
 #welcome
 {
     /*top:21.5vh;*/
-    top:15.5vh;
+
     /*height:74.5vh;*/
     /*width:80vw;right:10vw;*/
-    height:80.5vh; overflow-y: scroll;font-size:3vh;
-text-align:left;background: none;
+    height:83.5vh; overflow-y: scroll;font-size:3vh;
+text-align:left;background-color: #FF7676;
 }
 
 #docs-content
@@ -57,7 +54,9 @@ text-align:left;background: none;
     min-width:300px;
     /*max-width:700px;*/
     margin:auto;
-    background-color: #e1e1e1;
+    background-color: #fff;/*e1e1e1*/
+
+    border-radius: 5px;
 }
 
 #welcome .code.list
@@ -69,7 +68,7 @@ text-align:left;background: none;
 
 #welcome .code pre
 {
-
+    color:#000;
     padding:10px;
     font-size:2.2vh;
     word-break: normal;

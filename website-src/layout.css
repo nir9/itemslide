@@ -15,7 +15,7 @@ header{
     width:100vw;
     position:fixed;
     left:0;
-    height: 15.5vh;
+    height: 12.5vh;
     background-color: #FF3B30;
 
     color:#FFF;
@@ -24,7 +24,7 @@ header{
 #headertext
 {
     position:absolute;
-    margin-top:2.9vh;
+    margin-top:1.2vh;
     font-size:8vh;
     left:1.5vw;
     font-weight: 300;
@@ -34,8 +34,8 @@ header{
 #buttons-menu
 {
     position:absolute;/**/
-    top:1.6vh;
-    left:68vw;
+    top:1.8vh;
+    left:65vw;
 
     font-size:2.9vh;
     color: #FFF;
@@ -69,12 +69,14 @@ table /*overide defaults*/
 #buttons-menu .button-text
 {
     color:#FFF;
+    /*font-weight: 400;*/
     /*margin-right:0.45vh;*/
 }
 
 #buttons-menu img
 {
-    height:9vh;
+    height:6vh;
+    width:6vh;
 }
 
 
@@ -82,17 +84,21 @@ table /*overide defaults*/
 
 
     position:absolute;
-    top:2.15vh;
+    top:3.5vh;
     right:2vw;
     font-weight: 200;
-    font-size:4.5vh;
+    font-size:5.7vh;
     line-height: 6vh;
 
 }
 
-@media (max-width: 1200px) {/*cool*/
+@media (max-aspect-ratio: 16/9) {/*cool*/
     #downloadarea {
     display: none;
+    }
+
+    #main-img{
+    display:none;
     }
 
 
@@ -106,7 +112,7 @@ table /*overide defaults*/
 
 
     color:#FFF;
-    font-size: 6vh;
+
     font-weight: 600;
     text-decoration: none;
 
@@ -116,12 +122,23 @@ table /*overide defaults*/
 #welcome
 {
     position:fixed;
-    top:15.5vh;
-    height:45.5vh;
+    top:12.5vh;
+    height:48.5vh;
     width:100vw;
-    background-color:#F2F2F2;
-    font-size:6.5vh;
+    background-color:#FFA6A6;
 
+    font-size:6.5vh;
+    color:#FFF;
+}
+
+#welcome #main-img
+{
+
+    position:absolute;
+    top:-6.5vh;
+    right:21vw;
+    width:60vh;
+    height:60vh;
 }
 
 #welcome .content
@@ -131,10 +148,10 @@ table /*overide defaults*/
 
 }
 
-/*#welcome .content #maintitle
+#welcome .content #maintitle
 {
     font-weight: 300;
-}*/
+}
 
 #welcome .menu a
 {
@@ -145,9 +162,12 @@ table /*overide defaults*/
 
 
 
-    padding: 1.7vh 3vh 1.7vh 3vh;
+    padding: 1.3vh 2.5vh 1.3vh 2.5vh;
 
-    background-color: #888;
+
+    border-style: solid;
+    border-width: 2px;
+    border-color: #FFF;
 
     /*border-style: solid;
     border-width: 4px;
@@ -156,7 +176,7 @@ table /*overide defaults*/
 
     text-decoration: none;
     /*padding:2vh;*/
-
+font-weight: 400;
     color:#FFF;
     font-size:3vh;
     transition: background-color 0.25s;
@@ -164,7 +184,7 @@ table /*overide defaults*/
 
 #welcome .menu a:hover
 {
-    background-color: #444;
+    background-color: #FF7676;
 }
 
 
@@ -175,7 +195,7 @@ table /*overide defaults*/
     font-size:2.5vh;
     bottom:0%;
     padding: 0.5vh;
-    background-color: #333;
+    background-color: #660000;
     font-weight: 200;
     color:white;
     right:0;left:0;

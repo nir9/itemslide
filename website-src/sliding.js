@@ -1,10 +1,9 @@
 $(document).ready(function (){
 
-	$("ul").initslide(
-        /*{
-            disable_slide:true,
-            duration:1500
-        }*/
+	$("ul").itemslide(
+        {
+            swipe_out: true //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
+        }
     );//initialize itemslide
 
     /*$("ul").on('pan', function(event) {

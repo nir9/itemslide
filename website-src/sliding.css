@@ -3,7 +3,7 @@
     position:fixed;
     top:61%;
 
-    background-color:#AAAAAA;
+    background-color:#FF7676;/*FF473D*/
     height:35%;
     width:100vw;
 
@@ -63,6 +63,7 @@ li {
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
     transform: scale(0.95);
+
 
 
 }

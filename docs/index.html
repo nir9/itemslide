@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
-    <title>ItemSlide - jQuery plugin for a touch enabled carousel</title>
+    <title>ItemSlide - jQuery plugin for a touch carousel</title>
 
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'><!--CODE--->
@@ -23,6 +23,8 @@
 
 
         <a style="color:#FFF;text-decoration:none;" href="../index.html"><div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span></div></a>
+
+
 
 
         <table id="buttons-menu">
@@ -45,13 +47,15 @@
         </table>
 
 
+        <!--END OF BUTTONS MENU--->
+
+
+
         <span id="downloadarea">
-    <a href="../src/itemslide.min.js" id="download">DOWNLOAD</a><br/>
-        just 5KB minified
+        <a href="../src/itemslide.min.js" id="download">DOWNLOAD</a> (8K)
         </span>
 
     </header>
-
 
 
 
@@ -63,7 +67,7 @@
         <div class="title"><a name="init">Initialize</a></div><br/>
 
         <div class='code'>
-            <pre>$(<span class="or">"ul"</span>).<span class="pu">initslide</span>();</pre>
+            <pre>$(<span class="or">"ul"</span>).<span class="pu">itemslide</span>();</pre>
         </div>
 
     <br/>
@@ -120,13 +124,17 @@
         <ul>
         <li>duration - duration of swipe animation {default: 350ms}</li>
         <li>swipe_sensitivity - swiping sensitivity {default: 150}</li>
+
         <li>disable_slide - disable swiping and panning {default: false}</li>
         <li>disable_autowidth - disable calculation of width {default: false}
         (if you want to do it manually)</li>
         <li>disable_scroll - disable scrolling {default: false}</li>
         <li>start - index of slide that appears when initializing {default: 0}</li>
+        <!--<li>swipe_out - set this to true to enable swiping slides out of the carousel {default: false}</li>-->
         <li>pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)</li>
-        <li>one_item - set this to true if the navigation is full screen or one slide every time. (<a href="http://itemslide.github.io/examples/fullscreen_navigation/">Full Screen Example</a>)</li>
+        <li>one_item - set this to true if the navigation is full screen or one slide every time. {default: false}<br>(<a href="http://itemslide.github.io/examples/fullscreen_navigation/">Full Screen Example</a>)</li>
+            <li>swipe_out - set this to true to enable the swipe out feature. {default: false} (<a href="http://itemslide.github.io/">Homepage</a> has it enabled)</li>
+
         </ul>
         </div>
         <br/>
