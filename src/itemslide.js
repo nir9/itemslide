@@ -45,7 +45,7 @@ This is the main code
             var horizontal_pan = false;
 
 
-
+            var slides = $(this); //Saves the object given to the plugin in a variable
 
 
 
@@ -71,15 +71,16 @@ This is the main code
                 {
                     currentIndex: 0,
                     disable_autowidth: settings.disable_autowidth,
-                    velocity: 0
+                    velocity: 0,
+                    slideHeight: slides.children().height()
                 });
 
 
 
 
-            var slides = $(this); //Saves the object given to the plugin in a variable
 
-            var slideHeight = slides.children().height();
+
+
             //var slideWidth = slides.children().width();
 
 
@@ -283,7 +284,7 @@ This is the main code
                         slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");
 
                         //if(isExplorer)
-                        $(".itemslide_slideoutwrap").children().height(slideHeight);
+                        $(".itemslide_slideoutwrap").children().height(slides.data("vars").slideHeight);
 
                         verticalSlideFirstTimeCount = -1;
                     }
@@ -672,6 +673,8 @@ This is the main code
     $.fn.reload = function () { //Get index of active slide
         if (!this.data("vars").disable_autowidth)
             this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
+
+        this.data("vars").slideHeight = this.children().height();
 
         this.data("vars").velocity = 0; //Set panning veloicity to zero
         this.gotoSlide(this.data("vars").currentIndex);

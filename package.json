@@ -22,8 +22,8 @@
     "swipe"
   ],
   "dependencies": {
-    'jquery': '*',
-    'jquery-mousewheel': '*'
+    "jquery": "*",
+    "jquery-mousewheel": "*"
   },
   "author": "Nir Lichtman",
   "license": "MIT",
