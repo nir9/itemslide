@@ -9,12 +9,11 @@ This is the main code
 
 
 
-
+var isExplorer = false || !!document.documentMode; // At least IE6
 
 (function ($) {
     "use strict";
 
-    var isExplorer = false || !!document.documentMode; // At least IE6
 
 
     $.fn.initslide = function (options) { //Backwards compatibility (will be removed soon)
@@ -46,7 +45,6 @@ This is the main code
 
 
             var slides = $(this); //Saves the object given to the plugin in a variable
-
 
 
 
@@ -240,9 +238,7 @@ This is the main code
 
 
 
-                    //Triggers
-                    slides.trigger('changePos');
-                    slides.trigger('pan');
+
 
 
 
@@ -283,9 +279,6 @@ This is the main code
                     {
                         slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");
 
-                        //if(isExplorer)
-                        $(".itemslide_slideoutwrap").children().height(slides.data("vars").slideHeight);
-
                         verticalSlideFirstTimeCount = -1;
                     }
 
@@ -322,6 +315,10 @@ This is the main code
                             ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
 
                             + slides.currentLandPos);
+
+                        //Triggers pan and changePos when swiping carousel
+                        slides.trigger('changePos');
+                        slides.trigger('pan');
 
 
                     } else if (vertical_pan && settings.swipe_out) {
@@ -670,16 +667,24 @@ This is the main code
         this.gotoSlide(this.data("vars").currentIndex - 1);
     }
 
+
     $.fn.reload = function () { //Get index of active slide
         if (!this.data("vars").disable_autowidth)
             this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
 
+
+
         this.data("vars").slideHeight = this.children().height();
+
+        /*if (isExplorer) {//Fix annoying bug in ie
+            this.children().css("height","");
+        }*/
 
         this.data("vars").velocity = 0; //Set panning veloicity to zero
         this.gotoSlide(this.data("vars").currentIndex);
 
     }
+
 
     $.fn.addSlide = function (data) {
         this.append("<li>" + data + "</li>");

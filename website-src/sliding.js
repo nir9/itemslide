@@ -17,8 +17,11 @@ $(document).ready(function (){
 
     /*$("ul").on('changePos', function(event) {
         console.log("new pos: "+ $("ul").getCurrentPos());
-    }); //triggered when position of carousel has changed
-    */
+    }); //triggered when position of carousel has changed*/
+
+    $("ul").on('swipeout', function(event) {
+        console.log("swipe out occured");
+    });
 
 
     $( window ).resize(function() {
