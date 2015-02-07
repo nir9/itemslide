@@ -277,7 +277,19 @@ var isExplorer = false || !!document.documentMode; // At least IE6
                     //check if to wrap
                     if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
                     {
-                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");
+
+                        if (isExplorer)//Some annoying explorer bug fix
+                        {
+                            //$(".itemslide_slideoutwrap").children().css("height",slides.data("vars").slideHeight);
+                            slides.children().css("height",slides.data("vars").slideHeight);
+                        }
+
+
+                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");//wrapAll
+
+                        //slides.data("vars").slideHeight
+
+
 
                         verticalSlideFirstTimeCount = -1;
                     }
@@ -760,9 +772,7 @@ Can be enabled by setting the slideOut option to true.
 function slideout(slides, settings) {
 
 
-        if (isExplorer) {//Fix annoying bug in ie
-            slides.children().height(slides.data("vars").slideHeight);
-        }
+
 
         //Swipe out section
         var swipeOutLandPos = -400; //Some variables for the swipe out animation
@@ -848,16 +858,7 @@ function slideout(slides, settings) {
                 slides.children(":gt(" + (slides.savedSlideIndex) + ")").wrapAll("<div class='itemslide_move' />");
             }
 
-            //This is to fix some explorer problems :)
-            //alert(
-            if (isExplorer) {
-                //alert($(".itemslide_move").width());
-                //$(".itemslide_move").width($(".itemslide_move").width());
 
-                $(".itemslide_move").height(this.height());
-
-                //alert($(".itemslide_move").height());
-            }
 
 
 
@@ -912,8 +913,22 @@ function slideout(slides, settings) {
 
                     if (goback) //Go back to regular (escape)
                     {
+
+
+
+
+
                         $(".itemslide_slideoutwrap").children().unwrap(); //
                         $(".itemslide_move").children().unwrap(); //Remove wrapper
+
+
+                        if(isExplorer)//Some more propeirtery explorer problems yippe :)
+                        {
+                            //$(".itemslide_slideoutwrap").children().css("height","");
+                            slides.children().css("height","");
+                        }
+
+
                         slides.end_animation = true;
                         currentTime = 0;
 
@@ -935,8 +950,12 @@ function slideout(slides, settings) {
 
 
                     //console.log("AD");
+
+
+
+
                     $(".itemslide_slideoutwrap").children().unwrap(); //TODO:CHANGE
-                    //changeActiveSlideTo(prev.index()+1);
+
 
                     //The slide changes to active
 
@@ -977,6 +996,9 @@ function slideout(slides, settings) {
 
 
 
+
+
+
                         $(".itemslide_move").children().unwrap(); //Remove wrapper
 
                         slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
@@ -989,6 +1011,7 @@ function slideout(slides, settings) {
                             //Goto-slide to slide without animation
 
                         }
+
 
                         settings.duration = durationSave;
                         currentTime = 0;

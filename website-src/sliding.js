@@ -19,9 +19,9 @@ $(document).ready(function (){
         console.log("new pos: "+ $("ul").getCurrentPos());
     }); //triggered when position of carousel has changed*/
 
-    $("ul").on('swipeout', function(event) {
+    /*$("ul").on('swipeout', function(event) {
         console.log("swipe out occured");
-    });
+    });*/
 
 
     $( window ).resize(function() {

@@ -11,6 +11,10 @@ jQuery plugin for a touch carousel
 <img src="http://itemslide.github.io/website-src/img/Tested.svg" style="height:175px;"/>
 <br/>
 
+### Features
+- Touch swiping
+- Mousewheel scrolling
+- Swipe out
 
 ### Dependencies
 - [jQuery (1.7+)](http://jquery.com/)
@@ -23,6 +27,10 @@ jQuery plugin for a touch carousel
 
 ```bash
 $ npm install itemslide
+```
+or
+```bash
+$ bower install itemslide
 ```
 
 #### Check out the docs at [this link](http://itemslide.github.io/docs)

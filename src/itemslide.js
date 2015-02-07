@@ -277,7 +277,19 @@ var isExplorer = false || !!document.documentMode; // At least IE6
                     //check if to wrap
                     if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
                     {
-                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");
+
+                        if (isExplorer)//Some annoying explorer bug fix
+                        {
+                            //$(".itemslide_slideoutwrap").children().css("height",slides.data("vars").slideHeight);
+                            slides.children().css("height",slides.data("vars").slideHeight);
+                        }
+
+
+                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");//wrapAll
+
+                        //slides.data("vars").slideHeight
+
+
 
                         verticalSlideFirstTimeCount = -1;
                     }
