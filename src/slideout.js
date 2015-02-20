@@ -8,6 +8,7 @@ Can be enabled by setting the slideOut option to true.
     To apply multiple transforms on one element - you wrap the element with a tag to apply the transform on the tag.
 */
 
+//This feature is ONLY compatible with jQuery
 
 function slideout(slides, settings) {
 
@@ -202,13 +203,13 @@ function slideout(slides, settings) {
                     if (slides.savedSlideIndex == slides.data("vars").currentIndex) //Cool it works
                         $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('id', 'active'); //Change destination index to active
 
-
-                    if (slides.savedSlideIndex == (slides.children().length - 1) && !before) //Is in last slide
+                    //Looks like the fix works
+                    if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == slides.data("vars").currentIndex) //Is in last slide
                     {
                         //console.log("len "+(slides.children().length-1)+"ssi "+(slides.savedSlideIndex));
                         settings.duration = 200;
                         slides.gotoSlide(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
-
+                        //console.log(slides.data("vars").currentIndex);
                     }
 
                     if (slides.savedSlideIndex == 0 && slides.data("vars").currentIndex != 0) {
@@ -248,6 +249,7 @@ function slideout(slides, settings) {
                             //Create function in this file to instant reposition.
                             //Or just t3d and getPositionByIndex
                             slides.gotoWithoutAnimation(slides.data("vars").currentIndex - 1);
+
                             //Goto-slide to slide without animation
 
                         }
@@ -256,6 +258,7 @@ function slideout(slides, settings) {
                         settings.duration = durationSave;
                         currentTime = 0;
                         slides.end_animation = true; //enables future swipe outs
+
                         return;
                     }
 

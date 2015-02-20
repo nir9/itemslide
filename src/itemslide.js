@@ -7,17 +7,18 @@
 This is the main code
 */
 
+//NOTE: Swipe Out is NOT compatible with Vanilla
 
 
 var isExplorer = false || !!document.documentMode; // At least IE6
 
-(function ($) {
+$(function(){ //document ready
     "use strict";
 
 
 
     $.fn.initslide = function (options) { //Backwards compatibility (will be removed soon)
-        console.log("Please do not use .initslide() as its deprecated - use .itemslide() instead");
+        alert("Please do not use .initslide() as its deprecated - use .itemslide() instead");
         this.itemslide(options);
     }
 
@@ -64,6 +65,18 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
             var settings = $.extend({}, defaults, options);
 
+            settings.swipe_out = (settings.swipe_out && ($.fn.jquery != null)); //Check if using jQuery (If no jQuery - no support for swipe out)
+
+
+
+
+            /*this.data("vars") = //Variables that can be accessed publicly //Optimized for zepto = $(this) and delete "vars"
+                {
+                    currentIndex: 0,
+                    disable_autowidth: settings.disable_autowidth,
+                    velocity: 0,
+                    slideHeight: slides.children().height()
+                };*/
 
             this.data("vars", //Variables that can be accessed publicly
                 {
@@ -75,7 +88,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
 
-
+            //$(this).data.velocity = 1; This is how to use data
 
 
 
@@ -102,7 +115,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
             if (!settings.disable_autowidth)
-                slides.css("width", slides.children('li').length * slides.children('li').width() + 10); //SET WIDTH
+                slides.css("width", slides.children('li').length * slides.children().cwidth() + 10); //SET WIDTH
             //To add vertical scrolling just set width to slides.children('li').width()
 
             //console.log("WIDTH: " + slides.css("width"));
@@ -112,6 +125,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
             slides.translate3d(0);
+
 
 
             gotoSlideByIndex(settings.start);
@@ -139,6 +153,8 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
             //Swipe out related variables
             slides.savedSlideIndex = 0;
+
+
 
             slides.on('mousedown touchstart', 'li', function (e) {
 
@@ -287,7 +303,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
                         slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");//wrapAll
 
-                        //slides.data("vars").slideHeight
+                        //slides.data("vars")("vars").slideHeight
 
 
 
@@ -322,6 +338,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
                     //Reposition according to horizontal navigation or vertical navigation
                     if (horizontal_pan) {
                         vertical_pan = false;
+
                         slides.translate3d(
 
                             ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
@@ -386,6 +403,8 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
                                 //swipeOutLandPos = -400; //CHANGE!!
 
+
+                                //Here is another issue with Zepto disable if not using jQuery
                                 slides.swipeOut();
 
 
@@ -478,11 +497,18 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
 
-                slides.children(':nth-child(' + (slides.data("vars").currentIndex + 1) + ')').attr('id', ''); //WORKS!!
-                //console.log(slides.data("vars").currentIndex + 1);
+
+
+                //Zepto problem fixed added ||0
+                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1)||0) + ')').attr('id', ''); //WORKS!!
+
+
+                //console.log(slides.data("vars")("vars").currentIndex + 1);
                 //            slides.children(':nth-child(' + (i + 1) + ')').attr("style", ""); //clean
-                slides.children(':nth-child(' + (i + 1) + ')').attr('id', 'active'); //Change destination index to active
+                slides.children(':nth-child(' + ((i + 1)||0) + ')').attr('id', 'active'); //Change destination index to active
+
                 //console.log((i+1));
+
                 if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
                 {
                     slides.data("vars").currentIndex = i; //Set current index to landing index
@@ -498,10 +524,12 @@ var isExplorer = false || !!document.documentMode; // At least IE6
             function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured - by position
 
                 for (var i = 0; i < slides.children('li').length; i++) {
+                    //hmm widths with zepto allternating
+                    //console.log(slides.children(':nth-child('+(i+1)+')').width());
 
-                    if (slides.children(i).width() * i + slides.children(i).width() / 2 -
+                    if (slides.children().cwidth() * i + slides.children().cwidth() / 2 -
 
-                        slides.children(i).width() * settings.pan_threshold * direction - getPositionByIndex(0) > x) {
+                        slides.children().cwidth() * settings.pan_threshold * direction - getPositionByIndex(0) > x) {
 
 
                         if (!settings.one_item)
@@ -510,7 +538,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
                         else //If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
                         {
                             if (i != slides.data("vars").currentIndex)
-                                return slides.data("vars").currentIndex + 1 * direction //Return 0 or more
+                                return slides.data("vars").currentIndex + 1 * direction; //Return 0 or more
                             else
                                 return slides.data("vars").currentIndex;
                         }
@@ -519,7 +547,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
                     }
 
                 }
-
+                //return 1;
                 return settings.one_item ? slides.data("vars").currentIndex + 1 : slides.children('li').length - 1; //If one item enabled than just go one slide forward and not until the end.
 
             }
@@ -527,7 +555,10 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
             function getPositionByIndex(i) {
-                return -(i * slides.children('li').width() - ((slides.parent().width() - initialLeft - slides.children('li').width()) / 2));
+                //console.log(-(i * slides.children().cwidth() - ((slides.parent().width() - initialLeft - slides.children().cwidth()) / 2)));
+                //Another fix for zepto - select active one or else it will select first one
+
+                return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - initialLeft - slides.children().cwidth()) / 2));
             }
 
 
@@ -574,10 +605,11 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
 
-                currentPos = slides.translate3d().x;
+                currentPos = slides.translate3d().x;//PROBLEMMMMMMM ZEPTO
+
 
                 slides.currentLandPos = getPositionByIndex(i);
-
+                //console.log(slides.currentLandPos);
 
 
 
@@ -621,7 +653,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
                 slides.translate3d(currentPos - easeOutBack(currentTime, 0, currentPos - slides.currentLandPos, total_duration, total_back));
-
+                //console.log(slides.translate3d());
 
 
 
@@ -682,8 +714,10 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
     $.fn.reload = function () { //Get index of active slide
         if (!this.data("vars").disable_autowidth)
-            this.css("width", this.children('li').length * this.children('li').width() + 10); //SET WIDTH
+        {
+            this.css("width", this.children('li').length * this.children().cwidth() + 10); //SET WIDTH
 
+        }
 
 
         this.data("vars").slideHeight = this.children().height();
@@ -704,7 +738,7 @@ var isExplorer = false || !!document.documentMode; // At least IE6
     }
 
     $.fn.removeSlide = function (index) {
-        this.children(':nth-child(' + (index + 1) + ')').remove();
+        this.children(':nth-child(' + ((index + 1)||0) + ')').remove();
         //this.reload();
     }
 
@@ -727,14 +761,38 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
             this.css('transform', 'translate3d(' + x + 'px' + ',' + (y || 0) + 'px, 0px)');
 
+
         } else { //Get value
             var matrix = matrixToArray(this.css("transform"));
 
-            return { //Return object with x and y
-                x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
-                y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
-            };
+            ///  console.log($.fn.jquery); This is how to detect if using jQuery
+
+
+            //Check if jQuery
+            if($.fn.jquery != null) { //This happens if has jQuery
+                return { //Return object with x and y
+                    x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
+                    y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
+                };
+            }
+
+
+            else { //This happens if has --Zepto--
+                var vals = this.css('transform').replace("translate3d","").replace("(","").replace(")","").replace(" ","").replace("px","").split(",");//Consider regex instead of tons of replaces
+
+                return { //Return object with x and y
+                    x: parseFloat(vals[0]),
+                    y: parseFloat(vals[1])//YESSS Fixed
+                };
+            }
+
+
         }
+    }
+
+
+    $.fn.cwidth = function (){ //This is for getting width via css
+        return parseInt(this.css("width").replace("px",""));
     }
 
 
@@ -743,7 +801,9 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 
 
 
-})(jQuery);
+
+
+});
 
 
 //General Functions

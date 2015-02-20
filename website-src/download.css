@@ -1,0 +1,14 @@
+
+
+#welcome
+{
+    height:83.5vh; font-size:5vh;
+    background-color: #FF7676;
+}
+
+
+#welcome .menu a:hover
+{
+    background-color: #FFA6A6;
+}
+

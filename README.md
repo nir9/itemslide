@@ -1,7 +1,7 @@
 ItemSlide.js
 ===================
 
-jQuery plugin for a touch carousel
+A simple and beautiful touch carousel
 
 [Website](http://itemslide.github.io/)
 
@@ -16,14 +16,16 @@ jQuery plugin for a touch carousel
 - Mousewheel scrolling
 - Swipe out
 
-### Dependencies
-- [jQuery (1.7+)](http://jquery.com/)
 
 #### Optional Dependencies (adds features)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
 
 ### Downloading
+
+[jQuery Version](http://itemslide.github.io/dist/itemslide.min.js)
+
+[Vanilla Version](http://itemslide.github.io/dist/itemslide.vanilla.min.js)
 
 ```bash
 $ npm install itemslide
