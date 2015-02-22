@@ -8,7 +8,6 @@ This is the main code
 */
 
 
-
 var isExplorer = false || !!document.documentMode; // At least IE6
 
 $(function(){ //document ready
@@ -64,18 +63,10 @@ $(function(){ //document ready
 
             var settings = $.extend({}, defaults, options);
 
-            settings.swipe_out = (settings.swipe_out && ($.fn.jquery != null)); //Check if using jQuery (If no jQuery - no support for swipe out)
 
 
 
 
-            /*this.data("vars") = //Variables that can be accessed publicly //Optimized for zepto = $(this) and delete "vars"
-                {
-                    currentIndex: 0,
-                    disable_autowidth: settings.disable_autowidth,
-                    velocity: 0,
-                    slideHeight: slides.children().height()
-                };*/
 
             this.data("vars", //Variables that can be accessed publicly
                 {
@@ -87,7 +78,7 @@ $(function(){ //document ready
 
 
 
-            //$(this).data.velocity = 1; This is how to use data
+
 
 
 
@@ -161,7 +152,9 @@ $(function(){ //document ready
 
 
                     if (e.type == 'touchstart') //Check for touch event or mousemove
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                    {
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) ); //jQuery for some reason "clones" the event.
+                    }
                     else
                         touch = e;
 
@@ -227,6 +220,7 @@ $(function(){ //document ready
             var verticalSlideFirstTimeCount = 0; //This is used for the vertical pan if to happen once (to wrap it for later translate 3d it)
 
 
+
             function mousemove(e) //Called by mousemove event (inside the mousedown event)
                 {
 
@@ -234,7 +228,7 @@ $(function(){ //document ready
                     //Check type of event
                     if (e.type == 'touchmove') //Check for touch event or mousemove
                     {
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
 
                         if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
                             prevent = 1;
@@ -386,7 +380,7 @@ $(function(){ //document ready
                         if (isDown) {
 
                             if (e.type == 'touchend') //Check for touch event or mousemove
-                                touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                                touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
                             else
                                 touch = e;
 
@@ -403,7 +397,6 @@ $(function(){ //document ready
                                 //swipeOutLandPos = -400; //CHANGE!!
 
 
-                                //Here is another issue with Zepto disable if not using jQuery
                                 slides.swipeOut();
 
 
@@ -816,7 +809,8 @@ function easeOutBack(t, b, c, d, s) {
     if (s == undefined) s = 1.70158;
 
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-}/*
+}
+/*
 This code is for the slide out feature.
 Can be enabled by setting the slideOut option to true.
 */
@@ -826,7 +820,7 @@ Can be enabled by setting the slideOut option to true.
     To apply multiple transforms on one element - you wrap the element with a tag to apply the transform on the tag.
 */
 
-//This feature is ONLY compatible with jQuery
+//http://css-tricks.com/useful-nth-child-recipies/
 
 function slideout(slides, settings) {
 
@@ -906,15 +900,15 @@ function slideout(slides, settings) {
             savedOpacity = slides.savedSlide.css("opacity");
 
 
-
+            //Replaced gt and lt with a pure css alternative
             if (slides.savedSlideIndex < slides.data("vars").currentIndex) //Check if before or after
             {
 
                 before = true;
-                slides.children(":lt(" + (slides.savedSlideIndex) + ")").wrapAll("<div class='itemslide_move' />");
+                slides.children(":nth-child(-n+" + (slides.savedSlideIndex+1) + ")").wrapAll("<div class='itemslide_move' />");
             } else {
                 before = false;
-                slides.children(":gt(" + (slides.savedSlideIndex) + ")").wrapAll("<div class='itemslide_move' />");
+                slides.children(":nth-child(n+" + (slides.savedSlideIndex+2) + ")").wrapAll("<div class='itemslide_move' />");/*Hmm looks like it works good on (x+2)*/
             }
 
 

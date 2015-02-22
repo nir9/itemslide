@@ -8,7 +8,7 @@ Can be enabled by setting the slideOut option to true.
     To apply multiple transforms on one element - you wrap the element with a tag to apply the transform on the tag.
 */
 
-//This feature is ONLY compatible with jQuery
+//http://css-tricks.com/useful-nth-child-recipies/
 
 function slideout(slides, settings) {
 
@@ -88,15 +88,15 @@ function slideout(slides, settings) {
             savedOpacity = slides.savedSlide.css("opacity");
 
 
-
+            //Replaced gt and lt with a pure css alternative
             if (slides.savedSlideIndex < slides.data("vars").currentIndex) //Check if before or after
             {
 
                 before = true;
-                slides.children(":lt(" + (slides.savedSlideIndex) + ")").wrapAll("<div class='itemslide_move' />");
+                slides.children(":nth-child(-n+" + (slides.savedSlideIndex+1) + ")").wrapAll("<div class='itemslide_move' />");
             } else {
                 before = false;
-                slides.children(":gt(" + (slides.savedSlideIndex) + ")").wrapAll("<div class='itemslide_move' />");
+                slides.children(":nth-child(n+" + (slides.savedSlideIndex+2) + ")").wrapAll("<div class='itemslide_move' />");/*Hmm looks like it works good on (x+2)*/
             }
 
 

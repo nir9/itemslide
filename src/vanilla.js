@@ -133,7 +133,7 @@ var Zepto = (function() {
   // it compatible with browsers that don't support the DOM fully.
 
     //hmmmmm
-  /*zepto.fragment = function(html, name, properties) {
+  zepto.fragment = function(html, name, properties) {
     var dom, nodes, container
 
     // A special case optimization for a single tag
@@ -160,7 +160,7 @@ var Zepto = (function() {
     }
 
     return dom
-  }*/
+  }
 
   // `$.zepto.Z` swaps out the prototype of the given `dom` array
   // of nodes with `$.fn` and thus supplying all the Zepto functions
@@ -498,7 +498,7 @@ var Zepto = (function() {
     },*/
 
 
-    /*find: function(selector){
+    find: function(selector){
       var result, $this = this
       if (!selector) result = $()
       else if (typeof selector == 'object')
@@ -511,7 +511,7 @@ var Zepto = (function() {
       else if (this.length == 1) result = $(zepto.qsa(this[0], selector))
       else result = this.map(function(){ return zepto.qsa(this, selector) })
       return result
-    },*/
+    },
 
     closest: function(selector, context){
       var node = this[0], collection = false
@@ -555,7 +555,7 @@ var Zepto = (function() {
     pluck: function(property){
       return $.map(this, function(el){ return el[property] })
     },
-    /*show: function(){
+    show: function(){
       return this.each(function(){
         this.style.display == "none" && (this.style.display = '')
         if (getComputedStyle(this, '').getPropertyValue("display") == "none")
@@ -613,7 +613,7 @@ var Zepto = (function() {
         var el = $(this)
         ;(setting === undefined ? el.css("display") == "none" : setting) ? el.show() : el.hide()
       })
-    },
+    },/*
     prev: function(selector){ return $(this.pluck('previousElementSibling')).filter(selector || '*') },
     next: function(selector){ return $(this.pluck('nextElementSibling')).filter(selector || '*') },
     html: function(html){

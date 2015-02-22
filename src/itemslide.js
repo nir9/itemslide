@@ -7,8 +7,6 @@
 This is the main code
 */
 
-//NOTE: Swipe Out is NOT compatible with Vanilla
-
 
 var isExplorer = false || !!document.documentMode; // At least IE6
 
@@ -65,18 +63,10 @@ $(function(){ //document ready
 
             var settings = $.extend({}, defaults, options);
 
-            settings.swipe_out = (settings.swipe_out && ($.fn.jquery != null)); //Check if using jQuery (If no jQuery - no support for swipe out)
 
 
 
 
-            /*this.data("vars") = //Variables that can be accessed publicly //Optimized for zepto = $(this) and delete "vars"
-                {
-                    currentIndex: 0,
-                    disable_autowidth: settings.disable_autowidth,
-                    velocity: 0,
-                    slideHeight: slides.children().height()
-                };*/
 
             this.data("vars", //Variables that can be accessed publicly
                 {
@@ -88,7 +78,7 @@ $(function(){ //document ready
 
 
 
-            //$(this).data.velocity = 1; This is how to use data
+
 
 
 
@@ -162,7 +152,9 @@ $(function(){ //document ready
 
 
                     if (e.type == 'touchstart') //Check for touch event or mousemove
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                    {
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) ); //jQuery for some reason "clones" the event.
+                    }
                     else
                         touch = e;
 
@@ -228,6 +220,7 @@ $(function(){ //document ready
             var verticalSlideFirstTimeCount = 0; //This is used for the vertical pan if to happen once (to wrap it for later translate 3d it)
 
 
+
             function mousemove(e) //Called by mousemove event (inside the mousedown event)
                 {
 
@@ -235,7 +228,7 @@ $(function(){ //document ready
                     //Check type of event
                     if (e.type == 'touchmove') //Check for touch event or mousemove
                     {
-                        touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
 
                         if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
                             prevent = 1;
@@ -387,7 +380,7 @@ $(function(){ //document ready
                         if (isDown) {
 
                             if (e.type == 'touchend') //Check for touch event or mousemove
-                                touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                                touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
                             else
                                 touch = e;
 
@@ -404,7 +397,6 @@ $(function(){ //document ready
                                 //swipeOutLandPos = -400; //CHANGE!!
 
 
-                                //Here is another issue with Zepto disable if not using jQuery
                                 slides.swipeOut();
 
 

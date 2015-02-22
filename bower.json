@@ -1,11 +1,11 @@
 {
   "name": "itemslide",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/itemslide/itemslide.github.io",
   "authors": [
     "Nir Lichtman <nir_lichtman@hotmail.com>"
   ],
-  "description": "jQuery plugin for a touch carousel",
+  "description": "A simple and beautiful JavaScript touch carousel",
   "main": "/dist/itemslide.min.js",
   "keywords": [
     "jquery-plugin",
