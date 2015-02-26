@@ -1313,13 +1313,10 @@ $(function(){ //document ready
 
 
 
-    $.fn.initslide = function (options) { //Backwards compatibility (will be removed soon)
-        alert("Please do not use .initslide() as its deprecated - use .itemslide() instead");
-        this.itemslide(options);
-    }
-
 
     $.fn.itemslide = function (options) {
+
+            console.log("ItemSlide - NOTE: The active item now gets the 'itemslide-active' class instead of the 'active' id"); //Just a notice for ones that still use id=active - will be removed after a while.
 
             var initialLeft = 0;
 
@@ -1355,6 +1352,7 @@ $(function(){ //document ready
                 one_item: false, //Set true for full screen navigation or navigation with one item every time
                 pan_threshold: 0.3, //Precentage of slide width
                 disable_autowidth: false,
+                parent_width: false,
                 swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
 
             };
@@ -1362,7 +1360,10 @@ $(function(){ //document ready
             var settings = $.extend({}, defaults, options);
 
 
-
+            if(settings.parent_width)
+            {
+                slides.children().width(slides.parent().cwidth());//resize the slides
+            }
 
 
 
@@ -1370,8 +1371,10 @@ $(function(){ //document ready
                 {
                     currentIndex: 0,
                     disable_autowidth: settings.disable_autowidth,
+                    parent_width: settings.parent_width,
                     velocity: 0,
-                    slideHeight: slides.children().height()
+                    slideHeight: slides.children().height(),
+
                 });
 
 
@@ -1790,12 +1793,12 @@ $(function(){ //document ready
 
 
                 //Zepto problem fixed added ||0
-                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1)||0) + ')').attr('id', ''); //WORKS!!
+                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1)||0) + ')').attr('class', ''); //WORKS!!
 
 
                 //console.log(slides.data("vars")("vars").currentIndex + 1);
                 //            slides.children(':nth-child(' + (i + 1) + ')').attr("style", ""); //clean
-                slides.children(':nth-child(' + ((i + 1)||0) + ')').attr('id', 'active'); //Change destination index to active
+                slides.children(':nth-child(' + ((i + 1)||0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
 
                 //console.log((i+1));
 
@@ -2003,11 +2006,19 @@ $(function(){ //document ready
 
 
     $.fn.reload = function () { //Get index of active slide
+
+        //Update some sizes
+        if(this.data("vars").parent_width)
+        {
+            this.children().width(this.parent().cwidth());//resize the slides
+        }
+
         if (!this.data("vars").disable_autowidth)
         {
             this.css("width", this.children('li').length * this.children().cwidth() + 10); //SET WIDTH
 
         }
+
 
 
         this.data("vars").slideHeight = this.children().height();
@@ -2018,6 +2029,7 @@ $(function(){ //document ready
 
         this.data("vars").velocity = 0; //Set panning veloicity to zero
         this.gotoSlide(this.data("vars").currentIndex);
+
 
     }
 
@@ -2109,8 +2121,8 @@ function easeOutBack(t, b, c, d, s) {
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
 }
 /*
-This code is for the slide out feature.
-Can be enabled by setting the slideOut option to true.
+This code is for the swipe out feature.
+Can be enabled by setting the swipe_out option to true.
 */
 
 /*
@@ -2311,7 +2323,7 @@ function slideout(slides, settings) {
                     //The slide changes to active
 
                     if (slides.savedSlideIndex == slides.data("vars").currentIndex) //Cool it works
-                        $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('id', 'active'); //Change destination index to active
+                        $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('class', 'itemslide-active'); //Change destination index to active
 
                     //Looks like the fix works
                     if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == slides.data("vars").currentIndex) //Is in last slide

@@ -1,6 +1,6 @@
 /*
-This code is for the slide out feature.
-Can be enabled by setting the slideOut option to true.
+This code is for the swipe out feature.
+Can be enabled by setting the swipe_out option to true.
 */
 
 /*
@@ -201,7 +201,7 @@ function slideout(slides, settings) {
                     //The slide changes to active
 
                     if (slides.savedSlideIndex == slides.data("vars").currentIndex) //Cool it works
-                        $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('id', 'active'); //Change destination index to active
+                        $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('class', 'itemslide-active'); //Change destination index to active
 
                     //Looks like the fix works
                     if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == slides.data("vars").currentIndex) //Is in last slide

@@ -68,7 +68,7 @@ li {
 
 }
 
-#active
+.itemslide-active
 {/*applied to current active item*/
     -webkit-transform:  scale(1);
     -ms-transform:  scale(1);
