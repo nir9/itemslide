@@ -66,7 +66,10 @@ function slideout(slides, settings) {
                 goback = false;
 
                 //Trigger swipeout event
-                slides.trigger('swipeout');
+                slides.trigger({
+                    type: "swipeout",
+                    slide: slides.savedSlideIndex
+                });
             }
 
 

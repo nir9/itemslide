@@ -14,10 +14,10 @@ A simple and beautiful touch carousel
 ### Features
 - Touch swiping
 - Mousewheel scrolling
-- Swipe out
+- The ability to "swipe out" slides
 
 
-#### Optional Dependencies (adds features)
+#### Optional Plugins (To add features)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
 
 

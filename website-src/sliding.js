@@ -20,7 +20,7 @@ $(document).ready(function (){
     }); //triggered when position of carousel has changed*/
 
     /*$("ul").on('swipeout', function(event) {
-        console.log("swipe out occured");
+        console.log("swiped out slide - " + event.slide);
     });*/
 
 

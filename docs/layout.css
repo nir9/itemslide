@@ -28,11 +28,15 @@ text-align:left;background-color: #FF7676;
 
 }
 
+#welcome .main-title
+{
+    font-size:6.5vh;
 
+}
 
 #welcome .title
 {
-    font-size:6vh;
+    font-size:5.5vh;
 }
 
 #welcome .sub-title

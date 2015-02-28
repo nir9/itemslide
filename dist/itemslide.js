@@ -1,5 +1,4 @@
-//Dependencies - jQuery.
-//Optional Dependencies - jQuery Mousewheel (~2.5KB)
+//Optional Plugins - jQuery Mousewheel (~2.5KB)
 
 //about:flags
 
@@ -16,9 +15,8 @@ $(function(){ //document ready
 
 
 
-    $.fn.itemslide = function (options) {
 
-            console.log("ItemSlide - NOTE: The active item now gets the 'itemslide-active' class instead of the 'active' id"); //Just a notice for ones that still use id=active - will be removed after a while.
+    $.fn.itemslide = function (options) {
 
             var initialLeft = 0;
 
@@ -41,7 +39,6 @@ $(function(){ //document ready
 
 
             var slides = $(this); //Saves the object given to the plugin in a variable
-
 
 
 
@@ -807,6 +804,8 @@ $(function(){ //document ready
 
 
 
+
+
 });
 
 
@@ -890,7 +889,10 @@ function slideout(slides, settings) {
                 goback = false;
 
                 //Trigger swipeout event
-                slides.trigger('swipeout');
+                slides.trigger({
+                    type: "swipeout",
+                    slide: slides.savedSlideIndex
+                });
             }
 
 

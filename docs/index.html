@@ -6,12 +6,15 @@
     <title>ItemSlide.js - Documentation</title>
 
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'><!--CODE--->
+    <link href='//fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+    <!--CODE--->
 
 
     <!--Website Files-->
-    <link href="../website-src/layout.css" rel="stylesheet" /><!--main layout--->
-    <link href="layout.css" rel="stylesheet" /><!--docs layout--->
+    <link href="../website-src/layout.css" rel="stylesheet" />
+    <!--main layout--->
+    <link href="layout.css" rel="stylesheet" />
+    <!--docs layout--->
 
 
 
@@ -22,7 +25,10 @@
     <header>
 
 
-        <a style="color:#FFF;text-decoration:none;" href="../index.html"><div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span></div></a>
+        <a style="color:#FFF;text-decoration:none;" href="../index.html">
+            <div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span>
+            </div>
+        </a>
 
 
 
@@ -32,14 +38,28 @@
                 <td>
                     <a id="docs" href="index.html">
                         <table>
-                            <tr><td><img src="../website-src/img/docs.svg" /></td></tr><tr><td><span class="button-text">Docs</span></td></tr>
+                            <tr>
+                                <td><img src="../website-src/img/docs.svg" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="button-text">Docs</span>
+                                </td>
+                            </tr>
                         </table>
                     </a>
                 </td>
                 <td>
                     <a id="github" href="https://github.com/itemslide/itemslide.github.io">
                         <table>
-                                <tr><td><img src="../website-src/img/octocat.svg" /></td></tr><tr><td><span class="button-text">Github</span></td></tr>
+                            <tr>
+                                <td><img src="../website-src/img/octocat.svg" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="button-text">Github</span>
+                                </td>
+                            </tr>
                         </table>
                     </a>
                 </td>
@@ -62,25 +82,38 @@
 
 
     <div id="welcome">
-    <div class="content" id="docs-content">
+        <div class="content" id="docs-content">
+            <div class="main-title">
+                <a name="getting-started">Getting Started</a>
+            </div>
+            <br/>
+            <div class="title">
+                <a name="markup">Markup</a>
+            </div>
+            <br/>
 
-        <div class="title"><a name="init">Initialize</a></div><br/>
+            <div class='code'><pre>
+<span class="pu">&lt;ul&gt;</span>
+    <span class="pu">&lt;li&gt;</span>
+        Slide #1
+    <span class="pu">&lt;/li&gt;</span>
+    <span class="pu">&lt;li&gt;</span>
+        Slide #2
+    <span class="pu">&lt;/li&gt;</span>
+<span class="pu">&lt;/ul&gt;</span></pre>
+            </div>
+            <br/>
 
-        <div class='code'>
-            <pre>$(<span class="or">"ul"</span>).<span class="pu">itemslide</span>();</pre>
-        </div>
+            <br/>
+            <div class="title">
+                <a name="css">CSS</a>
+            </div>
 
-    <br/>
-    <br/>
-
-    <div class="title">
-        <a name="css">CSS</a>
-    </div>
-
-    <br/>
-        You can use <a href="http://itemslide.github.io/website-src/sliding.css">our exisiting css</a> and change the sizes or just make your own but make sure that its based upon
-    <br/><br/><div class='code'>
-        <pre>
+            <br/> You can use <a href="http://itemslide.github.io/website-src/sliding.css">our exisiting css</a> and change the sizes or just make your own but make sure that its based upon
+            <br/>
+            <br/>
+            <div class='code'>
+                <pre>
 <span class="bl">ul</span> {
     <span class="pu">margin</span>: <span class="gr">0</span>;
     <span class="pu">padding</span>: <span class="gr">0</span>;
@@ -94,113 +127,134 @@
 <span class="bl">li</span> {
     <span class="pu">float</span>: <span class="or">left</span>;
 }</pre>
-        </div>
+            </div>
 
 
-        <br/>
-        <div class="title">
-            <a name="markup">Markup</a>
-        </div>
-        <br/>
 
-        <div class='code'><pre>
-<span class="pu">&lt;ul&gt;</span>
-    <span class="pu">&lt;li&gt;</span>
-        Slide #1
-    <span class="pu">&lt;/li&gt;</span>
-    <span class="pu">&lt;li&gt;</span>
-        Slide #2
-    <span class="pu">&lt;/li&gt;</span>
-<span class="pu">&lt;/ul&gt;</span></pre>
-        </div>
+            <br/>
+            <div class="title"><a name="init">Initialize</a>
+            </div>
+            <br/>
+
+            <div class='code'>
+                <pre>$(<span class="or">"ul"</span>).<span class="pu">itemslide</span>();</pre>
+            </div>
 
 
-        <br/>
-        <div class="title">
-            <a name="options">Options</a>
-        </div>
-        <br/>
-        <div class="code list">
-        <ul>
-        <li>duration - duration of swipe animation {default: 350ms}</li>
-        <li>swipe_sensitivity - swiping sensitivity {default: 150}</li>
 
-        <li>disable_slide - disable swiping and panning {default: false}</li>
-        <li>disable_autowidth - disable calculation of width {default: false}
-        (if you want to do it manually)</li>
-        <li>disable_scroll - disable scrolling {default: false}</li>
-        <li>start - index of slide that appears when initializing {default: 0}</li>
-        <!--<li>swipe_out - set this to true to enable swiping slides out of the carousel {default: false}</li>-->
-        <li>pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)</li>
-        <li>one_item - set this to true if the navigation is full screen or one slide every time. {default: false}<br>(<a href="http://itemslide.github.io/examples/fullscreen_navigation/">Full Screen Example</a>)</li>
-            <li>parent_width - set this to true if you want the width of the slides to be the width of the parent of ul. {default: false}</li>
-            <li>swipe_out - set this to true to enable the swipe out feature. {default: false} (<a href="http://itemslide.github.io/">Homepage</a> has it enabled)</li>
+            <br/><br/>
+            <div class="main-title">
+                <a name="options">Options</a>
+            </div>
 
-        </ul>
-        </div>
-        <br/>
-        Example implementation<br/><br/>
-        <div class='code'><pre>
+            <div class="code list">
+                <ul>
+                    <li>duration - duration of swipe animation {default: 350ms}</li>
+                    <li>swipe_sensitivity - swiping sensitivity {default: 150}</li>
+
+                    <li>disable_slide - disable swiping and panning {default: false}</li>
+                    <li>disable_autowidth - disable calculation of width {default: false} (if you want to do it manually)</li>
+                    <li>disable_scroll - disable scrolling {default: false}</li>
+                    <li>start - index of slide that appears when initializing {default: 0}</li>
+                    <!--<li>swipe_out - set this to true to enable swiping slides out of the carousel {default: false}</li>-->
+                    <li>pan_threshold - can be also considered as panning sensitivity {default: 0.3}(precentage of slide width)</li>
+                    <li>one_item - set this to true if the navigation is full screen or one slide every time. {default: false}
+                        <br>(<a href="http://itemslide.github.io/examples/fullscreen_navigation/">Full Screen Example</a>)</li>
+                    <li>parent_width - set this to true if you want the width of the slides to be the width of the parent of ul. {default: false}</li>
+                    <li>swipe_out - set this to true to enable the swipe out feature. {default: false} (<a href="http://itemslide.github.io/">Homepage</a> has it enabled)</li>
+
+                </ul>
+            </div>
+            <br/> Example implementation
+            <br/>
+            <br/>
+            <div class='code'><pre>
 $(<span class="or">"ul"</span>).<span class="pu">initslide</span>(
     {
         <span class="pu">disable_slide</span>: <span class="or">true</span>,
         <span class="pu">duration</span>: <span class="gr">1500</span>
     }
-);</pre></div><br/>
+);</pre>
+            </div>
+            <br/>
 
 
 
-        <!--METHODS--->
-        <div class="title">
-            <a name="options">Methods</a>
-        </div><br/>
-        <div class="sub-title">Get</div></br>
+            <!--METHODS--->
+            <div class="main-title">
+                <a name="options">Methods</a>
+            </div>
+            <br/>
+            <div class="sub-title">Get</div>
+            </br>
 
-        <ul class="code list">
-            <li>getActiveIndex() - get current active slide index</li>
-            <li>getCurrentPos() - get current position of carousel (pixels)</li>
-        </ul>
-        <br/>
-        <div class='code'><pre>console.<span class="pu">log</span>($(<span class="or">"ul"</span>).<span class="pu">getActiveIndex</span>());</pre>
-        </div>
+            <ul class="code list">
+                <li>getActiveIndex() - get current active slide index</li>
+                <li>getCurrentPos() - get current position of carousel (pixels)</li>
+            </ul>
+            <br/>
+            <div class='code'><pre>console.<span class="pu">log</span>($(<span class="or">"ul"</span>).<span class="pu">getActiveIndex</span>());</pre>
+            </div>
 
-        <br/>
-        <div class="sub-title">Set</div></br>
-        <ul class="code list">
-            <li>next() - goes to next slide</li>
-            <li>previous() - goes to previous slide</li>
-            <li>gotoSlide(i) - goes to a specific slide by index</li>
-            <li>reload() - recalculates width and center object (recommended to call when resize occures)</li>
-            <li>addSlide(data) - adds in the end of the carousel a new item.</li>
-            <li>removeSlide(index) - removes a specific slide by index.</li>
-            <li>NOTE: addSlide automatically adds li tags.</li>
-        </ul>
+            <br/>
+            <div class="sub-title">Set</div>
+            </br>
+            <ul class="code list">
+                <li>next() - goes to next slide</li>
+                <li>previous() - goes to previous slide</li>
+                <li>gotoSlide(i) - goes to a specific slide by index</li>
+                <li>reload() - recalculates width and center object (recommended to call when resize occures)</li>
+                <li>addSlide(data) - adds in the end of the carousel a new item.</li>
+                <li>removeSlide(index) - removes a specific slide by index.</li>
+                <li>NOTE: addSlide automatically adds li tags.</li>
+            </ul>
 
-        <br/>
+            <br/>
 
-        <div class='code'><pre>
+            <div class='code'><pre>
 $(<span class="or">"ul"</span>).<span class="pu">next</span>();
-$(<span class="or">"ul"</span>).<span class="pu">addSlide</span>(<span class="or">"New Slide"</span>);</pre></div>
-        <br/>
-        <div class="title">Events</div></br>
+$(<span class="or">"ul"</span>).<span class="pu">addSlide</span>(<span class="or">"New Slide"</span>);</pre>
+            </div>
+            <br/>
+            <div class="main-title">Events</div>
+            </br>
 
 
 
-    <ul class="code list">
-        <li>changePos - triggered when the position of the carousel is changed</li>
-        <li>pan - triggered when user pans</li>
-        <li>changeActiveIndex - triggered when the current active item has changed</li>
-        <li>swipeout - triggered when user swipes out a slide (if swipe_out is enabled)</li>
-    </ul><br/>
-        <div class='code'><pre>
+            <ul class="code list">
+                <li>changePos - triggered when the position of the carousel is changed</li>
+                <li>pan - triggered when user pans</li>
+                <li>changeActiveIndex - triggered when the current active item has changed</li>
+                <li>swipeout - triggered when user swipes out a slide (if swipe_out is enabled)
+                    <ul>
+                        <li>
+                            event.slide - get swiped out slide
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <br/>
+            <div class='code'><pre>
 $(<span class="or">"ul"</span>).<span class="pu">on</span>(<span class="or">'changePos'</span>, <span class="bl">function</span>(<span class="pu">e</span>) {
         console.<span class="pu">log</span>(<span class="or">"new pos: "</span>+ $(<span class="or">"ul"</span>).<span class="pu">getCurrentPos</span>());
-});</pre></div>
-        <br/>
-        <div class="title">Classes</div></br>
+});
 
-        The current active slide gets the 'itemslide-active' class.
-    <br/><br/><br/><br/>
+$(<span class="or">"ul"</span>).<span class="pu">on</span>(<span class="or">'swipeout'</span>, <span class="bl">function</span>(<span class="pu">event</span>) {
+        console.<span class="pu">log</span>(<span class="or">"swiped out slide - "</span>+ event.<span class="pu">slide</span>);
+});</pre>
+
+            </div>
+
+            <br/>
+            <div class="main-title">Classes</div>
+            </br>
+
+            The current active slide gets the 'itemslide-active' class.
+            <br/>
+            <br/>
+
+            <br/>
+            <br/>
 
         </div>
     </div>
