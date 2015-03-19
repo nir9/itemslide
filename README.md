@@ -13,7 +13,7 @@ A simple and beautiful touch carousel
 - The ability to "swipe out" slides
 
 
-![ItemSlide](https://raw.github.com/itemslide/itemslide.github.io/master/website-src/img/itemslide.jpg)
+![ItemSlide](https://raw.github.com/itemslide/itemslide.github.io/master/website-src/img/itemslide.png)
 
 
 
