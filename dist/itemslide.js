@@ -38,7 +38,7 @@ $(function(){ //document ready
             var horizontal_pan = false;
 
 
-            var slides = $(this); //Saves the object given to the plugin in a variable
+            var slides = this; //Saves the object given to the plugin in a variable
 
 
 
