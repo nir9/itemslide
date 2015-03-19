@@ -7,19 +7,23 @@ A simple and beautiful touch carousel
 
 [Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
 
-### Tested on iPhone 4, iPad Mini, Nexus 4 & LG G3
-
 ### Features
 - Touch swiping
 - Mousewheel scrolling
 - The ability to "swipe out" slides
 
 
-#### Check out the docs at [this link](http://itemslide.github.io/docs)
+![ItemSlide](https://raw.github.com/itemslide/itemslide.github.io/master/website-src/img/itemslide.jpg)
+
+
+
+### Tested on iPhone 4, iPad Mini, Nexus 4 & LG G3
+
 
 
 #### Optional Plugins (To add features)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
+
 
 
 ### Downloading
@@ -35,3 +39,5 @@ or
 ```bash
 $ bower install itemslide
 ```
+
+#### Check out the docs at [this link](http://itemslide.github.io/docs)
