@@ -17,8 +17,8 @@ A simple and beautiful touch carousel
 
 
 
-### Tested on iPhone 4, iPad Mini, Nexus 4 & LG G3
-
+#### Tested on iPhone 4, iPad Mini, Nexus 4 & LG G3
+<br/>
 
 
 #### Optional Plugins (To add features)

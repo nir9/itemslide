@@ -46,6 +46,7 @@ $(function(){ //document ready
                 duration: 350,
                 swipe_sensitivity: 150,
                 disable_slide: false,
+                disable_clicktoslide: false,
                 disable_scroll: false,
                 start: 0,
                 one_item: false, //Set true for full screen navigation or navigation with one item every time
@@ -148,7 +149,7 @@ $(function(){ //document ready
 
             slides.on('mousedown touchstart', 'li', function (e) {
 
-                if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
+                //if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
 
 
                     if (e.type == 'touchstart') //Check for touch event or mousemove
@@ -208,7 +209,7 @@ $(function(){ //document ready
 
 
 
-                }
+                //}
             });
 
             //MouseMove related variables
@@ -330,6 +331,11 @@ $(function(){ //document ready
 
                     //Reposition according to horizontal navigation or vertical navigation
                     if (horizontal_pan) {
+
+                        if (settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
+                            return;
+                        }
+
                         vertical_pan = false;
 
                         slides.translate3d(
@@ -343,7 +349,7 @@ $(function(){ //document ready
                         slides.trigger('pan');
 
 
-                    } else if (vertical_pan && settings.swipe_out) {
+                    } else if (vertical_pan && settings.swipe_out) {//Swipe out
                         e.preventDefault();
 
                         $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
@@ -372,7 +378,7 @@ $(function(){ //document ready
 
                 function (e) {
 
-                    if (!settings.disable_slide) {
+
 
                         //e.preventDefault();
 
@@ -393,6 +399,7 @@ $(function(){ //document ready
                             if (vertical_pan && settings.swipe_out) //Vertical PANNING
                             {
 
+                                //HAPPENS WHEN SWIPEOUT
 
                                 //swipeOutLandPos = -400; //CHANGE!!
 
@@ -401,7 +408,8 @@ $(function(){ //document ready
 
 
                             } //Veritcal Pan
-                            else if (slides.end_animation) {
+
+                            else if (slides.end_animation && !settings.disable_slide) { //if finished animation of sliding and swiping is not disabled
 
 
 
@@ -430,21 +438,24 @@ $(function(){ //document ready
                                 {
 
                                     gotoSlideByIndex(getLandingSlideIndex(slides.data("vars").velocity * settings.swipe_sensitivity - slides.translate3d().x));
+                                    return;
                                     //NOT HERE - remove before commit
-                                } else {
-                                    if (slides.savedSlide.index() != slides.data("vars").currentIndex) //TODO: SOLVE MINOR ISSUE HERE
-                                    { //If this occurs then its a tap
-                                        e.preventDefault(); //FIXED
-                                        gotoSlideByIndex(slides.savedSlide.index());
-                                    } else {
-
-                                    }
                                 }
-                            } //Regular horizontal pan
+                            } //Regular horizontal pan until here
 
+
+
+
+                            //TAP - click to slide
+                            if (slides.savedSlide.index() != slides.data("vars").currentIndex && !((touch.pageX - startPointX) * direction < 6 * (-1)) && !settings.disable_clicktoslide) //TODO: SOLVE MINOR ISSUE HERE
+                            { //If this occurs then its a tap
+                                e.preventDefault(); //FIXED
+                                gotoSlideByIndex(slides.savedSlide.index());
+                            }
+                            //TAP until here
 
                         }
-                    }
+
                 }
             );
 
