@@ -1307,7 +1307,7 @@ This is the main code
 
 var isExplorer = false || !!document.documentMode; // At least IE6
 
-$(function(){ //document ready
+$(function () { //document ready
     "use strict";
 
 
@@ -1358,9 +1358,8 @@ $(function(){ //document ready
             var settings = $.extend({}, defaults, options);
 
 
-            if(settings.parent_width)
-            {
-                slides.children().width(slides.parent().cwidth());//resize the slides
+            if (settings.parent_width) {
+                slides.children().width(slides.parent().cwidth()); //resize the slides
             }
 
 
@@ -1386,8 +1385,8 @@ $(function(){ //document ready
 
             slides.end_animation = true;
 
-            if(settings.swipe_out) //Check if enabled slideout feature
-                slideout(slides,settings); //Apply slideout
+            if (settings.swipe_out) //Check if enabled slideout feature
+                slideout(slides, settings); //Apply slideout
 
 
             initialLeft = parseInt(slides.css("left").replace("px", ""));
@@ -1450,60 +1449,59 @@ $(function(){ //document ready
                 //if (!settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when the panning started
 
 
-                    if (e.type == 'touchstart') //Check for touch event or mousemove
-                    {
-                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) ); //jQuery for some reason "clones" the event.
+                if (e.type == 'touchstart') //Check for touch event or mousemove
+                {
+                    touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
+                } else
+                    touch = e;
+
+                //If hasn't ended swipe out escape
+                if (!slides.end_animation)
+                    return;
+
+                //Reset
+                swipeStartTime = Date.now();
+
+                isDown = 1;
+
+                prevent = 0; //to know when to start prevent default
+
+                startPointX = touch.pageX;
+                startPointY = touch.pageY;
+
+                vertical_pan = false;
+                horizontal_pan = false;
+
+                slides.savedSlide = $(this);
+
+                slides.savedSlideIndex = slides.savedSlide.index();
+
+                //Swipe out reset
+                verticalSlideFirstTimeCount = 0;
+
+                //Reset until here
+                //Check this---
+
+                //currentPos = slides.currentLandPos;
+
+                //Turn on mousemove event when mousedown
+
+                $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
+
+
+
+
+                /*Clear Selections*/
+                if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
+                    if (window.getSelection().empty) { // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) { // Firefox
+                        window.getSelection().removeAllRanges();
                     }
-                    else
-                        touch = e;
-
-                    //If hasn't ended swipe out escape
-                    if(!slides.end_animation)
-                        return;
-
-                    //Reset
-                    swipeStartTime = Date.now();
-
-                    isDown = 1;
-
-                    prevent = 0; //to know when to start prevent default
-
-                    startPointX = touch.pageX;
-                    startPointY = touch.pageY;
-
-                    vertical_pan = false;
-                    horizontal_pan = false;
-
-                    slides.savedSlide = $(this);
-
-                    slides.savedSlideIndex = slides.savedSlide.index();
-
-                    //Swipe out reset
-                    verticalSlideFirstTimeCount = 0;
-
-                    //Reset until here
-                    //Check this---
-
-                    //currentPos = slides.currentLandPos;
-
-                    //Turn on mousemove event when mousedown
-
-                    $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
-
-
-
-
-                    /*Clear Selections*/
-                    if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
-                        if (window.getSelection().empty) { // Chrome
-                            window.getSelection().empty();
-                        } else if (window.getSelection().removeAllRanges) { // Firefox
-                            window.getSelection().removeAllRanges();
-                        }
-                    } else if (document.selection) { // IE?
-                        document.selection.empty();
-                    }
-                    /*Clear Selections Until Here*/
+                } else if (document.selection) { // IE?
+                    document.selection.empty();
+                }
+                /*Clear Selections Until Here*/
 
 
 
@@ -1527,7 +1525,7 @@ $(function(){ //document ready
                     //Check type of event
                     if (e.type == 'touchmove') //Check for touch event or mousemove
                     {
-                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
 
                         if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
                             prevent = 1;
@@ -1540,8 +1538,6 @@ $(function(){ //document ready
                         touch = e;
                         e.preventDefault();
                     }
-
-
 
 
 
@@ -1586,14 +1582,14 @@ $(function(){ //document ready
                     if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
                     {
 
-                        if (isExplorer)//Some annoying explorer bug fix
+                        if (isExplorer) //Some annoying explorer bug fix
                         {
                             //$(".itemslide_slideoutwrap").children().css("height",slides.data("vars").slideHeight);
-                            slides.children().css("height",slides.data("vars").slideHeight);
+                            slides.children().css("height", slides.data("vars").slideHeight);
                         }
 
 
-                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />");//wrapAll
+                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
 
                         //slides.data("vars")("vars").slideHeight
 
@@ -1647,7 +1643,7 @@ $(function(){ //document ready
                         slides.trigger('pan');
 
 
-                    } else if (vertical_pan && settings.swipe_out) {//Swipe out
+                    } else if (vertical_pan && settings.swipe_out) { //Swipe out
                         e.preventDefault();
 
                         $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
@@ -1678,81 +1674,82 @@ $(function(){ //document ready
 
 
 
-                        //e.preventDefault();
+                    //e.preventDefault();
 
 
-                        if (isDown) {
+                    if (isDown) {
 
-                            if (e.type == 'touchend') //Check for touch event or mousemove
-                                touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]) );
-                            else
-                                touch = e;
+                        if (e.type == 'touchend') //Check for touch event or mousemove
+                            touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
+                        else
+                            touch = e;
 
-                            isDown = false;
+                        isDown = false;
 
-                            $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
-
-
-                            //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
-                            if (vertical_pan && settings.swipe_out) //Vertical PANNING
-                            {
-
-                                //HAPPENS WHEN SWIPEOUT
-
-                                //swipeOutLandPos = -400; //CHANGE!!
+                        $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
 
 
-                                slides.swipeOut();
+                        //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
+                        if (vertical_pan && settings.swipe_out) //Vertical PANNING
+                        {
+
+                            //HAPPENS WHEN SWIPEOUT
+
+                            //swipeOutLandPos = -400; //CHANGE!!
 
 
-                            } //Veritcal Pan
+                            slides.swipeOut();
 
-                            else if (slides.end_animation && !settings.disable_slide) { //if finished animation of sliding and swiping is not disabled
-
-
-
-                                //Calculate deltaTime for calculation of velocity
-                                var deltaTime = (Date.now() - swipeStartTime);
-                                slides.data("vars").velocity = -(touch.pageX - startPointX) / deltaTime;
-
-                                if (slides.data("vars").velocity > 0) { //Set direction
-                                    direction = 1; //PAN LEFT
-                                } else {
-                                    direction = -1;
-                                }
-
-
-                                distanceFromStart = (touch.pageX - startPointX) * direction * -1; //Yaaa SOOO
+                            return;
+                        } //Veritcal Pan
+                        else if (slides.end_animation && !settings.disable_slide) { //if finished animation of sliding and swiping is not disabled
 
 
 
+                            //Calculate deltaTime for calculation of velocity
+                            var deltaTime = (Date.now() - swipeStartTime);
+                            slides.data("vars").velocity = -(touch.pageX - startPointX) / deltaTime;
 
-
-
-                                //TAP is when deltaX is less or equal to 12px
-
-
-                                if ((touch.pageX - startPointX) * direction < 6 * (-1)) //Check distance to see if the event is a tap
-                                {
-
-                                    gotoSlideByIndex(getLandingSlideIndex(slides.data("vars").velocity * settings.swipe_sensitivity - slides.translate3d().x));
-                                    return;
-                                    //NOT HERE - remove before commit
-                                }
-                            } //Regular horizontal pan until here
-
-
-
-
-                            //TAP - click to slide
-                            if (slides.savedSlide.index() != slides.data("vars").currentIndex && !((touch.pageX - startPointX) * direction < 6 * (-1)) && !settings.disable_clicktoslide) //TODO: SOLVE MINOR ISSUE HERE
-                            { //If this occurs then its a tap
-                                e.preventDefault(); //FIXED
-                                gotoSlideByIndex(slides.savedSlide.index());
+                            if (slides.data("vars").velocity > 0) { //Set direction
+                                direction = 1; //PAN LEFT
+                            } else {
+                                direction = -1;
                             }
-                            //TAP until here
 
+
+                            distanceFromStart = (touch.pageX - startPointX) * direction * -1; //Yaaa SOOO
+
+
+
+
+
+
+                            //TAP is when deltaX is less or equal to 12px
+
+
+                            if ((touch.pageX - startPointX) * direction < 6 * (-1)) { //Check distance to see if the event is a tap
+
+                                gotoSlideByIndex(getLandingSlideIndex(slides.data("vars").velocity * settings.swipe_sensitivity - slides.translate3d().x));
+
+                                return;
+                                //NOT HERE - remove before commit
+                            }
+                        } //Regular horizontal pan until here
+
+
+
+
+
+                        //TAP - click to slide
+                        //&& !((touch.pageX - startPointX) * direction < 6 * (-1))
+                        //TODO: SOLVE MINOR ISSUE HERE
+                        if (slides.savedSlide.index() != slides.data("vars").currentIndex && !settings.disable_clicktoslide) { //If this occurs then its a tap
+                            e.preventDefault(); //FIXED
+                            gotoSlideByIndex(slides.savedSlide.index());
                         }
+                        //TAP until here
+
+                    }
 
                 }
             );
@@ -1801,12 +1798,12 @@ $(function(){ //document ready
 
 
                 //Zepto problem fixed added ||0
-                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1)||0) + ')').attr('class', ''); //WORKS!!
+                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1) || 0) + ')').attr('class', ''); //WORKS!!
 
 
                 //console.log(slides.data("vars")("vars").currentIndex + 1);
                 //            slides.children(':nth-child(' + (i + 1) + ')').attr("style", ""); //clean
-                slides.children(':nth-child(' + ((i + 1)||0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
+                slides.children(':nth-child(' + ((i + 1) || 0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
 
                 //console.log((i+1));
 
@@ -1906,7 +1903,7 @@ $(function(){ //document ready
 
 
 
-                currentPos = slides.translate3d().x;//PROBLEMMMMMMM ZEPTO
+                currentPos = slides.translate3d().x; //PROBLEMMMMMMM ZEPTO
 
 
                 slides.currentLandPos = getPositionByIndex(i);
@@ -1979,12 +1976,12 @@ $(function(){ //document ready
 
 
 
-            slides.gotoWithoutAnimation = function (i)//Goto position without sliding animation
-            {
-                slides.data("vars").currentIndex = i;
-                slides.currentLandPos = getPositionByIndex(i);
-                slides.translate3d(getPositionByIndex(i));
-            }
+            slides.gotoWithoutAnimation = function (i) //Goto position without sliding animation
+                {
+                    slides.data("vars").currentIndex = i;
+                    slides.currentLandPos = getPositionByIndex(i);
+                    slides.translate3d(getPositionByIndex(i));
+                }
 
 
 
@@ -2016,13 +2013,11 @@ $(function(){ //document ready
     $.fn.reload = function () { //Get index of active slide
 
         //Update some sizes
-        if(this.data("vars").parent_width)
-        {
-            this.children().width(this.parent().cwidth());//resize the slides
+        if (this.data("vars").parent_width) {
+            this.children().width(this.parent().cwidth()); //resize the slides
         }
 
-        if (!this.data("vars").disable_autowidth)
-        {
+        if (!this.data("vars").disable_autowidth) {
             this.css("width", this.children('li').length * this.children().cwidth() + 10); //SET WIDTH
 
         }
@@ -2048,7 +2043,7 @@ $(function(){ //document ready
     }
 
     $.fn.removeSlide = function (index) {
-        this.children(':nth-child(' + ((index + 1)||0) + ')').remove();
+        this.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
         //this.reload();
     }
 
@@ -2079,20 +2074,17 @@ $(function(){ //document ready
 
 
             //Check if jQuery
-            if($.fn.jquery != null) { //This happens if has jQuery
+            if ($.fn.jquery != null) { //This happens if has jQuery
                 return { //Return object with x and y
                     x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
                     y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
                 };
-            }
-
-
-            else { //This happens if has --Zepto--
-                var vals = this.css('transform').replace("translate3d","").replace("(","").replace(")","").replace(" ","").replace("px","").split(",");//Consider regex instead of tons of replaces
+            } else { //This happens if has --Zepto--
+                var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
 
                 return { //Return object with x and y
                     x: parseFloat(vals[0]),
-                    y: parseFloat(vals[1])//YESSS Fixed
+                    y: parseFloat(vals[1]) //YESSS Fixed
                 };
             }
 
@@ -2101,11 +2093,9 @@ $(function(){ //document ready
     }
 
 
-    $.fn.cwidth = function (){ //This is for getting width via css
-        return parseInt(this.css("width").replace("px",""));
+    $.fn.cwidth = function () { //This is for getting width via css
+        return parseInt(this.css("width").replace("px", ""));
     }
-
-
 
 
 
@@ -2129,8 +2119,7 @@ function easeOutBack(t, b, c, d, s) {
     if (s == undefined) s = 1.70158;
 
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-}
-/*
+}/*
 This code is for the swipe out feature.
 Can be enabled by setting the swipe_out option to true.
 */
