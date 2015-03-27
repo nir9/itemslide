@@ -22,7 +22,7 @@ A simple and beautiful touch carousel
 
 
 #### Optional Plugins (To add features)
-- [jQuery Mousewheel (Adds scrolling) (~2.5KB)](http://itemslide.github.io/dependencies/jquery.mousewheel.min.js)
+- [jQuery Mousewheel (Adds scrolling) (~2.5KB)](https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js)
 
 
 
