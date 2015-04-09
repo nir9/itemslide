@@ -9,10 +9,6 @@ var isExplorer = false || !!document.documentMode; // At least IE6
 $(function () { //document ready
     "use strict";
 
-    /*
-        TODO:
-        MAYBE GRUNT
-    */
 
     $.fn.itemslide = function (options) {
 
@@ -437,9 +433,13 @@ $(function () { //document ready
             //UNTILL HERE MOUSEWHEEL
 
 
-            slides.on('gotoSlide', function (e, i) //triggered when object method is called
+            slides.on('gotoSlide', function (e, props) //triggered when object method is called
                 {
-                    gotoSlideByIndex(i);
+                    //This fixes some bugs occuring when more than itemslide is on same page (makes sure gotoslide is only on intended element by the intended element passed in event)
+                    if(props.el.get(0) != $(this).get(0))
+                        return;
+
+                    gotoSlideByIndex(props.i);
                 });
 
 
@@ -489,14 +489,15 @@ $(function () { //document ready
                     }
 
                 }
-                //return 1;
+
                 return settings.one_item ? slides.data("vars").currentIndex + 1 : slides.children('li').length - 1; //If one item enabled than just go one slide forward and not until the end.
 
             }
 
 
 
-            function getPositionByIndex(i) {
+            function getPositionByIndex(i) { //Here we shall add basic nav
+                //return 0 - i * slides.children().cwidth();
                 return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - initialLeft - slides.children().cwidth()) / 2));
             }
 
@@ -609,7 +610,7 @@ $(function () { //document ready
 
     //SET
     $.fn.gotoSlide = function (i) {
-        this.trigger('gotoSlide', i);
+        this.trigger('gotoSlide', {i:i , el:$(this)});
     }
 
     $.fn.next = function () { //Next slide

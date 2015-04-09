@@ -41,3 +41,5 @@ $ bower install itemslide
 ```
 
 #### Check out the docs at [this link](http://itemslide.github.io/docs)
+
+#### [How to build ItemSlide using Grunt](https://github.com/itemslide/itemslide.github.io/blob/master/CONTRIBUTING.md#building-using-grunt)
