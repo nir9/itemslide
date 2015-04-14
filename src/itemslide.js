@@ -12,8 +12,6 @@ $(function () { //document ready
 
     $.fn.itemslide = function (options) {
 
-            var initialLeft = 0;
-
 
             //Animation variables
             var currentPos = 0,
@@ -77,8 +75,6 @@ $(function () { //document ready
             if (settings.swipe_out) //Check if enabled slideout feature
                 slideout(slides, settings); //Apply slideout
 
-
-            initialLeft = parseInt(slides.css("left").replace("px", ""));
 
 
             slides.css({ //Setting some css to avoid problems on touch devices
@@ -498,7 +494,7 @@ $(function () { //document ready
 
             function getPositionByIndex(i) { //Here we shall add basic nav
                 //return 0 - i * slides.children().cwidth();
-                return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - initialLeft - slides.children().cwidth()) / 2));
+                return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - slides.children().cwidth()) / 2));
             }
 
 

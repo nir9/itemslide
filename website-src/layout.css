@@ -98,6 +98,9 @@ table /*overide defaults*/
     display:none;
     }
 
+    #fotter a {
+        background: none !important;
+    }
 
 }
 
@@ -197,6 +200,18 @@ font-weight: 400;
     color:white;
     right:0;left:0;
 
+}
+
+#fotter a {
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+
+
+    background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
+    background-size: 2px 0.2vmin;
+    background-position: 0 2.86vh; /*considering font size is 2.5*/
+    background-repeat: repeat-x;
 }
 
 #docsbuttons
