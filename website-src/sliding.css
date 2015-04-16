@@ -1,10 +1,10 @@
 
 #scrolling{/*frame*/
     position:fixed;
-    top:61%;
+    top:58%;
 
-    background-color:#FF7676;/*FF473D*/
-    height:35%;
+    background:#FF8383;/*FF473D*/
+    height:38%;
     width:100vw;
 
     overflow: hidden;
@@ -25,7 +25,7 @@ ul {
     padding: 0;
     position: absolute;
 
-    margin-top:3vh;
+    margin-top:4vh;
     height:80%;
 
 

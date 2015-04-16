@@ -12,34 +12,23 @@ header{
     width:100vw;
     position:fixed;
     left:0;
-    height: 12.5vh;
-    background-color: #FF3B30;
+    height: 9.5vh;
+    background-color: #FF3333;
 
     color:#FFF;
 }
 
 #headertext
 {
-    position:absolute;
-    margin-top:1.2vh;
-    font-size:8vh;
-    left:1.5vw;
+    /*position:absolute;*/
+    float:left;
+
+    margin-top:0.35vh;
+    font-size:6.5vh;
+    margin-left:1.5vw;
     font-weight: 300;
 }
 
-
-#buttons-menu
-{
-    position:absolute;/**/
-    top:1.8vh;
-    left:65vw;
-
-    font-size:2.9vh;
-    color: #FFF;
-
-
-
-}
 
 table /*overide defaults*/
 {
@@ -47,44 +36,41 @@ table /*overide defaults*/
 	border-spacing: 0;
 }
 
+#buttons-menu {
+    margin-left:225px;
+    margin-top:2.8vh;
+}
+
+
 #buttons-menu a
 {
+    color:#FFF;
     text-decoration: none;
 
 
 }
 
+
 #buttons-menu td
 {
     font-weight: 300;
-    font-size:2.9vh;
+    font-size:3.5vh;/*Buttons font size*/
+
+
     text-align: center;
-    padding-left:0.8vw;
+    padding-left:2.8vw;
 }
 
-
-#buttons-menu .button-text
-{
-    color:#FFF;
-    /*font-weight: 400;*/
-    /*margin-right:0.45vh;*/
-}
-
-#buttons-menu img
-{
-    height:6vh;
-    width:6vh;
-}
 
 
 #downloadarea{
 
 
     position:absolute;
-    top:3.5vh;
+    top:2vh;
     right:2vw;
     font-weight: 200;
-    font-size:5.7vh;
+    font-size:4.9vh;
     line-height: 6vh;
 
 }
@@ -122,12 +108,12 @@ table /*overide defaults*/
 #welcome
 {
     position:fixed;
-    top:12.5vh;
+    top:9.5vh;
     height:48.5vh;
     width:100vw;
-    background-color:#FFA6A6;
+    background-color:#FF4D4D;
 
-    font-size:6.5vh;
+    font-size:8vh;
     color:#FFF;
 }
 
@@ -136,9 +122,9 @@ table /*overide defaults*/
 
     position:absolute;
     top:-6.5vh;
-    right:21vw;
-    width:60vh;
-    height:60vh;
+    right:16vw;
+    width:53vh;
+    height:53vh;
 }
 
 #welcome .content
@@ -155,10 +141,13 @@ table /*overide defaults*/
 
 #welcome .menu a
 {
-    border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -o-border-radius: 15px;
-    -moz-border-radius: 15px;
+    position: relative;
+    top:5.5vh;
+
+    border-radius: 2vh;
+    -webkit-border-radius: 2vh;
+    -o-border-radius: 2vh;
+    -moz-border-radius: 2vh;
 
 
 
@@ -176,9 +165,9 @@ table /*overide defaults*/
 
     text-decoration: none;
     /*padding:2vh;*/
-font-weight: 400;
+    font-weight: 400;
     color:#FFF;
-    font-size:3vh;
+    font-size:3.1vh;
     transition: background-color 0.25s;
 }
 
@@ -195,7 +184,7 @@ font-weight: 400;
     font-size:2.5vh;
     bottom:0%;
     padding: 0.5vh;
-    background-color: #660000;
+    background-color: #8E0C0C;
     font-weight: 200;
     color:white;
     right:0;left:0;
@@ -213,24 +202,3 @@ font-weight: 400;
     background-position: 0 2.86vh; /*considering font size is 2.5*/
     background-repeat: repeat-x;
 }
-
-#docsbuttons
-{
-
-    font-size:3vh;
-
-
-}
-
-#docsbuttons *
-{
-    cursor:pointer;
-    text-decoration: none;
-    color:#000;
-}
-
-
-
-
-
-

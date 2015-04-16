@@ -13,11 +13,7 @@
 
 #welcome
 {
-    /*top:21.5vh;*/
-
-    /*height:74.5vh;*/
-    /*width:80vw;right:10vw;*/
-    height:83.5vh; overflow-y: scroll;font-size:3vh;
+    height:86.5vh; overflow-y: scroll;font-size:3vh;
 text-align:left;background-color: #FF7676;
 }
 
