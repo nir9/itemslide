@@ -1,13 +1,13 @@
 {
   "name": "itemslide",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A simple and beautiful JavaScript touch carousel",
   "main": "dist/itemslide.min.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Open the tests folder to test\""
   },
   "repository": {
     "type": "git",

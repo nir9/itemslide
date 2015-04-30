@@ -193,135 +193,135 @@ $(function () { //document ready
 
             // Called by mousemove event (inside the mousedown event)
             function mousemove(e) {
-                //Check type of event
-                if (e.type == 'touchmove') //Check for touch event or mousemove
-                {
-                    touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
+                    //Check type of event
+                    if (e.type == 'touchmove') //Check for touch event or mousemove
+                    {
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
 
-                    if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
-                        prevent = 1;
+                        if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
+                            prevent = 1;
 
-                    if (prevent)
+                        if (prevent)
+                            e.preventDefault();
+
+                    } else //Regular mousemove
+                    {
+                        touch = e;
                         e.preventDefault();
-
-                } else //Regular mousemove
-                {
-                    touch = e;
-                    e.preventDefault();
-                }
+                    }
 
 
 
 
 
-                //Set direction of panning
-                if ((-(touch.pageX - startPointX)) > 0) { //Set direction
-                    direction = 1; //PAN LEFT
-                } else {
-                    direction = -1;
-                }
+                    //Set direction of panning
+                    if ((-(touch.pageX - startPointX)) > 0) { //Set direction
+                        direction = 1; //PAN LEFT
+                    } else {
+                        direction = -1;
+                    }
 
 
 
 
-                //If out boundaries than set some variables to save previous location before out boundaries
-                if (isOutBoundaries()) {
+                    //If out boundaries than set some variables to save previous location before out boundaries
+                    if (isOutBoundaries()) {
 
-                    if (firstTime) {
-                        savedStartPt = touch.pageX;
+                        if (firstTime) {
+                            savedStartPt = touch.pageX;
 
-                        firstTime = 0;
+                            firstTime = 0;
+
+                        }
+
+                    } else {
+
+                        if (!firstTime) { //Reset Values
+                            slides.currentLandPos = slides.translate3d().x;
+                            startPointX = touch.pageX;
+                        }
+
+                        firstTime = 1;
 
                     }
 
-                } else {
-
-                    if (!firstTime) { //Reset Values
-                        slides.currentLandPos = slides.translate3d().x;
-                        startPointX = touch.pageX;
-                    }
-
-                    firstTime = 1;
-
-                }
-
-                //check if to wrap
-                if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
-                {
-
-                    if (isExplorer) //Some annoying explorer bug fix
+                    //check if to wrap
+                    if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
                     {
 
-                        slides.children().css("height", slides.data("vars").slideHeight);
+                        if (isExplorer) //Some annoying explorer bug fix
+                        {
+
+                            slides.children().css("height", slides.data("vars").slideHeight);
+                        }
+
+
+                        slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
+
+
+
+
+
+                        verticalSlideFirstTimeCount = -1;
                     }
 
 
-                    slides.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
+
+                    //Reposition according to current deltaX
+                    if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+                    {
+                        if (!vertical_pan && slides.end_animation) //So it will stay one direction
+                            horizontal_pan = true;
+
+                        cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
 
 
-
-
-                    verticalSlideFirstTimeCount = -1;
-                }
-
-
-
-                //Reposition according to current deltaX
-                if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
-                {
-                    if (!vertical_pan && slides.end_animation) //So it will stay one direction
-                        horizontal_pan = true;
-
-                    cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
-
-
-
-                }
-                //Is vertical panning or horizontal panning
-                if (Math.abs(touch.pageY - startPointY) > 6) //Is vertical panning
-                {
-                    if (!horizontal_pan && slides.end_animation) {
-                        vertical_pan = true;
                     }
-                }
-
-
-
-
-
-                //Reposition according to horizontal navigation or vertical navigation
-                if (horizontal_pan) {
-
-                    if (settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
-                        return;
+                    //Is vertical panning or horizontal panning
+                    if (Math.abs(touch.pageY - startPointY) > 6) //Is vertical panning
+                    {
+                        if (!horizontal_pan && slides.end_animation) {
+                            vertical_pan = true;
+                        }
                     }
 
-                    vertical_pan = false;
-
-                    slides.translate3d(
-
-                        ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
-
-                        + slides.currentLandPos);
-
-                    //Triggers pan and changePos when swiping carousel
-                    slides.trigger('changePos');
-                    slides.trigger('pan');
 
 
-                } else if (vertical_pan && settings.swipe_out) { //Swipe out
-                    e.preventDefault();
-
-                    $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
 
 
-                    if (verticalSlideFirstTimeCount != -1) //Happen once...
-                        verticalSlideFirstTimeCount = 1;
+                    //Reposition according to horizontal navigation or vertical navigation
+                    if (horizontal_pan) {
 
-                }
+                        if (settings.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
+                            return;
+                        }
 
-            } //End of mousemove function
+                        vertical_pan = false;
+
+                        slides.translate3d(
+
+                            ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
+
+                            + slides.currentLandPos);
+
+                        //Triggers pan and changePos when swiping carousel
+                        slides.trigger('changePos');
+                        slides.trigger('pan');
+
+
+                    } else if (vertical_pan && settings.swipe_out) { //Swipe out
+                        e.preventDefault();
+
+                        $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
+
+
+                        if (verticalSlideFirstTimeCount != -1) //Happen once...
+                            verticalSlideFirstTimeCount = 1;
+
+                    }
+
+                } //End of mousemove function
 
 
 
@@ -351,6 +351,7 @@ $(function () { //document ready
 
 
 
+                            vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
 
                             slides.swipeOut();
 
@@ -411,18 +412,19 @@ $(function () { //document ready
 
             //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
             try {
-                slides.mousewheel(function (event) {
+                slides.mousewheel(function (e) {
+                    if (!settings.disable_scroll && !vertical_pan) { //Check if scroll has been disabled
+                        e.preventDefault();
 
-                    if (!settings.disable_scroll) {
-                        slides.data("vars").velocity = 0;
-                        var mouseLandingIndex = slides.data("vars").currentIndex - event.deltaY;
+                        var mouseLandingIndex = slides.data("vars").currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
+
 
                         if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
-                            return;
+                            return; //Consider in gotoSlide
 
+                        slides.data("vars").velocity = 0; //No BOUNCE
                         gotoSlideByIndex(mouseLandingIndex);
 
-                        event.preventDefault();
                     }
                 });
             } catch (e) {}
@@ -432,7 +434,7 @@ $(function () { //document ready
             slides.on('gotoSlide', function (e, props) //triggered when object method is called
                 {
                     //This fixes some bugs occuring when more than itemslide is on same page (makes sure gotoslide is only on intended element by the intended element passed in event)
-                    if(props.el.get(0) != $(this).get(0))
+                    if (props.el.get(0) != $(this).get(0))
                         return;
 
                     gotoSlideByIndex(props.i);
@@ -440,11 +442,9 @@ $(function () { //document ready
 
 
 
-
             function changeActiveSlideTo(i) {
 
-
-                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1) || 0) + ')').attr('class', ''); //WORKS!!
+                slides.children(':nth-child(' + ((slides.data("vars").currentIndex + 1) || 0) + ')').attr('class', '');
 
 
                 slides.children(':nth-child(' + ((i + 1) || 0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
@@ -456,7 +456,6 @@ $(function () { //document ready
                     slides.data("vars").currentIndex = i; //Set current index to landing index
                     slides.trigger('changeActiveIndex');
                 }
-
 
             }
 
@@ -493,7 +492,6 @@ $(function () { //document ready
 
 
             function getPositionByIndex(i) { //Here we shall add basic nav
-                //return 0 - i * slides.children().cwidth();
                 return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - slides.children().cwidth()) / 2));
             }
 
@@ -606,7 +604,10 @@ $(function () { //document ready
 
     //SET
     $.fn.gotoSlide = function (i) {
-        this.trigger('gotoSlide', {i:i , el:$(this)});
+        this.trigger('gotoSlide', {
+            i: i, // Index
+            el: $(this)
+        });
     }
 
     $.fn.next = function () { //Next slide
