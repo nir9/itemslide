@@ -52,7 +52,7 @@ $(function () { //document ready
 
 
             if (settings.parent_width) {
-                slides.children().width(slides.parent().cwidth()); //resize the slides
+                slides.children().width(slides.parent().outerWidth(true)); //resize the slides
             }
 
 
@@ -88,7 +88,7 @@ $(function () { //document ready
 
 
             if (!settings.disable_autowidth)
-                slides.css("width", slides.children('li').length * slides.children().cwidth() + 10); //SET WIDTH
+                slides.css("width", slides.children('li').length * slides.children().outerWidth(true) + 10); //SET WIDTH
             //To add vertical scrolling just set width to slides.children('li').width()
 
 
@@ -464,9 +464,9 @@ $(function () { //document ready
                 for (var i = 0; i < slides.children('li').length; i++) {
 
 
-                    if (slides.children().cwidth() * i + slides.children().cwidth() / 2 -
+                    if (slides.children().outerWidth(true) * i + slides.children().outerWidth(true) / 2 -
 
-                        slides.children().cwidth() * settings.pan_threshold * direction - getPositionByIndex(0) > x) {
+                        slides.children().outerWidth(true) * settings.pan_threshold * direction - getPositionByIndex(0) > x) {
 
 
                         if (!settings.one_item)
@@ -492,7 +492,7 @@ $(function () { //document ready
 
 
             function getPositionByIndex(i) { //Here we shall add basic nav
-                return -(i * slides.children().cwidth() - ((slides.parent().cwidth() - slides.children().cwidth()) / 2));
+                return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / 2));
             }
 
 
@@ -628,11 +628,11 @@ $(function () { //document ready
 
         //Update some sizes
         if (this.data("vars").parent_width) {
-            this.children().width(this.parent().cwidth()); //resize the slides
+            this.children().width(this.parent().outerWidth(true)); //resize the slides
         }
 
         if (!this.data("vars").disable_autowidth) {
-            this.css("width", this.children('li').length * this.children().cwidth() + 10); //SET WIDTH
+            this.css("width", this.children('li').length * this.children().outerWidth(true) + 10); //SET WIDTH
 
         }
 
@@ -701,11 +701,6 @@ $(function () { //document ready
 
 
         }
-    }
-
-
-    $.fn.cwidth = function () { //This is for getting width via css (Some problems with zepto)
-        return parseInt(this.css("width").replace("px", ""));
     }
 
 
