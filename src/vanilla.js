@@ -1274,6 +1274,17 @@ window.$ === undefined && (window.$ = Zepto)
     return compatible(event)
   }
 
+
+  //Added
+  $.fn.outerWidth = function () {
+    var el = $(this)[0];
+    var width = el.offsetWidth;
+    var style = getComputedStyle(el);
+
+    width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+    return width;
+  }
+
 })(Zepto)
 
 //     Zepto.js
