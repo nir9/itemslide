@@ -10,7 +10,7 @@ Can be enabled by setting the swipe_out option to true.
 
 // http://css-tricks.com/useful-nth-child-recipies/
 
-function slideout(slides, settings) {
+function slideout(slides, settings, vars) {
 
         //Some variables for the swipe out animation
         var swipeOutLandPos = -400,
@@ -87,7 +87,7 @@ function slideout(slides, settings) {
 
 
             //Replaced gt and lt with a pure css alternative
-            if (slides.savedSlideIndex < slides.data("vars").currentIndex) //Check if before or after
+            if (slides.savedSlideIndex < vars.currentIndex) //Check if before or after
             {
 
                 before = true;
@@ -180,11 +180,11 @@ function slideout(slides, settings) {
 
                 //The slide changes to active
 
-                if (slides.savedSlideIndex == slides.data("vars").currentIndex) //Cool it works
+                if (slides.savedSlideIndex == vars.currentIndex) //Cool it works
                     $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('class', 'itemslide-active'); //Change destination index to active
 
                 //Looks like the fix works
-                if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == slides.data("vars").currentIndex) //Is in last slide
+                if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide
                 {
 
                     settings.duration = 200;
@@ -192,7 +192,7 @@ function slideout(slides, settings) {
 
                 }
 
-                if (slides.savedSlideIndex == 0 && slides.data("vars").currentIndex != 0) {
+                if (slides.savedSlideIndex == 0 && vars.currentIndex != 0) {
 
                     currentTime = 500; //To escape this will finish animation
 
@@ -220,11 +220,11 @@ function slideout(slides, settings) {
 
                     slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
-                    if (slides.savedSlideIndex == 0 && slides.data("vars").currentIndex != 0 || before) {
+                    if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
                         //change index instant change of active index
                         //Create function in this file to instant reposition.
                         //Or just t3d and getPositionByIndex
-                        slides.gotoWithoutAnimation(slides.data("vars").currentIndex - 1);
+                        slides.gotoWithoutAnimation(vars.currentIndex - 1);
 
                         //Goto-slide to slide without animation
 

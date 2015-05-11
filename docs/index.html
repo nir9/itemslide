@@ -121,7 +121,10 @@
             <br/>
 
             <div class='code'>
-                <pre>$(<span class="or">"ul"</span>).<span class="pu">itemslide</span>();</pre>
+<pre><span class="bl">var</span> carousel;
+carousel = $(<span class="or">"ul"</span>);
+carousel.<span class="pu">itemslide</span>();
+</pre>
             </div>
 
 
@@ -153,8 +156,9 @@
             <br/> Example implementation
             <br/>
             <br/>
-            <div class='code'><pre>
-$(<span class="or">"ul"</span>).<span class="pu">itemslide</span>(
+            <div class='code'><pre><span class="bl">var</span> carousel;
+carousel = $(<span class="or">"ul"</span>);
+carousel.<span class="pu">itemslide</span>(
     {
         <span class="pu">disable_slide</span>: <span class="or">true</span>,
         <span class="pu">duration</span>: <span class="gr">1500</span>
@@ -178,7 +182,7 @@ $(<span class="or">"ul"</span>).<span class="pu">itemslide</span>(
                 <li>getCurrentPos() - get current position of carousel (pixels)</li>
             </ul>
             <br/>
-            <div class='code'><pre>console.<span class="pu">log</span>($(<span class="or">"ul"</span>).<span class="pu">getActiveIndex</span>());</pre>
+            <div class='code'><pre>console.<span class="pu">log</span>(carousel.<span class="pu">getActiveIndex</span>());</pre>
             </div>
 
             <br/>
@@ -197,8 +201,8 @@ $(<span class="or">"ul"</span>).<span class="pu">itemslide</span>(
             <br/>
 
             <div class='code'><pre>
-$(<span class="or">"ul"</span>).<span class="pu">next</span>();
-$(<span class="or">"ul"</span>).<span class="pu">addSlide</span>(<span class="or">"New Slide"</span>);</pre>
+carousel.<span class="pu">next</span>();
+carousel.<span class="pu">addSlide</span>(<span class="or">"New Slide"</span>);</pre>
             </div>
             <br/>
             <div class="main-title">Events</div>
@@ -220,11 +224,11 @@ $(<span class="or">"ul"</span>).<span class="pu">addSlide</span>(<span class="or
             </ul>
             <br/>
             <div class='code'><pre>
-$(<span class="or">"ul"</span>).<span class="pu">on</span>(<span class="or">'changePos'</span>, <span class="bl">function</span>(<span class="pu">e</span>) {
-        console.<span class="pu">log</span>(<span class="or">"new pos: "</span>+ $(<span class="or">"ul"</span>).<span class="pu">getCurrentPos</span>());
+carousel.<span class="pu">on</span>(<span class="or">'changePos'</span>, <span class="bl">function</span>(<span class="pu">e</span>) {
+        console.<span class="pu">log</span>(<span class="or">"new pos: "</span>+ carousel.<span class="pu">getCurrentPos</span>());
 });
 
-$(<span class="or">"ul"</span>).<span class="pu">on</span>(<span class="or">'swipeout'</span>, <span class="bl">function</span>(<span class="pu">event</span>) {
+carousel.<span class="pu">on</span>(<span class="or">'swipeout'</span>, <span class="bl">function</span>(<span class="pu">event</span>) {
         console.<span class="pu">log</span>(<span class="or">"swiped out slide - "</span>+ event.<span class="pu">slide</span>);
 });</pre>
 
@@ -243,8 +247,6 @@ $(<span class="or">"ul"</span>).<span class="pu">on</span>(<span class="or">'swi
 
         </div>
     </div>
-
-
 
 
     <div id="fotter" align="center">Created by <a href="https://twitter.com/nirl9">Nir Lichtman</a>. Design by <a href="http://iddan.co.il/portfolio/">Iddan Abarbanel</a>.</div>

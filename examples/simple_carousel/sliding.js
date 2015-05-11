@@ -1,11 +1,14 @@
+var carousel;
 $(document).ready(function () {
 
-    $("ul").itemslide({
+    carousel = $("ul");
+
+    carousel.itemslide({
 
     }); //initialize itemslide
 
     $(window).resize(function () {
-        $("ul").reload();
+        carousel.reload();
 
     }); //Recalculate width and center positions and sizes when window is resized
 });

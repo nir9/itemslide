@@ -1,38 +1,36 @@
+var carousel;
+
 $(document).ready(function (){
 
-	$("ul").itemslide(
+    carousel = $("#scrolling ul");
+
+	carousel.itemslide(
         {
             swipe_out: true //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
         }
     );//initialize itemslide
 
-    /*$("ul").on('pan', function(event) {
+    /*carousel.on('pan', function(event) {
         console.log("PANNING OCCURED!!");
     }); //triggered when user pans
 
-    $("ul").on('changeActiveIndex', function(event) {
+    carousel.on('changeActiveIndex', function(event) {
         console.log("changeActiveIndex OCCURED!!");
     }); //triggered when current active item has changed
     */
 
-    /*$("ul").on('changePos', function(event) {
-        console.log("new pos: "+ $("ul").getCurrentPos());
+    /*carousel.on('changePos', function(event) {
+        console.log("new pos: "+ carousel.getCurrentPos());
     }); //triggered when position of carousel has changed*/
 
-    /*$("ul").on('swipeout', function(event) {
+    /*carousel.on('swipeout', function(event) {
         console.log("swiped out slide - " + event.slide);
     });*/
 
 
     $( window ).resize(function() {
-        $("ul").reload();
+        carousel.reload();
     });//Recalculate width and center positions and sizes when window is resized
-
-
-
-
-
-
 
 
 });
