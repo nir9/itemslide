@@ -501,7 +501,6 @@ $(function () { //document ready
 
             //Goto position without sliding animation
             slides.gotoWithoutAnimation = function (i) {
-                console.log('d');
                 changeActiveSlideTo(i);
                 vars.currentIndex = i;
                 slides.currentLandPos = getPositionByIndex(i);
