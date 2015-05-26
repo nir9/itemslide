@@ -43,5 +43,3 @@ $ bower install itemslide
 #### Check out the docs at [this link](http://itemslide.github.io/docs)
 
 #### [How to build ItemSlide using Grunt](https://github.com/itemslide/itemslide.github.io/blob/master/CONTRIBUTING.md#building-using-grunt)
-
-##### ItemSlide has changed a bit. now you need to declare a variable with the object then call ItemSlide on it, [See the docs](http://itemslide.github.io/docs)

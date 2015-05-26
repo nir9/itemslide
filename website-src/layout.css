@@ -88,6 +88,8 @@ table /*overide defaults*/
         background: none !important;
     }
 
+
+
 }
 
 
@@ -191,7 +193,7 @@ table /*overide defaults*/
 
 }
 
-#fotter a {
+#fotter #hrefs {
     color: #FFF;
     font-weight: 400;
     text-decoration: none;
@@ -201,4 +203,24 @@ table /*overide defaults*/
     background-size: 2px 0.2vmin;
     background-position: 0 2.86vh; /*considering font size is 2.5*/
     background-repeat: repeat-x;
+}
+
+/* fotter buttons */
+#links {
+    position: absolute;
+    left:1vw;
+    top:1vmin;
+
+}
+#twitterwrap {
+    position:absolute;
+    left:100px;
+    bottom:0%;
+}
+
+/* stars button and twitter share */
+@media (max-aspect-ratio: 16/9), (max-width: 1200px), (max-height: 800px) {
+    #links {
+        display:none;
+    }
 }

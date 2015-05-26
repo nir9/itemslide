@@ -1,8 +1,8 @@
-//Optional Plugins - jQuery Mousewheel (~2.5KB)
 /*
 This is the main code
 */
-console.log("Hello, ItemSlide has changed a bit. now you need to declare a variable with the object then call ItemSlide on it, See the docs.");
+//Optional Plugins - jQuery Mousewheel (~2.5KB)
+
 
 var isExplorer = false || !!document.documentMode; // At least IE6
 
@@ -25,7 +25,6 @@ $(function () { //document ready
                 horizontal_pan = false;
 
             var slides = this; //Saves the object given to the plugin in a variable
-
 
 
             var defaults = { //Options
@@ -82,8 +81,6 @@ $(function () { //document ready
                 slides.css("width", slides.children('li').length * slides.children().outerWidth(true) + 10); //SET WIDTH
             //To add vertical scrolling just set width to slides.children('li').width()
 
-
-
             //Init
 
 
@@ -110,11 +107,12 @@ $(function () { //document ready
 
             slides.on('mousedown touchstart', 'li', function (e) {
 
-                if (e.type == 'touchstart') //Check for touch event or mousemove
-                {
+                //Check for touch event or mousemove
+                if (e.type == 'touchstart') {
                     touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
-                } else
+                } else {
                     touch = e;
+                }
 
                 //If hasn't ended swipe out escape
                 if (!slides.end_animation)
@@ -194,7 +192,6 @@ $(function () { //document ready
                             e.preventDefault();
                     }
 
-
                     //Set direction of panning
                     if ((-(touch.pageX - startPointX)) > 0) { //Set direction
                         direction = 1; //PAN LEFT
@@ -209,7 +206,6 @@ $(function () { //document ready
                             savedStartPt = touch.pageX;
 
                             firstTime = 0;
-
                         }
 
                     } else {
@@ -238,8 +234,6 @@ $(function () { //document ready
 
                         verticalSlideFirstTimeCount = -1;
                     }
-
-
 
                     //Reposition according to current deltaX
                     if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
@@ -278,7 +272,6 @@ $(function () { //document ready
                         slides.trigger('changePos');
                         slides.trigger('pan');
 
-
                     } else if (vertical_pan && settings.swipe_out) { //Swipe out
                         e.preventDefault();
 
@@ -287,7 +280,6 @@ $(function () { //document ready
 
                         if (verticalSlideFirstTimeCount != -1) //Happen once...
                             verticalSlideFirstTimeCount = 1;
-
                     }
 
                 } //End of mousemove function
@@ -345,14 +337,13 @@ $(function () { //document ready
                                 gotoSlideByIndex(getLandingSlideIndex(vars.velocity * settings.swipe_sensitivity - slides.translate3d().x));
 
                                 return;
-                                //NOT HERE - remove before commit
                             }
                         } //Regular horizontal pan until here
 
 
                         //TAP - click to slide
                         if (slides.savedSlide.index() != vars.currentIndex && !settings.disable_clicktoslide) { //If this occurs then its a tap
-                            e.preventDefault(); //FIXED
+                            e.preventDefault();
                             gotoSlideByIndex(slides.savedSlide.index());
                         }
                         //TAP until here
@@ -373,7 +364,6 @@ $(function () { //document ready
 
                         var mouseLandingIndex = vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
 
-
                         if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
                             return; //Consider in gotoSlide
 
@@ -387,50 +377,37 @@ $(function () { //document ready
 
 
             function changeActiveSlideTo(i) {
-
                 slides.children(':nth-child(' + ((vars.currentIndex + 1) || 0) + ')').attr('class', '');
 
-
                 slides.children(':nth-child(' + ((i + 1) || 0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
-
-
 
                 if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
                 {
                     vars.currentIndex = i; //Set current index to landing index
                     slides.trigger('changeActiveIndex');
                 }
-
             }
 
             function getLandingSlideIndex(x) { //Get slide that will be selected when silding occured - by position
 
                 for (var i = 0; i < slides.children('li').length; i++) {
 
-
                     if (slides.children().outerWidth(true) * i + slides.children().outerWidth(true) / 2 -
-
                         slides.children().outerWidth(true) * settings.pan_threshold * direction - getPositionByIndex(0) > x) {
-
 
                         if (!settings.one_item)
                             return i;
 
-                        else //If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
-                        {
+                        // If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
+                        else {
                             if (i != vars.currentIndex)
                                 return vars.currentIndex + 1 * direction; //Return 0 or more
                             else
                                 return vars.currentIndex;
                         }
-
-
                     }
-
                 }
-
                 return settings.one_item ? vars.currentIndex + 1 : slides.children('li').length - 1; //If one item enabled than just go one slide forward and not until the end.
-
             }
 
 
@@ -445,7 +422,6 @@ $(function () { //document ready
             }
 
             function gotoSlideByIndex(i) {
-
 
 
                 if (i >= slides.children('li').length - 1 || i <= 0) //If exceeds boundaries dont goto slide
@@ -484,7 +460,6 @@ $(function () { //document ready
 
                 slides.currentLandPos = getPositionByIndex(i);
 
-
                 //Reset
 
 
@@ -493,7 +468,6 @@ $(function () { //document ready
                 slidesGlobalID = requestAnimationFrame(animationRepeat);
 
             }
-
 
             //ANIMATION
             var total_back = 0,
@@ -527,20 +501,20 @@ $(function () { //document ready
 
             //Goto position without sliding animation
             slides.gotoWithoutAnimation = function (i) {
+                console.log('d');
+                changeActiveSlideTo(i);
                 vars.currentIndex = i;
                 slides.currentLandPos = getPositionByIndex(i);
                 slides.translate3d(getPositionByIndex(i));
             }
 
 
-
             //--------------------------------------------------------------------------//
-
 
 
             //Some external functions (see docs)
 
-            // SET
+            // SET Method
             slides.gotoSlide = function (i) {
                 gotoSlideByIndex(i);
             };
@@ -579,10 +553,10 @@ $(function () { //document ready
 
             slides.removeSlide = function (index) {
                 this.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
-
+                //this.reload();
             }
 
-            // GET
+            // GET Methods
 
             //Get index of active slide
             slides.getActiveIndex = function () {
@@ -591,15 +565,10 @@ $(function () { //document ready
 
             //Get current position of carousel
             slides.getCurrentPos = function () {
-
                 return this.translate3d().x;
             }
 
-
-
         } //END OF INIT ($.fn.itemslide)
-
-
 
 
     //Translates the x or y of an object or returns the x translate value
@@ -627,11 +596,8 @@ $(function () { //document ready
                     y: parseFloat(vals[1]) //YESSS Fixed
                 };
             }
-
-
         }
     }
-
 });
 
 
