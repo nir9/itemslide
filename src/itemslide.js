@@ -332,7 +332,7 @@ $(function () { //document ready
 
                             //TAP is when deltaX is less or equal to 12px
 
-                            if ((touch.pageX - startPointX) * direction < 6 * (-1)) { //Check distance to see if the event is a tap
+                            if (distanceFromStart > 6) { //Check distance to see if the event is a tap
 
                                 gotoSlideByIndex(getLandingSlideIndex(vars.velocity * settings.swipe_sensitivity - slides.translate3d().x));
 
@@ -413,13 +413,29 @@ $(function () { //document ready
 
 
             function getPositionByIndex(i) { //Here we shall add basic nav
-                return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / 2));
+                return  (-i * slides.children().outerWidth(true));
+            }
+
+
+            function isOutBoundariesLeft() {    //Return if user is panning out of left boundaries
+                var leftBound = Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && direction == -1;
+                return leftBound;
+            }
+
+
+            function isOutBoundariesRight() {   //Return if user is panning out of right boundaries
+                var slidesCount = slides.children('li').length - 1;
+                var leftMargin = parseInt(slides.first().css('padding-left'));
+
+                var rightBound = (leftMargin + Math.ceil(slides.translate3d().x)- slides.parent().outerWidth(true)) < (getPositionByIndex(slidesCount) - slides.children('li').last().outerWidth(true)) && direction == 1;
+                return rightBound;
             }
 
 
             function isOutBoundaries() { //Return if user is panning out of boundaries
-                return (((Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && direction == -1) || (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children('li').length - 1)) && direction == 1)));
+                return (isOutBoundariesLeft() || isOutBoundariesRight());
             }
+
 
             function gotoSlideByIndex(i) {
 
