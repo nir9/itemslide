@@ -439,11 +439,16 @@ $(function () { //document ready
 
             function gotoSlideByIndex(i) {
 
-                var slideWidth = slides.children('li').last().outerWidth(true);
                 var viewportWidth = slides.parent().outerWidth(true);
-                var slidesMatchesScreen = viewportWidth / slideWidth;
-                slidesMatchesScreen = Math.floor(slidesMatchesScreen);
-
+                var slidesMatchesScreen = 0;
+                // Slides count, that matches the screen, calculation. Performed, when slider is scrolled to the right or from the end
+                $.each(Array.prototype.reverse.call(slides.children('li')), function(i, slide) {
+                    viewportWidth -= slide.offsetWidth;
+                    if (viewportWidth <= 0) {
+                        slidesMatchesScreen = i;
+                        return false;
+                    }
+                });
                 var boundarySlideNumber = slides.children('li').length - slidesMatchesScreen;
 
                 if (i >= boundarySlideNumber || i <= 0) //If exceeds boundaries dont goto slide
