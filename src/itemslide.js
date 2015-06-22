@@ -55,7 +55,8 @@ $(function () { //document ready
                 disable_autowidth: settings.disable_autowidth,
                 parent_width: settings.parent_width,
                 velocity: 0,
-                slideHeight: slides.children().height()
+                slideHeight: slides.children().height(),
+                active_class: 'itemslide-active'
             };
 
 
@@ -104,9 +105,7 @@ $(function () { //document ready
             //Swipe out related variables
             slides.savedSlideIndex = 0;
 
-
-            slides.on('mousedown touchstart', 'li', function (e) {
-
+            function touchstart (e) {
                 //Check for touch event or mousemove
                 if (e.type == 'touchstart') {
                     touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
@@ -157,9 +156,9 @@ $(function () { //document ready
                     document.selection.empty();
                 }
                 /*Clear Selections Until Here*/
+            }
 
-
-            });
+            slides.on('mousedown touchstart', 'li', touchstart);
 
             //MouseMove related variables
             var firstTime = true,
@@ -284,74 +283,68 @@ $(function () { //document ready
 
                 } //End of mousemove function
 
+            function touchend(e) {
+                if (isDown) {
+
+                    if (e.type == 'touchend') //Check for touch event or mousemove
+                        touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
+                    else
+                        touch = e;
+
+                    isDown = false;
+
+                    $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
 
 
-            $(window).on('mouseup touchend', /*Pan End*/
+                    //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
+                    //Vertical PANNING
+                    if (vertical_pan && settings.swipe_out) {
 
-                function (e) {
+                        //HAPPENS WHEN SWIPEOUT
+
+                        vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
+
+                        slides.swipeOut();
+
+                        return;
+                    } //Veritcal Pan
+                    else if (slides.end_animation && !settings.disable_slide) { //if finished animation of sliding and swiping is not disabled
+
+                        //Calculate deltaTime for calculation of velocity
+                        var deltaTime = (Date.now() - swipeStartTime);
+                        vars.velocity = -(touch.pageX - startPointX) / deltaTime;
+
+                        if (vars.velocity > 0) { //Set direction
+                            direction = 1; //PAN LEFT
+                        } else {
+                            direction = -1;
+                        }
 
 
-                    if (isDown) {
+                        distanceFromStart = (touch.pageX - startPointX) * direction * -1; //Yaaa SOOO
 
-                        if (e.type == 'touchend') //Check for touch event or mousemove
-                            touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
-                        else
-                            touch = e;
+                        //TAP is when deltaX is less or equal to 12px
 
-                        isDown = false;
+                        if (distanceFromStart > 6) { //Check distance to see if the event is a tap
 
-                        $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
-
-
-                        //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
-                        //Vertical PANNING
-                        if (vertical_pan && settings.swipe_out) {
-
-                            //HAPPENS WHEN SWIPEOUT
-
-                            vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
-
-                            slides.swipeOut();
+                            gotoSlideByIndex(getLandingSlideIndex(vars.velocity * settings.swipe_sensitivity - slides.translate3d().x));
 
                             return;
-                        } //Veritcal Pan
-                        else if (slides.end_animation && !settings.disable_slide) { //if finished animation of sliding and swiping is not disabled
-
-                            //Calculate deltaTime for calculation of velocity
-                            var deltaTime = (Date.now() - swipeStartTime);
-                            vars.velocity = -(touch.pageX - startPointX) / deltaTime;
-
-                            if (vars.velocity > 0) { //Set direction
-                                direction = 1; //PAN LEFT
-                            } else {
-                                direction = -1;
-                            }
-
-
-                            distanceFromStart = (touch.pageX - startPointX) * direction * -1; //Yaaa SOOO
-
-                            //TAP is when deltaX is less or equal to 12px
-
-                            if (distanceFromStart > 6) { //Check distance to see if the event is a tap
-
-                                gotoSlideByIndex(getLandingSlideIndex(vars.velocity * settings.swipe_sensitivity - slides.translate3d().x));
-
-                                return;
-                            }
-                        } //Regular horizontal pan until here
-
-
-                        //TAP - click to slide
-                        if (slides.savedSlide.index() != vars.currentIndex && !settings.disable_clicktoslide) { //If this occurs then its a tap
-                            e.preventDefault();
-                            gotoSlideByIndex(slides.savedSlide.index());
                         }
-                        //TAP until here
+                    } //Regular horizontal pan until here
 
+
+                    //TAP - click to slide
+                    if (slides.savedSlide.index() != vars.currentIndex && !settings.disable_clicktoslide) { //If this occurs then its a tap
+                        e.preventDefault();
+                        gotoSlideByIndex(slides.savedSlide.index());
                     }
+                    //TAP until here
 
                 }
-            );
+            }
+
+            $(window).on('mouseup touchend', touchend);
 
             /*UNTIL HERE - swiping and panning events*/
 
@@ -571,6 +564,18 @@ $(function () { //document ready
                 // w/o animation cuz its smoother
                 this.gotoWithoutAnimation(vars.currentIndex);
             };
+
+            slides.destroy = function() {
+                //remove listeners
+                this.off('mousedown touchstart', 'li', touchstart);
+                $(window).off('mousemove touchmove', mousemove);
+                $(window).off('mouseup touchend', touchend);
+
+                //remove classes
+                this.children().removeClass(vars.active_class);
+
+                //remove data
+            }
 
             slides.addSlide = function (data) {
                 this.append("<li>" + data + "</li>");
