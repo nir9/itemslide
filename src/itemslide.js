@@ -439,11 +439,17 @@ $(function () { //document ready
 
             function gotoSlideByIndex(i) {
 
+                var slideWidth = slides.children('li').last().outerWidth(true);
+                var viewportWidth = slides.parent().outerWidth(true);
+                var slidesMatchesScreen = viewportWidth / slideWidth;
+                slidesMatchesScreen = Math.floor(slidesMatchesScreen);
 
-                if (i >= slides.children('li').length - 1 || i <= 0) //If exceeds boundaries dont goto slide
+                var boundarySlideNumber = slides.children('li').length - slidesMatchesScreen;
+
+                if (i >= boundarySlideNumber || i <= 0) //If exceeds boundaries dont goto slide
                 {
                     isBoundary = true;
-                    i = Math.min(Math.max(i, 0), slides.children('li').length - 1); //Put in between boundaries
+                    i = Math.min(Math.max(i, 0), boundarySlideNumber); //Put in between boundaries
                 } else {
                     isBoundary = false;
                 }
