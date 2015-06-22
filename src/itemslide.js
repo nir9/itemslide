@@ -379,7 +379,7 @@ $(function () { //document ready
             function changeActiveSlideTo(i) {
                 slides.children(':nth-child(' + ((vars.currentIndex + 1) || 0) + ')').attr('class', '');
 
-                slides.children(':nth-child(' + ((i + 1) || 0) + ')').attr('class', 'itemslide-active'); //Change destination index to active
+                slides.children(':nth-child(' + ((i + 1) || 0) + ')').addClass('itemslide-active'); //Change destination index to active
 
                 if (i != settings.currentIndex) //Check if landingIndex is different from currentIndex
                 {
