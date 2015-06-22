@@ -181,7 +181,7 @@ function slideout(slides, settings, vars) {
                 //The slide changes to active
 
                 if (slides.savedSlideIndex == vars.currentIndex) //Cool it works
-                    $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('class', 'itemslide-active'); //Change destination index to active
+                    $(".itemslide_move").children(':nth-child(' + (1) + ')').addClass(vars.active_class); //Change destination index to active
 
                 //Looks like the fix works
                 if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide

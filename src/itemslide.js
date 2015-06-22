@@ -31,7 +31,7 @@ $(function () { //document ready
                 duration: 350,
                 swipe_sensitivity: 150,
                 disable_slide: false,
-                disable_clicktoslide: false,
+                disable_clicktoslide: true,
                 disable_scroll: false,
                 start: 0,
                 one_item: false, //Set true for full screen navigation or navigation with one item every time
@@ -573,6 +573,7 @@ $(function () { //document ready
 
                 //remove classes
                 this.children().removeClass(vars.active_class);
+                this.removeAttr('style');
 
                 //remove data
             }
