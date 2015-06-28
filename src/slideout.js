@@ -9,9 +9,6 @@ Can be enabled by setting the swipe_out option to true.
 */
 
 // http://css-tricks.com/useful-nth-child-recipies/
-
-$(function () { //document ready
-    "use strict";
     
     var isExplorer = false || !!document.documentMode; // At least IE6
     
@@ -259,4 +256,3 @@ $(function () { //document ready
     else {
         throw new Error('itemslide not defined. Impossible to use slideout without itemslide');
     }
-})();

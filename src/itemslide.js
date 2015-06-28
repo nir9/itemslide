@@ -3,17 +3,16 @@ This is the main code
 */
 //Optional Plugins - jQuery Mousewheel (~2.5KB)
 
-if (typeof Object.create !== "function") {
-    Object.create = function (obj) {
-        function F() {}
-        F.prototype = obj;
-        return new F();
-    };
-}
-
-$(function () { //document ready
     "use strict";
-    
+
+    if (typeof Object.create !== "function") {
+        Object.create = function (obj) {
+            function F() {}
+            F.prototype = obj;
+            return new F();
+        };
+    }
+     
     var isExplorer = false || !!document.documentMode; // At least IE6
     
     var Slides = {
@@ -85,8 +84,12 @@ $(function () { //document ready
             
             //Swipe out related variables
             this.$el.savedSlideIndex = 0;
-            this.$el.on('mousedown touchstart', 'li', this.touchstart);
-            $(window).on('mouseup touchend', this.touchend);
+            this.$el.on('mousedown touchstart', 'li', function(e) {
+                _this.touchstart.call(this, e, _this);
+            });
+            $(window).on('mouseup touchend', function(e) {
+                _this.touchend.call(this, e, _this);
+            });
             //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
             try {
                 this.mousewheel(function (e) {
@@ -163,7 +166,7 @@ $(function () { //document ready
             $.fn.itemslide.cancelAnimationFrame(vars.slidesGlobalID);
             
             vars.startTime = Date.now();
-            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat);
+            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat.bind(this));
 
         },
         
@@ -185,6 +188,7 @@ $(function () { //document ready
         getLandingSlideIndex: function(x) { //Get slide that will be selected when silding occured - by position
             var $el = this.$el;
             var options = this.options;
+            var vars = this.vars;
             
             for (var i = 0; i < $el.children('li').length; i++) {
 
@@ -211,7 +215,7 @@ $(function () { //document ready
         },
 
         isOutBoundariesLeft: function() {    //Return if user is panning out of left boundaries
-            var leftBound = Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && vars.direction == -1;
+            var leftBound = Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1;
             return leftBound;
         },
 
@@ -219,7 +223,7 @@ $(function () { //document ready
             var slidesCount = this.$el.children('li').length - 1;
             var leftMargin = parseInt(this.$el.first().css('padding-left'));
 
-            var rightBound = (leftMargin + Math.ceil(this.translate3d().x)- this.$el.parent().outerWidth(true)) < (this.getPositionByIndex(slidesCount) - this.$el.children('li').last().outerWidth(true)) && vars.direction == 1;
+            var rightBound = (leftMargin + Math.ceil(this.translate3d().x)- this.$el.parent().outerWidth(true)) < (this.getPositionByIndex(slidesCount) - this.$el.children('li').last().outerWidth(true)) && this.vars.direction == 1;
             return rightBound;
         },
 
@@ -227,8 +231,8 @@ $(function () { //document ready
             return (this.isOutBoundariesLeft() || this.isOutBoundariesRight());
         },
         
-        touchstart: function(e) {
-            var vars = this.vars;
+        touchstart: function(e, _this) {
+            var vars = _this.vars;
             
             //Check for touch event or mousemove
             if (e.type == 'touchstart') {
@@ -238,15 +242,15 @@ $(function () { //document ready
             }
 
             //If hasn't ended swipe out escape
-            if (!this.$el.end_animation)
+            if (!_this.$el.end_animation)
                 return;
 
             //Reset
-            swipeStartTime = Date.now();
+            vars.swipeStartTime = Date.now();
 
-            isDown = 1;
+            vars.isDown = 1;
 
-            prevent = 0; //to know when to start prevent default
+            vars.prevent = 0; //to know when to start prevent default
 
             vars.startPointX = vars.touch.pageX;
             vars.startPointY = vars.touch.pageY;
@@ -254,9 +258,9 @@ $(function () { //document ready
             vars.vertical_pan = false;
             vars.horizontal_pan = false;
 
-            this.$el.savedSlide = $(this);
+            _this.$el.savedSlide = $(this);
 
-            this.$el.savedSlideIndex = this.$el.savedSlide.index();
+            _this.$el.savedSlideIndex = _this.$el.savedSlide.index();
 
             //Swipe out reset
             vars.verticalSlideFirstTimeCount = 0;
@@ -266,7 +270,9 @@ $(function () { //document ready
 
             //Turn on mousemove event when mousedown
 
-            $(window).on('mousemove touchmove', this.mousemove); //When mousedown start the handler for mousemove event
+            $(window).on('mousemove touchmove', function(e) {
+             _this.mousemove.call(this, e, _this)
+            }); //When mousedown start the handler for mousemove event
 
 
             /*Clear Selections*/
@@ -282,9 +288,9 @@ $(function () { //document ready
             /*Clear Selections Until Here*/
         },
         
-        touchend: function(e) {
-            var vars = this.vars;
-            var options = this.options;
+        touchend: function(e, _this) {
+            var vars = _this.vars;
+            var options = _this.options;
             
             if (vars.isDown) {
 
@@ -310,11 +316,11 @@ $(function () { //document ready
 
                     return;
                 } //Veritcal Pan
-                else if (this.$el.end_animation && !options.disable_slide) { //if finished animation of sliding and swiping is not disabled
+                else if (_this.$el.end_animation && !options.disable_slide) { //if finished animation of sliding and swiping is not disabled
 
                     //Calculate deltaTime for calculation of velocity
-                    var deltaTime = (Date.now() - swipeStartTime);
-                    vars.velocity = -(this.vars.touch.pageX - vars.startPointX) / deltaTime;
+                    var deltaTime = (Date.now() - vars.swipeStartTime);
+                    vars.velocity = -(_this.vars.touch.pageX - vars.startPointX) / deltaTime;
 
                     if (vars.velocity > 0) { //Set direction
                         vars.direction = 1; //PAN LEFT
@@ -323,13 +329,13 @@ $(function () { //document ready
                     }
 
 
-                    vars.distanceFromStart = (this.vars.touch.pageX - vars.startPointX) * vars.direction * -1; //Yaaa SOOO
+                    vars.distanceFromStart = (_this.vars.touch.pageX - vars.startPointX) * vars.direction * -1; //Yaaa SOOO
 
                     //TAP is when deltaX is less or equal to 12px
 
                     if (vars.distanceFromStart > 6) { //Check distance to see if the event is a tap
-                        var landingSlideIndex = this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - this.translate3d().x);
-                        this.gotoSlideByIndex(landingSlideIndex);
+                        var landingSlideIndex = _this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x);
+                        _this.gotoSlideByIndex(landingSlideIndex);
 
                         return;
                     }
@@ -337,9 +343,9 @@ $(function () { //document ready
 
 
                 //TAP - click to slide
-                if (this.$el.savedSlide.index() != vars.currentIndex && !settings.disable_clicktoslide) { //If this occurs then its a tap
+                if (_this.$el.savedSlide.index() != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
                     e.preventDefault();
-                    gotoSlideByIndex(this.$el.savedSlide.index());
+                    _this.gotoSlideByIndex(_this.$el.savedSlide.index());
                 }
                 //TAP until here
 
@@ -347,16 +353,16 @@ $(function () { //document ready
         },
         
         // Called by mousemove event (inside the mousedown event)
-        mousemove: function(e) {
-            var vars = this.vars;
-            var options = this.options;
+        mousemove: function(e, _this) {
+            var vars = _this.vars;
+            var options = _this.options;
             
             //Check type of event
             if (e.type == 'touchmove') //Check for touch event or mousemove
             {
                 vars.touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
 
-                if (Math.abs(vars.touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
+                if (Math.abs(vars.touch.pageX - vars.startPointX) > 10) //If touch event than check if to start preventing default behavior
                     prevent = 1;
 
                 if (prevent)
@@ -372,29 +378,29 @@ $(function () { //document ready
             }
 
             //Set direction of panning
-            if ((-(vars.touch.pageX - startPointX)) > 0) { //Set direction
+            if ((-(vars.touch.pageX - vars.startPointX)) > 0) { //Set direction
                 vars.direction = 1; //PAN LEFT
             } else {
                 vars.direction = -1;
             }
 
             //If out boundaries than set some variables to save previous location before out boundaries
-            if (this.isOutBoundaries()) {
+            if (_this.isOutBoundaries()) {
 
-                if (firstTime) {
-                    savedStartPt = vars.touch.pageX;
+                if (vars.firstTime) {
+                    vars.savedStartPt = vars.touch.pageX;
 
-                    firstTime = 0;
+                    vars.firstTime = 0;
                 }
 
             } else {
 
-                if (!firstTime) { //Reset Values
-                    this.$el.currentLandPos = this.translate3d().x;
-                    startPointX = vars.touch.pageX;
+                if (!vars.firstTime) { //Reset Values
+                    _this.$el.currentLandPos = _this.translate3d().x;
+                    vars.startPointX = vars.touch.pageX;
                 }
 
-                firstTime = 1;
+                vars.firstTime = 1;
 
             }
 
@@ -405,28 +411,28 @@ $(function () { //document ready
                 if (isExplorer) //Some annoying explorer bug fix
                 {
 
-                    this.$el.children().css("height", vars.slideHeight);
+                    _this.$el.children().css("height", vars.slideHeight);
                 }
 
 
-                this.$el.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
+                _this.$el.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
 
                 vars.verticalSlideFirstTimeCount = -1;
             }
 
             //Reposition according to current deltaX
-            if (Math.abs(vars.touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+            if (Math.abs(vars.touch.pageX - vars.startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
             {
-                if (!vars.vertical_pan && this.$el.end_animation) //So it will stay one direction
+                if (!vars.vertical_pan && _this.$el.end_animation) //So it will stay one direction
                     vars.horizontal_pan = true;
 
-                $.fn.itemslide.cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+                $.fn.itemslide.cancelAnimationFrame(vars.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
             }
             //Is vertical panning or horizontal panning
-            if (Math.abs(vars.touch.pageY - startPointY) > 6) //Is vertical panning
+            if (Math.abs(vars.touch.pageY - vars.startPointY) > 6) //Is vertical panning
             {
-                if (!vars.horizontal_pan && this.$el.end_animation) {
+                if (!vars.horizontal_pan && _this.$el.end_animation) {
                     vars.vertical_pan = true;
                 }
             }
@@ -441,20 +447,20 @@ $(function () { //document ready
 
                 vars.vertical_pan = false;
 
-                this.translate3d(
+                _this.translate3d(
 
-                    ((firstTime == 0) ? (savedStartPt - startPointX + (vars.touch.pageX - savedStartPt) / 4) : (vars.touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
+                    ((vars.firstTime == 0) ? (vars.savedStartPt - vars.startPointX + (vars.touch.pageX - vars.savedStartPt) / 4) : (vars.touch.pageX - vars.startPointX)) //Check if out of boundaries - if true than add springy panning effect
 
-                    + this.$el.currentLandPos);
+                    + _this.$el.currentLandPos);
 
                 //Triggers pan and changePos when swiping carousel
-                this.$el.trigger('changePos');
-                this.$el.trigger('pan');
+                _this.$el.trigger('changePos');
+                _this.$el.trigger('pan');
 
             } else if (vars.vertical_pan && options.swipe_out) { //Swipe out
                 e.preventDefault();
 
-                this.translate3d.call($(".itemslide_slideoutwrap"), 0, vars.touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
+                this.translate3d.call($(".itemslide_slideoutwrap"), 0, vars.touch.pageY - vars.startPointY); //Using wrapper to transform brief explanation at the top.
 
                 if (vars.verticalSlideFirstTimeCount != -1) //Happen once...
                     vars.verticalSlideFirstTimeCount = 1;
@@ -499,8 +505,9 @@ $(function () { //document ready
         },
         
         animationRepeat: function() { //Repeats using requestAnimationFrame //For the sliding
+            var _this = this;
             var vars = this.vars;
-            var currentTime = Date.now() - startTime;
+            var currentTime = Date.now() - vars.startTime;
 
             this.$el.trigger('changePos');
 
@@ -516,7 +523,9 @@ $(function () { //document ready
                 return; //out of recursion
             }
 
-            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat);
+            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(function(){
+                _this.animationRepeat.bind(_this);
+            });
 
         },
         
@@ -577,9 +586,9 @@ $(function () { //document ready
             var $el = this.$el;
             var vars = this.vars;
             //remove listeners
-            $el.off('mousedown touchstart', 'li', touchstart);
-            $(window).off('mousemove touchmove', mousemove);
-            $(window).off('mouseup touchend', touchend);
+            $el.off('mousedown touchstart', 'li');
+            $(window).off('mousemove touchmove');
+            $(window).off('mouseup touchend');
 
             //remove classes
             $el.children().removeClass(vars.active_class);
@@ -616,6 +625,7 @@ $(function () { //document ready
         var carousel = Object.create(Slides);
         carousel.init(options, this);
         $.data(this, "itemslide", carousel);
+        return carousel;
     }
         
     $.fn.itemslide.options = {
@@ -635,4 +645,3 @@ $(function () { //document ready
     if (RAF) {
         $.extend($.fn.itemslide, RAF)
     }
-});
