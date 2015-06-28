@@ -524,7 +524,7 @@ This is the main code
             }
 
             vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(function(){
-                _this.animationRepeat.bind(_this);
+                _this.animationRepeat.call(_this);
             });
 
         },
