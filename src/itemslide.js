@@ -3,6 +3,13 @@ This is the main code
 */
 //Optional Plugins - jQuery Mousewheel (~2.5KB)
 
+if (typeof Object.create !== "function") {
+    Object.create = function (obj) {
+        function F() {}
+        F.prototype = obj;
+        return new F();
+    };
+}
 
 $(function () { //document ready
     "use strict";
@@ -69,7 +76,7 @@ $(function () { //document ready
             this.$el.end_animation = true;
             
             if (this.options.swipe_out) {//Check if enabled slideout feature
-                Slideout(this.$el, this.options, this.vars); //Apply slideout (and transfer settings and variables)
+                $.fn.itemslide.slideout(this.$el, this.options, this.vars); //Apply slideout (and transfer settings and variables)
             }
             
             this.translate3d(0);

@@ -10,7 +10,12 @@ Can be enabled by setting the swipe_out option to true.
 
 // http://css-tricks.com/useful-nth-child-recipies/
 
-function slideout(slides, settings, vars) {
+$(function () { //document ready
+    "use strict";
+    
+    var isExplorer = false || !!document.documentMode; // At least IE6
+    
+    function slideout(slides, settings, vars) {
 
         //Some variables for the swipe out animation
         var swipeOutLandPos = -400,
@@ -247,3 +252,9 @@ function slideout(slides, settings, vars) {
 
 
     } //End of slide out init
+    
+    if ($.fn.itemslide) {
+        $.fn.itemslide.slideout = slideout;
+    }
+    
+})();
