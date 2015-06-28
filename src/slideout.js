@@ -256,5 +256,7 @@ $(function () { //document ready
     if ($.fn.itemslide) {
         $.fn.itemslide.slideout = slideout;
     }
-    
+    else {
+        throw new Error('itemslide not defined. Impossible to use slideout without itemslide');
+    }
 })();

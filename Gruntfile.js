@@ -1,9 +1,13 @@
 module.exports = function (grunt) {
+    var banner = '(function( window ) {\n',
+        footer = '\n})( window );';
 
     grunt.initConfig({
         concat: {
             options: {
                 separator: ';',
+                banner: banner,
+                footer: footer
             },
             regular: {
                 src: [

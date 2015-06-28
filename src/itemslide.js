@@ -160,10 +160,10 @@ $(function () { //document ready
             //Reset
 
 
-            this.cancelAnimationFrame(vars.slidesGlobalID);
+            $.fn.itemslide.cancelAnimationFrame(vars.slidesGlobalID);
             
             vars.startTime = Date.now();
-            vars.slidesGlobalID = this.requestAnimationFrame(this.animationRepeat);
+            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat);
 
         },
         
@@ -211,7 +211,7 @@ $(function () { //document ready
         },
 
         isOutBoundariesLeft: function() {    //Return if user is panning out of left boundaries
-            var leftBound = Math.floor(this.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1;
+            var leftBound = Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && vars.direction == -1;
             return leftBound;
         },
 
@@ -420,7 +420,7 @@ $(function () { //document ready
                 if (!vars.vertical_pan && this.$el.end_animation) //So it will stay one direction
                     vars.horizontal_pan = true;
 
-                this.cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+                $.fn.itemslide.cancelAnimationFrame(slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
             }
             //Is vertical panning or horizontal panning
@@ -516,7 +516,7 @@ $(function () { //document ready
                 return; //out of recursion
             }
 
-            vars.slidesGlobalID = this.requestAnimationFrame(this.animationRepeat);
+            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat);
 
         },
         
@@ -611,6 +611,7 @@ $(function () { //document ready
         }
     }
     
+    
     $.fn.itemslide = function (options) {
         var carousel = Object.create(Slides);
         carousel.init(options, this);
@@ -629,5 +630,9 @@ $(function () { //document ready
         disable_autowidth: false,
         parent_width: false,
         swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
+    }
+    
+    if (RAF) {
+        $.extend($.fn.itemslide, RAF)
     }
 });
