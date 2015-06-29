@@ -20,7 +20,7 @@ This is the main code
             var _this = this;
             
             this.$el = $(element);
-            this.options = $.extend({}, options, $.fn.itemslide.options);
+            this.options = $.extend({}, $.fn.itemslide.options, options);
             this.userOptions = options;
             
             if (this.options.parent_width) {
