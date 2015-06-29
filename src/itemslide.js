@@ -163,10 +163,10 @@ This is the main code
             //Reset
 
 
-            $.fn.itemslide.cancelAnimationFrame(vars.slidesGlobalID);
+            window.cancelAnimationFrame(vars.slidesGlobalID);
             
             vars.startTime = Date.now();
-            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(this.animationRepeat.bind(this));
+            vars.slidesGlobalID = window.requestAnimationFrame(this.animationRepeat.bind(this));
 
         },
         
@@ -426,7 +426,7 @@ This is the main code
                 if (!vars.vertical_pan && _this.$el.end_animation) //So it will stay one direction
                     vars.horizontal_pan = true;
 
-                $.fn.itemslide.cancelAnimationFrame(vars.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+                window.cancelAnimationFrame(vars.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
             }
             //Is vertical panning or horizontal panning
@@ -523,7 +523,7 @@ This is the main code
                 return; //out of recursion
             }
 
-            vars.slidesGlobalID = $.fn.itemslide.requestAnimationFrame(function(){
+            vars.slidesGlobalID = window.requestAnimationFrame(function(){
                 _this.animationRepeat.call(_this);
             });
 
@@ -640,8 +640,4 @@ This is the main code
         disable_autowidth: false,
         parent_width: false,
         swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
-    }
-    
-    if (RAF) {
-        $.extend($.fn.itemslide, RAF)
     }
