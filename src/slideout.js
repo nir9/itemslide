@@ -10,21 +10,21 @@ Can be enabled by setting the swipe_out option to true.
 
 // http://css-tricks.com/useful-nth-child-recipies/
     
-    var isExplorer = false || !!document.documentMode; // At least IE6
+    var isExplorer = !!document.documentMode; // At least IE6
     
     function slideout(slides, settings, vars) {
+
+        var _this = this;
 
         //Some variables for the swipe out animation
         var swipeOutLandPos = -400,
             swipeOutStartTime = Date.now(),
             currentSwipeOutPos = 0,
-            currentPos2 = 0,
             swipeOutGlobalID = 0;
 
         var durationSave = 0,
             savedOpacity = 0,
-            prev,
-            finish_swiping = false;
+            prev;
 
 
 
@@ -40,11 +40,9 @@ Can be enabled by setting the swipe_out option to true.
 
 
 
-        slides.swipeOut = function () {
+        _this.swipeOut = function () {
 
-
-
-            currentSwipeOutPos = $(".itemslide_slideoutwrap").translate3d().y;
+            currentSwipeOutPos = _this.translate3d(null, null, $(".itemslide_slideoutwrap")).y;
 
             swipeDirection = (currentSwipeOutPos < 0);
 
@@ -111,7 +109,7 @@ Can be enabled by setting the swipe_out option to true.
 
 
             swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
-        }
+        };
 
         var enableOpacity = true,
             currentTime = 0;
@@ -131,8 +129,8 @@ Can be enabled by setting the swipe_out option to true.
             if (enableOpacity) {
 
 
-                $(".itemslide_slideoutwrap").translate3d(0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0)); //DURATION VELOCITY
-                slides.savedSlide.css("opacity", savedOpacity - easeOutBack(currentTime, 0, savedOpacity - 0, 250, 0) * (goback ? -1 : 1)); //Can try to remove opacity when animating width
+                _this.translate3d(0, currentSwipeOutPos - _this._easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0), $(".itemslide_slideoutwrap")); //DURATION VELOCITY
+                slides.savedSlide.css("opacity", savedOpacity - _this._easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1)); //Can try to remove opacity when animating width
 
             } else {
                 //Animate slides after current swiped out slide
@@ -165,7 +163,7 @@ Can be enabled by setting the swipe_out option to true.
                 }
 
 
-                $(".itemslide_move").translate3d(0 - easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1)); //Before - multiply by -1 to turn to positive if before = true
+                _this.translate3d(0 - _this._easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1), $(".itemslide_move")); //Before - multiply by -1 to turn to positive if before = true
 
 
 
@@ -220,7 +218,7 @@ Can be enabled by setting the swipe_out option to true.
 
                     $(".itemslide_move").children().unwrap(); //Remove wrapper
 
-                    slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
+                    _this.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
                     if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
                         //change index instant change of active index

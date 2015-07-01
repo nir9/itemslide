@@ -13,7 +13,7 @@ This is the main code
         };
     }
      
-    var isExplorer = false || !!document.documentMode; // At least IE6
+    var isExplorer = !!document.documentMode; // At least IE6
     
     var Slides = {
         init: function(options, element) {
@@ -73,9 +73,9 @@ This is the main code
             };
             
             this.$el.end_animation = true;
-            
+
             if (this.options.swipe_out) {//Check if enabled slideout feature
-                $.fn.itemslide.slideout(this.$el, this.options, this.vars); //Apply slideout (and transfer settings and variables)
+                $.fn.itemslide.slideout.call(this, this.$el, this.options, this.vars); //Apply slideout (and transfer settings and variables)
             }
             
             this.translate3d(0);
@@ -201,7 +201,7 @@ This is the main code
                     // If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
                     else {
                         if (i != vars.currentIndex)
-                            return vars.currentIndex + 1 * vars.direction; //Return 0 or more
+                            return vars.currentIndex + vars.direction; //Return 0 or more
                         else
                             return vars.currentIndex;
                     }
@@ -312,7 +312,7 @@ This is the main code
 
                     vars.vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
 
-                    slideout.swipeOut();
+                    _this.swipeOut();
 
                     return;
                 } //Veritcal Pan
@@ -363,9 +363,9 @@ This is the main code
                 vars.touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
 
                 if (Math.abs(vars.touch.pageX - vars.startPointX) > 10) //If touch event than check if to start preventing default behavior
-                    prevent = 1;
+                    vars.prevent = 1;
 
-                if (prevent)
+                if (vars.prevent)
                     e.preventDefault();
 
             } else //Regular mousemove
@@ -460,7 +460,7 @@ This is the main code
             } else if (vars.vertical_pan && options.swipe_out) { //Swipe out
                 e.preventDefault();
 
-                this.translate3d.call($(".itemslide_slideoutwrap"), 0, vars.touch.pageY - vars.startPointY); //Using wrapper to transform brief explanation at the top.
+                _this.translate3d(0, vars.touch.pageY - vars.startPointY, $(".itemslide_slideoutwrap")); //Using wrapper to transform brief explanation at the top.
 
                 if (vars.verticalSlideFirstTimeCount != -1) //Happen once...
                     vars.verticalSlideFirstTimeCount = 1;
@@ -469,8 +469,8 @@ This is the main code
         }, //End of mousemove function
         
         //Translates the x or y of an object or returns the x translate value
-        translate3d: function (x, y) {
-            var $el = this.$el || $(this);
+        translate3d: function (x, y, element) {
+            var $el = element?$(element):'' || this.$el;
             
             if (x != null) { //Set value
                 $el.css('transform', 'translate3d(' + x + 'px' + ',' + (y || 0) + 'px, 0px)');
@@ -603,7 +603,7 @@ This is the main code
         },
 
         removeSlide: function (index) {
-            this.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
+            this.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
             //this.reload();
         },
 
@@ -618,7 +618,7 @@ This is the main code
         getCurrentPos: function () {
             return this.translate3d().x;
         }
-    }
+    };
     
     
     $.fn.itemslide = function (options) {
@@ -626,7 +626,7 @@ This is the main code
         carousel.init(options, this);
         $.data(this, "itemslide", carousel);
         return carousel;
-    }
+    };
         
     $.fn.itemslide.options = {
         duration: 350,
@@ -640,4 +640,4 @@ This is the main code
         disable_autowidth: false,
         parent_width: false,
         swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
-    }
+    };
