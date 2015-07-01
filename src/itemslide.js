@@ -332,11 +332,16 @@ This is the main code
                     vars.distanceFromStart = (_this.vars.touch.pageX - vars.startPointX) * vars.direction * -1; //Yaaa SOOO
 
                     //TAP is when deltaX is less or equal to 12px
-
-                    if (vars.distanceFromStart > 6) { //Check distance to see if the event is a tap
-                        var landingSlideIndex = _this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x);
-                        _this.gotoSlideByIndex(landingSlideIndex);
-
+                    if (vars.distanceFromStart > 6 && _this.isOutBoundariesRight()) { //Check distance to see if the event is a tap
+                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
+                        return;
+                    }
+                    else if (vars.distanceFromStart > 6 && _this.isOutBoundariesLeft()) {
+                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
+                        return;
+                    }
+                    else if (vars.distanceFromStart > 6){
+                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
                         return;
                     }
                 } //Regular horizontal pan until here
