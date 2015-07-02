@@ -61,7 +61,7 @@ This is the main code
                 vertical_pan: false,
                 horizontal_pan: false,
                 //MouseMove related variables
-                firstTime: true,
+                firstTime: 1,
                 savedStartPt: 0,
                 //Some swipe out mouse move related vars
                 verticalSlideFirstTimeCount: 0, //This is used for the vertical pan if to happen once (to wrap it for later translate 3d it)
@@ -215,16 +215,21 @@ This is the main code
         },
 
         isOutBoundariesLeft: function() {    //Return if user is panning out of left boundaries
-            var leftBound = Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1;
-            return leftBound;
+            return (Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1);
         },
 
         isOutBoundariesRight: function() {   //Return if user is panning out of right boundaries
             var slidesCount = this.$el.children('li').length - 1;
-            var leftMargin = parseInt(this.$el.first().css('padding-left'));
 
-            var rightBound = (leftMargin + Math.ceil(this.translate3d().x)- this.$el.parent().outerWidth(true)) < (this.getPositionByIndex(slidesCount) - this.$el.children('li').last().outerWidth(true)) && this.vars.direction == 1;
-            return rightBound;
+            var viewportWidth = this.$el.parent().outerWidth(true);
+            var slideWidth = this.$el.children('li').first().outerWidth(true);
+            var slidesMatchView = Math.floor(viewportWidth / slideWidth);
+            var boundaryMargin = this.$el.parent().outerWidth(true) - slidesMatchView * slideWidth;
+
+            var leftPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
+            var rightPart = Math.abs(this.getPositionByIndex(slidesCount)) + this.$el.children('li').last().outerWidth(true) + boundaryMargin;
+
+            return (leftPart < rightPart && this.vars.direction == 1);
         },
 
         isOutBoundaries: function() { //Return if user is panning out of boundaries
@@ -288,7 +293,8 @@ This is the main code
             /*Clear Selections Until Here*/
         },
         
-        touchend: function(e, _this) {
+        touchend: function(e, context) {
+            var _this = context;
             var vars = _this.vars;
             var options = _this.options;
             
@@ -330,18 +336,11 @@ This is the main code
 
 
                     vars.distanceFromStart = (_this.vars.touch.pageX - vars.startPointX) * vars.direction * -1; //Yaaa SOOO
+                    var landingSlideIndex = _this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x);
 
                     //TAP is when deltaX is less or equal to 12px
-                    if (vars.distanceFromStart > 6 && _this.isOutBoundariesRight()) { //Check distance to see if the event is a tap
-                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
-                        return;
-                    }
-                    else if (vars.distanceFromStart > 6 && _this.isOutBoundariesLeft()) {
-                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
-                        return;
-                    }
-                    else if (vars.distanceFromStart > 6){
-                        _this.gotoSlideByIndex(_this.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - _this.translate3d().x));
+                    if (vars.distanceFromStart > 6) {
+                        _this.gotoSlideByIndex(landingSlideIndex);
                         return;
                     }
                 } //Regular horizontal pan until here
@@ -358,9 +357,11 @@ This is the main code
         },
         
         // Called by mousemove event (inside the mousedown event)
-        mousemove: function(e, _this) {
+        mousemove: function(e, context) {
+            var _this = context;
             var vars = _this.vars;
             var options = _this.options;
+
             
             //Check type of event
             if (e.type == 'touchmove') //Check for touch event or mousemove
