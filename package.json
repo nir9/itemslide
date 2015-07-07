@@ -1,19 +1,19 @@
 {
-    "name": "itemslide",
-    "version": "1.3.0",
-    "description": "A simple and beautiful JavaScript touch carousel",
-    "main": "dist/itemslide.min.js",
-    "directories": {
-        "example": "examples"
-    },
-    "scripts": {
-        "test": "echo \"Open the tests folder to test\""
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/itemslide/itemslide.github.io"
-    },
-    "keywords": [
+  "name": "itemslide",
+  "version": "1.3.0",
+  "description": "A simple and beautiful JavaScript touch carousel",
+  "main": "dist/itemslide.min.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Open the tests folder to test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itemslide/itemslide.github.io"
+  },
+  "keywords": [
     "jquery-plugin",
     "carousel",
     "touch",
@@ -21,13 +21,16 @@
     "slide",
     "swipe"
   ],
-    "author": "Nir Lichtman",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/itemslide/itemslide.github.io/issues"
-    },
-    "devDependencies": {
-        "grunt": "^0.4.5",
-        "grunt-contrib-uglify": "^0.8.0"
-    }
+  "author": "Nir Lichtman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itemslide/itemslide.github.io/issues"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-uglify": "^0.8.0"
+  },
+  "dependencies": {
+    "grunt-contrib-concat": "^0.5.1"
+  }
 }
