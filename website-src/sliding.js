@@ -5,7 +5,8 @@ $(document).ready(function (){
     carousel = $("#scrolling ul").itemslide(
         {
             swipe_out: true, //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
-            disable_clicktoslide: false
+            disable_clicktoslide: false,
+            align: 'center'
         }
     );//initialize itemslide
 

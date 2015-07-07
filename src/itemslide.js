@@ -114,6 +114,8 @@ This is the main code
             var options = this.options;
             var viewportWidth = this.$el.parent().outerWidth(true);
             var slidesMatchesScreen = 0;
+            var boundarySlideNumber;
+
             // Slides count, that matches the screen, calculation. Performed, when slider is scrolled to the right or from the end
             $.each(Array.prototype.reverse.call(this.$el.children('li')), function(i, slide) {
                 viewportWidth -= slide.offsetWidth;
@@ -122,7 +124,13 @@ This is the main code
                     return false;
                 }
             });
-            var boundarySlideNumber = this.$el.children('li').length - slidesMatchesScreen;
+
+            if (this.options.align === 'center') {
+                boundarySlideNumber = this.$el.children('li').length - 1;
+            }
+            else{
+                boundarySlideNumber = this.$el.children('li').length - slidesMatchesScreen;
+            }
 
             if (i >= boundarySlideNumber || i <= 0) //If exceeds boundaries dont goto slide
             {
@@ -211,6 +219,9 @@ This is the main code
         },
 
         getPositionByIndex: function(i) { //Here we shall add basic nav
+            if (this.options.align === 'center') {
+                return -(i * this.$el.children().outerWidth(true) - ((this.$el.parent().outerWidth(true) - this.$el.children().outerWidth(true)) / 2))
+            }
             return  (-i * this.$el.children().outerWidth(true));
         },
 
@@ -225,9 +236,17 @@ This is the main code
             var slideWidth = this.$el.children('li').first().outerWidth(true);
             var slidesMatchView = Math.floor(viewportWidth / slideWidth);
             var boundaryMargin = this.$el.parent().outerWidth(true) - slidesMatchView * slideWidth;
+            var leftPart;
+            var rightPart;
 
-            var leftPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
-            var rightPart = Math.abs(this.getPositionByIndex(slidesCount)) + this.$el.children('li').last().outerWidth(true) + boundaryMargin;
+            if (this.options.align === 'center') {
+                leftPart = Math.ceil(this.translate3d().x);
+                rightPart = (this.getPositionByIndex(this.$el.children('li').length - 1));
+            }
+            else{
+                leftPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
+                rightPart = Math.abs(this.getPositionByIndex(slidesCount)) + this.$el.children('li').last().outerWidth(true) + boundaryMargin;
+            }
 
             return (leftPart < rightPart && this.vars.direction == 1);
         },
@@ -645,5 +664,6 @@ This is the main code
         pan_threshold: 0.3, //Precentage of slide width
         disable_autowidth: false,
         parent_width: false,
-        swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
+        swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
+        align: 'center' //Possible: center, justify
     };
