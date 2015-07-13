@@ -244,8 +244,8 @@ This is the main code
                 rightPart = (this.getPositionByIndex(this.$el.children('li').length - 1));
             }
             else{
-                leftPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
-                rightPart = Math.abs(this.getPositionByIndex(slidesCount)) + this.$el.children('li').last().outerWidth(true) + boundaryMargin;
+                leftPart = Math.abs(this.getPositionByIndex(slidesCount)) + this.$el.children('li').last().outerWidth(true) + boundaryMargin;
+                rightPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
             }
 
             return (leftPart < rightPart && this.vars.direction == 1);
