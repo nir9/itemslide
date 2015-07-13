@@ -9,20 +9,22 @@ Can be enabled by setting the swipe_out option to true.
 */
 
 // http://css-tricks.com/useful-nth-child-recipies/
+    
+    var isExplorer = !!document.documentMode; // At least IE6
+    
+    function slideout(slides, settings, vars) {
 
-function slideout(slides, settings, vars) {
+        var _this = this;
 
         //Some variables for the swipe out animation
         var swipeOutLandPos = -400,
             swipeOutStartTime = Date.now(),
             currentSwipeOutPos = 0,
-            currentPos2 = 0,
             swipeOutGlobalID = 0;
 
         var durationSave = 0,
             savedOpacity = 0,
-            prev,
-            finish_swiping = false;
+            prev;
 
 
 
@@ -38,11 +40,9 @@ function slideout(slides, settings, vars) {
 
 
 
-        slides.swipeOut = function () {
+        _this.swipeOut = function () {
 
-
-
-            currentSwipeOutPos = $(".itemslide_slideoutwrap").translate3d().y;
+            currentSwipeOutPos = _this.translate3d(null, null, $(".itemslide_slideoutwrap")).y;
 
             swipeDirection = (currentSwipeOutPos < 0);
 
@@ -109,7 +109,7 @@ function slideout(slides, settings, vars) {
 
 
             swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
-        }
+        };
 
         var enableOpacity = true,
             currentTime = 0;
@@ -129,8 +129,8 @@ function slideout(slides, settings, vars) {
             if (enableOpacity) {
 
 
-                $(".itemslide_slideoutwrap").translate3d(0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0)); //DURATION VELOCITY
-                slides.savedSlide.css("opacity", savedOpacity - easeOutBack(currentTime, 0, savedOpacity - 0, 250, 0) * (goback ? -1 : 1)); //Can try to remove opacity when animating width
+                _this.translate3d(0, currentSwipeOutPos - _this._easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0), $(".itemslide_slideoutwrap")); //DURATION VELOCITY
+                slides.savedSlide.css("opacity", savedOpacity - _this._easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1)); //Can try to remove opacity when animating width
 
             } else {
                 //Animate slides after current swiped out slide
@@ -163,7 +163,7 @@ function slideout(slides, settings, vars) {
                 }
 
 
-                $(".itemslide_move").translate3d(0 - easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1)); //Before - multiply by -1 to turn to positive if before = true
+                _this.translate3d(0 - _this._easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1), $(".itemslide_move")); //Before - multiply by -1 to turn to positive if before = true
 
 
 
@@ -181,14 +181,14 @@ function slideout(slides, settings, vars) {
                 //The slide changes to active
 
                 if (slides.savedSlideIndex == vars.currentIndex) //Cool it works
-                    $(".itemslide_move").children(':nth-child(' + (1) + ')').attr('class', 'itemslide-active'); //Change destination index to active
+                    $(".itemslide_move").children(':nth-child(' + (1) + ')').addClass(vars.active_class); //Change destination index to active
 
                 //Looks like the fix works
                 if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide
                 {
 
                     settings.duration = 200;
-                    slides.gotoSlide(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
+                    _this.gotoSlide(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
 
                 }
 
@@ -218,13 +218,13 @@ function slideout(slides, settings, vars) {
 
                     $(".itemslide_move").children().unwrap(); //Remove wrapper
 
-                    slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
+                    _this.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
                     if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
                         //change index instant change of active index
                         //Create function in this file to instant reposition.
                         //Or just t3d and getPositionByIndex
-                        slides.gotoWithoutAnimation(vars.currentIndex - 1);
+                        _this.gotoWithoutAnimation(vars.currentIndex - 1);
 
                         //Goto-slide to slide without animation
 
@@ -247,3 +247,10 @@ function slideout(slides, settings, vars) {
 
 
     } //End of slide out init
+    
+    if ($.fn.itemslide) {
+        $.fn.itemslide.slideout = slideout;
+    }
+    else {
+        throw new Error('itemslide not defined. Impossible to use slideout without itemslide');
+    }
