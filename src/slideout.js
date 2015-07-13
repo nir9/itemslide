@@ -188,7 +188,7 @@ Can be enabled by setting the swipe_out option to true.
                 {
 
                     settings.duration = 200;
-                    slides.gotoSlide(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
+                    _this.gotoSlide(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
 
                 }
 
@@ -224,7 +224,7 @@ Can be enabled by setting the swipe_out option to true.
                         //change index instant change of active index
                         //Create function in this file to instant reposition.
                         //Or just t3d and getPositionByIndex
-                        slides.gotoWithoutAnimation(vars.currentIndex - 1);
+                        _this.gotoWithoutAnimation(vars.currentIndex - 1);
 
                         //Goto-slide to slide without animation
 
