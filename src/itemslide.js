@@ -16,9 +16,11 @@ This is the main code
     var isExplorer = !!document.documentMode; // At least IE6
     
     var Slides = {
+
         init: function(options, element) {
             var _this = this;
             
+
             this.$el = $(element);
             this.options = $.extend({}, $.fn.itemslide.options, options);
             this.userOptions = options;
@@ -649,8 +651,22 @@ This is the main code
     $.fn.itemslide = function (options) {
         var carousel = Object.create(Slides);
         carousel.init(options, this);
-        $.data(this, "itemslide", carousel);
-        return carousel;
+
+        //this.m = carousel;
+
+        this.getActiveIndex = function() {return carousel.getActiveIndex();}
+        this.getCurrentPos = function() {return carousel.getCurrentPos();}
+        this.next = function() {carousel.next();}
+        this.previous = function() {carousel.previous();}
+        this.reload = function() {carousel.reload();}
+
+        this.gotoSlide = function(i) {carousel.gotoSlide(i);}
+        this.addSlide = function(i) {carousel.addSlide(i);}
+        this.removeSlide = function(i) {carousel.removeSlide(i);}
+
+        //$.data(this, "itemslide", carousel);
+
+        //return carousel;
     };
         
     $.fn.itemslide.options = {

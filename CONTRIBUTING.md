@@ -20,5 +20,5 @@ npm install
 Afterwards you can build the project just by typing
 
 ```bash
-grunt uglify
+grunt
 ```
