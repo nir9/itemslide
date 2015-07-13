@@ -92,16 +92,16 @@ This is the main code
             });
             //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
             try {
-                this.mousewheel(function (e) {
+                this.$el.mousewheel(function (e) {
                     if (!_this.options.disable_scroll && !_this.vars.vertical_pan) { //Check if scroll has been disabled
                         e.preventDefault();
 
                         var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
 
-                        if (mouseLandingIndex >= this.$el.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
+                        if (mouseLandingIndex >= _this.$el.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
                             return; //Consider in gotoSlide
 
-                        vars.velocity = 0; //No BOUNCE
+                        _this.vars.velocity = 0; //No BOUNCE
                         _this.gotoSlideByIndex(mouseLandingIndex);
                     }
                 });
