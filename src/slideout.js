@@ -129,8 +129,6 @@ function slideout(slides, settings, vars) {
                         return;
                     }
 
-
-
                     //Before - multiply by -1 to turn to positive if before = true
                     _this.translate3d(0 - _this._easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1), 0, $(".itemslide_move"));
 

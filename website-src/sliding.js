@@ -6,8 +6,6 @@ $(document).ready(function () {
 
     carousel.itemslide({
         swipe_out: true, //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
-        disable_clicktoslide: false,
-        align: 'center'
     }); //initialize itemslide
 
     /*carousel.on('pan', function(event) {
