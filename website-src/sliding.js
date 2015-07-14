@@ -6,7 +6,9 @@ $(document).ready(function (){
         {
             swipe_out: true, //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
             disable_clicktoslide: false,
-            align: 'center'
+            align: 'left',
+            leftToggle: '.do-scroll-left',
+            rightToggle: '.do-scroll-right'
         }
     );//initialize itemslide
 

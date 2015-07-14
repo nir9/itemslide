@@ -69,7 +69,8 @@ This is the main code
                 /*Swiping and panning events FROM HERE*/
                 isDown: false, //Check if mouse was down before mouse up
                 prevent: false, //TO prevent default ?
-                swipeStartTime: 0
+                swipeStartTime: 0,
+                hideArrowsInterval: 100 //interval, when it is necessary to hide arrow toggles
             };
             
             this.$el.end_animation = true;
@@ -79,6 +80,29 @@ This is the main code
             }
             
             this.translate3d(0);
+
+            if (this.options.leftToggle && this.options.rightToggle) {
+                var $leftToggle = this.$el.closest(this.options.leftToggle);
+                var $rightToggle = this.$el.closest(this.options.rightToggle);
+                if (!$leftToggle.length) {
+                    $leftToggle = this.$el.siblings(this.options.leftToggle).first();
+                }
+                if (!$rightToggle.length) {
+                    $rightToggle = this.$el.siblings(this.options.rightToggle).first();
+                }
+                this.$leftToggle = $leftToggle;
+                this.$rightToggle = $rightToggle;
+
+                this.$leftToggle.on('click', function(e) {
+                    e.preventDefault();
+                    _this.previous();
+                });
+
+                this.$rightToggle.on('click', function(e) {
+                    e.preventDefault();
+                    _this.next();
+                });
+            }
 
             this.gotoSlideByIndex(this.options.start);
             
@@ -107,6 +131,25 @@ This is the main code
                 });
             } catch (e) {}
             //UNTILL HERE MOUSEWHEEL
+        },
+
+        changeToggleDisplay: function() {
+            if (!this.$leftToggle || !this.$rightToggle) {
+                return;
+            }
+            if (this.isOutBoundariesLeft(this.vars.hideArrowsInterval)) {
+                this.$leftToggle.hide();
+            }
+            else{
+                this.$leftToggle.show();
+            }
+
+            if (this.isOutBoundariesRight(this.vars.hideArrowsInterval)) {
+                this.$rightToggle.hide();
+            }
+            else{
+                this.$rightToggle.show();
+            }
         },
         
         gotoSlideByIndex: function(i) {
@@ -225,11 +268,13 @@ This is the main code
             return  (-i * this.$el.children().outerWidth(true));
         },
 
-        isOutBoundariesLeft: function() {    //Return if user is panning out of left boundaries
-            return (Math.floor(this.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1);
+        isOutBoundariesLeft: function(gap) {    //Return if user is panning out of left boundaries
+            gap = gap ? gap : 0;
+            return ((Math.floor(this.translate3d().x) + gap) > (this.getPositionByIndex(0)));
         },
 
-        isOutBoundariesRight: function() {   //Return if user is panning out of right boundaries
+        isOutBoundariesRight: function(gap) {   //Return if user is panning out of right boundaries
+            gap = gap ? gap : 0;
             var slidesCount = this.$el.children('li').length - 1;
 
             var viewportWidth = this.$el.parent().outerWidth(true);
@@ -248,11 +293,11 @@ This is the main code
                 rightPart = Math.floor(this.$el.parent().outerWidth(true) - this.translate3d().x);
             }
 
-            return (leftPart < rightPart && this.vars.direction == 1);
+            return ((rightPart + gap > leftPart));
         },
 
-        isOutBoundaries: function() { //Return if user is panning out of boundaries
-            return (this.isOutBoundariesLeft() || this.isOutBoundariesRight());
+        isOutBoundaries: function(gap) { //Return if user is panning out of boundaries
+            return ( ( this.isOutBoundariesLeft(gap) && this.vars.direction == -1) || (this.isOutBoundariesRight(gap) && this.vars.direction == 1) );
         },
         
         touchstart: function(e, _this) {
@@ -409,6 +454,8 @@ This is the main code
                 vars.direction = -1;
             }
 
+            _this.changeToggleDisplay();     //show or hide left and right arrows
+
             //If out boundaries than set some variables to save previous location before out boundaries
             if (_this.isOutBoundaries()) {
 
@@ -545,6 +592,7 @@ This is the main code
                 //Animation Ended
                 this.translate3d(this.$el.currentLandPos);
 
+                this.changeToggleDisplay();
                 return; //out of recursion
             }
 
@@ -612,6 +660,8 @@ This is the main code
             var vars = this.vars;
             //remove listeners
             $el.off('mousedown touchstart', 'li');
+            this.$leftToggle.off('click');
+            this.$rightToggle.off('click');
             $(window).off('mousemove touchmove');
             $(window).off('mouseup touchend');
 

@@ -1,4 +1,3 @@
-
 #scrolling{/*frame*/
     position:fixed;
     top:58%;
@@ -10,6 +9,27 @@
     overflow: hidden;
 
 
+}
+
+.icon__arrow-left, .icon__arrow-right {
+    width: 40px;
+    height: 40px;
+    display: none;
+    background-size: 100%;
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    z-index: 1;
+}
+
+.icon__arrow-left {
+    background-image: url(img/arrow-left.svg), none;
+    left: 0;
+}
+
+.icon__arrow-right {
+    background-image: url(img/arrow-right.svg);
+    right: 0;
 }
 
 ul {
