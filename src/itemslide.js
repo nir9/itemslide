@@ -69,7 +69,8 @@ This is the main code
                 /*Swiping and panning events FROM HERE*/
                 isDown: false, //Check if mouse was down before mouse up
                 prevent: false, //TO prevent default ?
-                swipeStartTime: 0
+                swipeStartTime: 0,
+                noDrag: false
             };
             
             this.$el.end_animation = true;
@@ -257,6 +258,15 @@ This is the main code
         
         touchstart: function(e, _this) {
             var vars = _this.vars;
+
+            //no-drag feature
+            if ($(e.target).attr('no-drag') === 'true') {
+                vars.noDrag = true;
+                return;
+            }
+            else {
+                vars.noDrag = false;
+            }
             
             //Check for touch event or mousemove
             if (e.type == 'touchstart') {
@@ -316,8 +326,11 @@ This is the main code
             var _this = context;
             var vars = _this.vars;
             var options = _this.options;
-            
-            if (vars.isDown) {
+
+            if (vars.noDrag) {
+                return;
+            }
+            else if (vars.isDown) {
 
                 if (e.type == 'touchend') //Check for touch event or mousemove
                     vars.touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
@@ -381,7 +394,10 @@ This is the main code
             var vars = _this.vars;
             var options = _this.options;
 
-            
+            if (vars.noDrag) {
+                return;
+            }
+
             //Check type of event
             if (e.type == 'touchmove') //Check for touch event or mousemove
             {
