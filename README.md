@@ -28,9 +28,9 @@ A simple and beautiful touch carousel
 
 ### Downloading
 
-[jQuery Version](http://itemslide.github.io/dist/itemslide.min.js)
+#### [Download](http://itemslide.github.io/dist/itemslide.min.js)
 
-[Vanilla Version](http://itemslide.github.io/dist/itemslide.vanilla.min.js)
+Requires jQuery or Zepto.
 
 ```bash
 $ npm install itemslide
@@ -42,4 +42,6 @@ $ bower install itemslide
 
 #### Check out the docs at [this link](http://itemslide.github.io/docs)
 
-#### [How to build ItemSlide using Grunt](https://github.com/itemslide/itemslide.github.io/blob/master/CONTRIBUTING.md#building-using-grunt)
+#### [How to build ItemSlide using Grunt](https://github.com/itemslide/itemslide.github.io/blob/master/CONTRIBUTING.md)
+
+##### Note: The vanilla version has been removed, but now the regular version is compatible with both jQuery or Zepto.

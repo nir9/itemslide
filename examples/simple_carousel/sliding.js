@@ -9,6 +9,5 @@ $(document).ready(function () {
 
     $(window).resize(function () {
         carousel.reload();
-
     }); //Recalculate width and center positions and sizes when window is resized
 });

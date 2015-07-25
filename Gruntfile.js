@@ -1,49 +1,34 @@
 module.exports = function (grunt) {
-    var banner = '(function( window ) {\n',
-        footer = '\n})( window );';
 
     grunt.initConfig({
-        concat: {
-            options: {
-                separator: ';',
-                banner: banner,
-                footer: footer
-            },
-            regular: {
-                src: [
-                    'src/requestAnimationFrame.js',
-                    'src/itemslide.js',
-                    'src/slideout.js'
-                ],
-                dest: 'dist/itemslide.min.js'
-            },
-            vanilla: {
-                src: [
-                    'src/requestAnimationFrame.js',
-                    'src/vanilla.js',
-                    'src/itemslide.js',
-                    'src/slideout.js'
-                ],
-                dest: 'dist/itemslide.vanilla.min.js'
-            }
-        },
         uglify: {
             regular: {
                 files: {
-                    'dist/itemslide.min.js': ['dist/itemslide.min.js']
+                    'dist/itemslide.min.js': ['dist/itemslide.js']
                 }
-            },
-            vanilla: {
-                files: {
-                    'dist/itemslide.vanilla.min.js': ['dist/itemslide.vanilla.min.js']
-                }
+            }
+        },
+        browserify: {
+            regular: {
+                src: ['src/itemslide.js'],
+                dest: 'dist/itemslide.js'
+            }
+        },
+        watch: {
+            scripts: {
+                files: 'src/*.js',
+                tasks: ['browserify', 'uglify']
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('build', ['concat']);
-    grunt.registerTask('default', ['concat', 'uglify']);
+
+    //Tests will go to tests dir and builds will go to dist.
+    grunt.registerTask('default', ['browserify', 'uglify']);
+    grunt.registerTask('test', ['browserify']);
+
 };

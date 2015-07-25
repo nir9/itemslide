@@ -92,20 +92,12 @@ table /*overide defaults*/
 
 }
 
-
-
-
 #download{
-
-
-
     color:#FFF;
 
     font-weight: 600;
     text-decoration: none;
-
 }
-
 
 #welcome
 {
@@ -133,7 +125,6 @@ table /*overide defaults*/
 {
     position:relative;
     top:8vh;
-
 }
 
 #welcome .content #maintitle
@@ -151,10 +142,7 @@ table /*overide defaults*/
     -o-border-radius: 2vh;
     -moz-border-radius: 2vh;
 
-
-
     padding: 1.3vh 2.5vh 1.3vh 2.5vh;
-
 
     border-style: solid;
     border-width: 2px;
@@ -163,7 +151,6 @@ table /*overide defaults*/
     /*border-style: solid;
     border-width: 4px;
     border-color: grey;*/
-
 
     text-decoration: none;
     /*padding:2vh;*/
@@ -193,7 +180,7 @@ table /*overide defaults*/
 
 }
 
-#fotter #hrefs {
+#fotter .hrefs {
     color: #FFF;
     font-weight: 400;
     text-decoration: none;

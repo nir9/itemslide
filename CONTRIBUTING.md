@@ -1,13 +1,13 @@
-#### All contributions are welcome with the following guidelines:
+### Pull requests
 
-1. Please do the changes to the plugin code in the /src files, and not in the /dist files.
-2. To test your code use /tests.
+1. Please do the changes to the plugin code in the `/src` files, and not in the `/dist` files.
+2. To test your code use `/tests/index.html`.
+3. Keep your pull request simple and avoid doing any unintended changes.
 
 
+This project is built using Browserify so if you want to contribute make sure you have a basic understanding of it.
 
 #### Building using Grunt
-
-You can build the src files into dist files using Grunt-
 
 Before starting make sure you have Node.js and grunt-cli installed on your system.
 
@@ -17,7 +17,14 @@ First install the devDependencies (so you can use Grunt) by typing-
 npm install
 ```
 
-Afterwards you can build the project just by typing
+You can use watch so that grunt will build as you do changes to the `/src` files:
+
+```bash
+grunt watch
+```
+
+
+You can also just build the project by typing:
 
 ```bash
 grunt
