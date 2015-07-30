@@ -39,4 +39,4 @@ $.fn.outerWidth = function () {
 
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
-}
+};

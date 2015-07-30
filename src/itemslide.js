@@ -4,13 +4,15 @@ $(function () { //document ready
     global.isExplorer = !!document.documentMode; // At least IE6
 
     require("./polyfills");
-    var Carousel = require("./init");
+    var Carousel = require("./carousel");
     var externalFuncs = require("./external_funcs");
 
     $.fn.itemslide = function (options) {
         var carousel = Object.create(Carousel);
+        // Add external functions to element
         externalFuncs.apply(this, carousel);
-        carousel.init(options, this);
+
+        carousel.create(options, this);
     };
         
     $.fn.itemslide.options = {
@@ -35,17 +37,19 @@ $(function () { //document ready
             var matrix = matrixToArray(this.css("transform"));
 
             //Check if jQuery
-            if ($.fn.jquery != null) { //This happens if has jQuery
+            if ($.fn.jquery != null) {
                 return { //Return object with x and y
                     x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
                     y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
                 };
-            } else { //This happens if has --Zepto--
+            }
+            else {
+                // Zepto
                 var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
 
                 return { //Return object with x and y
                     x: parseFloat(vals[0]),
-                    y: parseFloat(vals[1]) //YESSS Fixed
+                    y: parseFloat(vals[1])
                 };
             }
         }

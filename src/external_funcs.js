@@ -26,7 +26,7 @@ module.exports = {
                 $el.children().width($el.parent().outerWidth(true)); //resize the slides
             }
 
-            if (!vars.disable_autowidth) {
+            if (!carousel.options.disable_autowidth) {
                 $el.css("width", $el.children('li').length * $el.children().outerWidth(true) + 10); //SET WIDTH
             }
 
@@ -36,7 +36,7 @@ module.exports = {
             vars.velocity = 0;
 
             // w/o animation cuz its smoother
-            carousel.anim.gotoWithoutAnimation(vars.currentIndex);
+            carousel.anim.gotoSlideByIndex(vars.currentIndex, true);
         };
 
         slides.addSlide = function (data) {

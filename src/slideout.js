@@ -14,9 +14,11 @@ module.exports = {
     slideout: slideout
 }
 
-function slideout(slides, settings, vars, el) {
+function slideout(_this) {
 
-    var _this = this;
+    var slides = _this.$el;
+    var settings = _this.options;
+    var vars = _this.vars;
 
     //Some variables for the swipe out animation
     var swipeOutLandPos = -400,
@@ -30,7 +32,12 @@ function slideout(slides, settings, vars, el) {
 
     var swipeDirection; // check direction of sliding - 1 (true) is up 0 is down
 
+
     slides.end_animation = true;
+
+    //For Slideout
+    slides.savedSlideIndex = 0;
+
 
     var goback = false;
     //Activate swipe out animation
@@ -118,10 +125,8 @@ function slideout(slides, settings, vars, el) {
                 $(".itemslide_slideoutwrap").children().unwrap(); //
                 $(itemslideMove).children().unwrap(); //Remove wrapper
 
-                if (isExplorer) //Some more propeirtery explorer problems yippe :)
-                {
-                    slides.children().css("height", "");
-                }
+                //Just fixing a minor issue with explorer
+                slides.children().css("height", "");
 
                 slides.end_animation = true;
                 currentTime = 0;
@@ -170,14 +175,14 @@ function slideout(slides, settings, vars, el) {
             if (currentTime >= 375) {
                 $(itemslideMove).children().unwrap(); //Remove wrapper
 
-                el.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
+                slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
                 if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
                     //change index instant change of active index
                     //Create function in this file to instant reposition.
                     //Or just t3d and getPositionByIndex
 
-                    _this.anim.gotoWithoutAnimation(vars.currentIndex - 1);
+                    _this.anim.gotoSlideByIndex(vars.currentIndex - 1, true);
 
                     //Goto-slide to slide without animation
                 }

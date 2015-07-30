@@ -8,7 +8,7 @@ var Animations = function(carousel) {
 };
 
 Animations.prototype = {
-    gotoSlideByIndex: function (i) {
+    gotoSlideByIndex: function (i , without_animation) {
         var vars = this.vars;
         var options = this.options;
         var slides = this.$el;
@@ -39,8 +39,16 @@ Animations.prototype = {
         //SET DURATION UNTILL HERE
 
         this.total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / $(window).width()) : 0);
-        this.currentPos = this.$el.translate3d().x;
+        this.currentPos = slides.translate3d().x;
         this.currentLandPos = this.getPositionByIndex(i);
+
+        if(without_animation) {
+            //Goto position without sliding animation
+            slides.translate3d(this.getPositionByIndex(i));
+            // In this case just change position and get out of the function so the animation won't start
+            return;
+        }
+
 
         //Reset
         window.cancelAnimationFrame(this.slidesGlobalID);
@@ -99,14 +107,6 @@ Animations.prototype = {
         return (((Math.floor(this.$el.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1) || (Math.ceil(this.$el.translate3d().x) < (this.getPositionByIndex(this.$el.children('li').length - 1)) && this.vars.direction == 1)));
     },
 
-    //Goto position without sliding animation
-    gotoWithoutAnimation: function (i) {
-        this.changeActiveSlideTo(i);
-        this.vars.currentIndex = i;
-        this.currentLandPos = this.getPositionByIndex(i);
-        this.$el.translate3d(this.getPositionByIndex(i));
-    },
-
     //Repeats using requestAnimationFrame //For the sliding
     animationRepeat: function () {
         var _this = this;
@@ -118,7 +118,6 @@ Animations.prototype = {
         this.$el.translate3d(this.currentPos - easeOutBack(currentTime, 0, this.currentPos - this.currentLandPos, this.total_duration, this.total_back));
 
         // to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
-
 
         if (currentTime >= this.total_duration) { //Check if easing time has reached total duration
             //Animation Ended
@@ -150,6 +149,80 @@ global.easeOutBack = function(t, b, c, d, s) {
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
+var Navigation = require("./navigation");
+var Animations = require("./animation");
+var slideout = require("./slideout");
+
+module.exports = {
+    create: function (options, element) {
+        // Create a new carousel
+
+        var _this = this;
+
+        _this.$el = element;
+
+        _this.options = $.extend($.fn.itemslide.options, options);
+
+        if (_this.options.parent_width) {
+            element.children().width(element.parent().outerWidth(true)); //resize the slides
+        }
+
+        element.css({ //Setting some css to avoid problems on touch devices
+            'touch-action': 'pan-y',
+            '-webkit-user-select': 'none',
+            '-webkit-touch-callout': 'none',
+            '-webkit-user-drag': 'none',
+            '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
+        });
+
+        if (!_this.options.disable_autowidth)
+            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10); //SET WIDTH
+        //To add vertical scrolling just set width to slides.children('li').width()
+
+        _this.vars = {
+            currentIndex: 0,
+            parent_width: _this.options.parent_width,
+            velocity: 0,
+            slideHeight: element.children().height()
+        };
+
+        element.end_animation = true;
+
+        if (_this.options.swipe_out) { //Check if enabled slideout feature
+            slideout.slideout(_this); //Apply slideout (and transfer settings and variables)
+        }
+        // Init modules
+        var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
+        var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
+        // Give external access
+        _this.anim = anim;
+
+        element.translate3d(0);
+        anim.gotoSlideByIndex(_this.options.start);
+
+
+        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
+        try {
+            element.mousewheel(function (e) {
+                if (!_this.options.disable_scroll && !nav.get_vertical_pan()) { //Check if scroll has been disabled
+                    e.preventDefault();
+
+                    var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
+
+                    if (mouseLandingIndex >= element.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
+                        return; //Consider in gotoSlide
+
+                    _this.vars.velocity = 0; //No BOUNCE
+                    anim.gotoSlideByIndex(mouseLandingIndex);
+                }
+            });
+        } catch (e) {
+        }
+        //UNTILL HERE MOUSEWHEEL
+    }
+};
+
+},{"./animation":1,"./navigation":5,"./slideout":7}],3:[function(require,module,exports){
 // Basically adds all external methods to the object
 module.exports = {
     apply: function (slides, carousel) {
@@ -178,7 +251,7 @@ module.exports = {
                 $el.children().width($el.parent().outerWidth(true)); //resize the slides
             }
 
-            if (!vars.disable_autowidth) {
+            if (!carousel.options.disable_autowidth) {
                 $el.css("width", $el.children('li').length * $el.children().outerWidth(true) + 10); //SET WIDTH
             }
 
@@ -188,7 +261,7 @@ module.exports = {
             vars.velocity = 0;
 
             // w/o animation cuz its smoother
-            carousel.anim.gotoWithoutAnimation(vars.currentIndex);
+            carousel.anim.gotoSlideByIndex(vars.currentIndex, true);
         };
 
         slides.addSlide = function (data) {
@@ -214,92 +287,7 @@ module.exports = {
         };
     }
 };
-},{}],3:[function(require,module,exports){
-var Navigation = require("./navigation");
-var Animations = require("./animation");
-var slideout = require("./slideout");
-
-module.exports = {
-    init: function (options, element) {
-        var _this = this;
-
-        this.$el = element;
-
-        this.options = $.extend($.fn.itemslide.options, options);
-
-        if (this.options.parent_width) {
-            this.$el.children().width(this.$el.parent().outerWidth(true)); //resize the slides
-        }
-
-        this.$el.css({ //Setting some css to avoid problems on touch devices
-            'touch-action': 'pan-y',
-            '-webkit-user-select': 'none',
-            '-webkit-touch-callout': 'none',
-            '-webkit-user-drag': 'none',
-            '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
-        });
-
-        if (!this.options.disable_autowidth)
-            this.$el.css("width", this.$el.children('li').length * this.$el.children().outerWidth(true) + 10); //SET WIDTH
-        //To add vertical scrolling just set width to slides.children('li').width()
-
-        this.vars = {
-            currentIndex: 0,
-            disable_autowidth: this.options.disable_autowidth,
-            parent_width: this.options.parent_width,
-            velocity: 0,
-            slideHeight: this.$el.children().height()
-        };
-
-        this.$el.end_animation = true;
-
-        if (this.options.swipe_out) { //Check if enabled slideout feature
-            slideout.slideout.call(this, this.$el, this.options, this.vars, element); //Apply slideout (and transfer settings and variables)
-        }
-        // Init modules
-        var anim = new Animations(this); // Stuff like gotoslide and the sliding animation
-        var nav = new Navigation(this, anim); // Handle swipes
-
-        // Give external access
-        this.anim = anim;
-
-        this.$el.translate3d(0);
-        anim.gotoSlideByIndex(this.options.start);
-
-        // Start navigation listeners
-        this.$el.on('mousedown touchstart', 'li', function (e) {
-            nav.touchstart(e);
-        });
-        $(window).on('mouseup touchend', function (e) {
-            nav.touchend(e);
-        });
-
-        //For Slideout
-        this.$el.savedSlideIndex = 0;
-
-        // And finally mousewheel navigation
-        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
-        try {
-            this.$el.mousewheel(function (e) {
-                if (!_this.options.disable_scroll && !nav.vertical_pan) { //Check if scroll has been disabled
-                    e.preventDefault();
-
-                    var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
-
-                    if (mouseLandingIndex >= _this.$el.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
-                        return; //Consider in gotoSlide
-
-                    _this.vars.velocity = 0; //No BOUNCE
-                    anim.gotoSlideByIndex(mouseLandingIndex);
-                }
-            });
-        } catch (e) {
-        }
-        //UNTILL HERE MOUSEWHEEL
-    }
-};
-
-},{"./animation":1,"./navigation":5,"./slideout":7}],4:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (global){
 $(function () { //document ready
     "use strict";
@@ -307,13 +295,15 @@ $(function () { //document ready
     global.isExplorer = !!document.documentMode; // At least IE6
 
     require("./polyfills");
-    var Carousel = require("./init");
+    var Carousel = require("./carousel");
     var externalFuncs = require("./external_funcs");
 
     $.fn.itemslide = function (options) {
         var carousel = Object.create(Carousel);
+        // Add external functions to element
         externalFuncs.apply(this, carousel);
-        carousel.init(options, this);
+
+        carousel.create(options, this);
     };
         
     $.fn.itemslide.options = {
@@ -338,47 +328,62 @@ $(function () { //document ready
             var matrix = matrixToArray(this.css("transform"));
 
             //Check if jQuery
-            if ($.fn.jquery != null) { //This happens if has jQuery
+            if ($.fn.jquery != null) {
                 return { //Return object with x and y
                     x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
                     y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
                 };
-            } else { //This happens if has --Zepto--
+            }
+            else {
+                // Zepto
                 var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
 
                 return { //Return object with x and y
                     x: parseFloat(vals[0]),
-                    y: parseFloat(vals[1]) //YESSS Fixed
+                    y: parseFloat(vals[1])
                 };
             }
         }
     };
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./external_funcs":2,"./init":3,"./polyfills":6}],5:[function(require,module,exports){
+},{"./carousel":2,"./external_funcs":3,"./polyfills":6}],5:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
 var Navigation = function (carousel, anim) {
-    this.$el = carousel.$el;
-    this.options = carousel.options;
-    this.vars = carousel.vars;
-    this.swipeOut = carousel.swipeOut;
-    // YUP
-    //this._this = this;
+    var $el = carousel.$el,
+        options = carousel.options,
+        vars = carousel.vars,
+        swipeOut = carousel.swipeOut;
+
+
 
     // Access animation methods
-    this.anim = anim;
+    //this.anim = anim;
 
-    // yup
-    this.vertical_pan = false;
 
-};
+    // Start navigation listeners
+    $el.on('mousedown touchstart', 'li', function (e) {
+        touchstart(e);
+    });
+    $(window).on('mouseup touchend', function (e) {
+        touchend(e);
+    });
 
-Navigation.prototype = {
-    touchstart: function (e) {
-        //no-drag feature
-        this.noDrag = false;
+
+    // And the navigation functions
+
+    // Navigation Variables
+    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false, horizontal_pan;
+
+    // Swipe out Variables
+    var verticalSlideFirstTimeCount;
+
+    // Getter for vertical_pan
+    this.get_vertical_pan = function() { return vertical_pan };
+
+    function touchstart(e) {
+        // no-drag feature
         if ($(e.target).attr('no-drag') === 'true') {
-            this.noDrag = true;
             return;
         }
 
@@ -386,74 +391,64 @@ Navigation.prototype = {
 
         //Check for touch event or mousemove
         if (e.type == 'touchstart') {
-            touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
+            touch = getTouch(e);
         } else {
             touch = e;
         }
 
         //If hasn't ended swipe out escape
-        if (!this.$el.end_animation) {
+        if (!$el.end_animation) {
             return;
         }
 
         //Reset
-        this.swipeStartTime = Date.now();
+        swipeStartTime = Date.now();
 
-        this.isDown = 1;
+        isDown = 1;
 
-        this.prevent = 0; //to know when to start prevent default
+        prevent = 0; //to know when to start prevent default
 
-        this.startPointX = touch.pageX;
-        this.startPointY = touch.pageY;
+        startPointX = touch.pageX;
+        startPointY = touch.pageY;
 
-        this.vertical_pan = false;
-        this.horizontal_pan = false;
+        vertical_pan = false;
+        horizontal_pan = false;
 
-        this.$el.savedSlide = $(e.target); // Get the slide that has been pressed
+        $el.savedSlide = $(e.target); // Get the slide that has been pressed
 
-        this.$el.savedSlideIndex = this.$el.savedSlide.index();
+        $el.savedSlideIndex = $el.savedSlide.index();
 
         //Swipe out reset
-        this.verticalSlideFirstTimeCount = 0;
-
+        verticalSlideFirstTimeCount = 0;
         //Reset until here
 
 
         //Turn on mousemove event when mousedown
-        var _this = this;
         $(window).on('mousemove touchmove', function (e) {
-            _this.mousemove(e)
+            mousemove(e)
         }); //When mousedown start the handler for mousemove event
 
+        // Clear selections so they wont affect sliding
+        clearSelections();
 
-        /*Clear Selections*/
-        if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
-            if (window.getSelection().empty) { // Chrome
-                window.getSelection().empty();
-            } else if (window.getSelection().removeAllRanges) { // Firefox
-                window.getSelection().removeAllRanges();
-            }
-        } else if (document.selection) { // IE?
-            document.selection.empty();
-        }
-        /*Clear Selections Until Here*/
-    },
+    }
 
-    // Called by mousemove event (inside the mousedown event)
-    mousemove: function (e) {
-        var vars = this.vars;
-        var options = this.options;
+    //mousemove vars
+    var savedStartPt, firstTime;
+
+    function mousemove(e) {
 
         var touch;
         //Check type of event
         //Check if touch event or mousemove
+
         if (e.type == 'touchmove') {
-            touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
+            touch = getTouch(e);
 
-            if (Math.abs(touch.pageX - vars.startPointX) > 10) //If touch event than check if to start preventing default behavior
-                this.prevent = 1;
+            if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
+                prevent = 1;
 
-            if (this.prevent)
+            if (prevent)
                 e.preventDefault();
 
         }
@@ -467,127 +462,120 @@ Navigation.prototype = {
         }
 
         //Set direction of panning
-        if ((-(touch.pageX - this.startPointX)) > 0) { //Set direction
+        if ((-(touch.pageX - startPointX)) > 0) { //Set direction
             vars.direction = 1; //PAN LEFT
         } else {
             vars.direction = -1;
         }
 
         //If out boundaries than set some variables to save previous location before out boundaries
-        if (this.anim.isOutBoundaries()) {
-            if (this.firstTime) {
-                this.savedStartPt = touch.pageX;
+        if (anim.isOutBoundaries()) {
+            if (firstTime) {
+                savedStartPt = touch.pageX;
 
-                this.firstTime = 0;
+                firstTime = 0;
             }
 
         } else {
 
-            if (!this.firstTime) { //Reset Values
-                this.anim.currentLandPos = this.$el.translate3d().x;
-                this.startPointX = touch.pageX;
+            if (!firstTime) { //Reset Values
+                anim.currentLandPos = $el.translate3d().x;
+                startPointX = touch.pageX;
             }
 
-            this.firstTime = 1;
+            firstTime = 1;
 
         }
 
         //check if to wrap
-        if (this.verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
+        if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
         {
-            if (isExplorer) //Some annoying explorer bug fix
-            {
-                this.$el.children().css("height", vars.slideHeight);
-            }
+            // Fixing a minor issue on ie and edge
+            $el.children().css("height", vars.slideHeight);
 
-            this.$el.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
+            $el.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
 
-            this.verticalSlideFirstTimeCount = -1;
+            verticalSlideFirstTimeCount = -1;
         }
 
         //Reposition according to current deltaX
-        if (Math.abs(touch.pageX - this.startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+        if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
         {
-            if (!this.vertical_pan && this.$el.end_animation) //So it will stay one direction
-                this.horizontal_pan = true;
+            if (!vertical_pan && $el.end_animation) //So it will stay one direction
+                horizontal_pan = true;
 
-            window.cancelAnimationFrame(this.anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+            window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
         }
         //Is vertical panning or horizontal panning
-        if (Math.abs(touch.pageY - this.startPointY) > 6) //Is vertical panning
+        if (Math.abs(touch.pageY - startPointY) > 6) //Is vertical panning
         {
-            if (!this.horizontal_pan && this.$el.end_animation) {
-                this.vertical_pan = true;
+            if (!horizontal_pan && $el.end_animation) {
+                vertical_pan = true;
             }
         }
 
 
         //Reposition according to horizontal navigation or vertical navigation
-        if (this.horizontal_pan) {
+        if (horizontal_pan) {
 
             if (options.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
                 return;
             }
 
-            this.vertical_pan = false;
+            vertical_pan = false;
 
-            this.$el.translate3d(
-                ((this.firstTime == 0) ? (this.savedStartPt - this.startPointX + (touch.pageX - this.savedStartPt) / 4) : (touch.pageX - this.startPointX)) //Check if out of boundaries - if true than add springy panning effect
+            $el.translate3d(
+                ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
 
-                + this.anim.currentLandPos);
+                + anim.currentLandPos);
 
             //Triggers pan and changePos when swiping carousel
-            this.$el.trigger('changePos');
-            this.$el.trigger('pan');
+            $el.trigger('changePos');
+            $el.trigger('pan');
 
-        } else if (this.vertical_pan && options.swipe_out) { //Swipe out
+        } else if (vertical_pan && options.swipe_out) { //Swipe out
             e.preventDefault();
 
-            $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - this.startPointY); //Using wrapper to transform brief explanation at the top.
+            $(".itemslide_slideoutwrap").translate3d(0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
 
             //Happen once...
-            if (this.verticalSlideFirstTimeCount != -1) {
-                this.verticalSlideFirstTimeCount = 1;
+            if (verticalSlideFirstTimeCount != -1) {
+                verticalSlideFirstTimeCount = 1;
             }
         }
+    } // END OF MOUSEMOVE
 
-    }, //End of mousemove function
+    function touchend(e) {
+        if (isDown) {
+            var touch;
 
-    touchend: function (e) {
-        var vars = this.vars;
-        var options = this.options;
-        var touch;
-
-        if (this.isDown && this.noDrag == false) {
 
             if (e.type == 'touchend') //Check for touch event or mousemove
-                touch = (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]));
+                touch = getTouch(e);
             else
                 touch = e;
-
-            this.isDown = false;
 
             $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
 
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             //Vertical PANNING
-            if (this.vertical_pan && options.swipe_out) {
+            if (vertical_pan && options.swipe_out) {
 
                 //HAPPENS WHEN SWIPEOUT
 
-                this.vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
+                vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
 
-                this.swipeOut();
+                swipeOut();
 
                 return;
             } //Veritcal Pan
-            else if (this.$el.end_animation && !options.disable_slide) { //if finished animation of sliding and swiping is not disabled
+            else if ($el.end_animation && !options.disable_slide) { //if finished animation of sliding and swiping is not disabled
 
                 //Calculate deltaTime for calculation of velocity
-                var deltaTime = (Date.now() - this.swipeStartTime);
-                vars.velocity = -(touch.pageX - this.startPointX) / deltaTime;
+                var deltaTime = (Date.now() - swipeStartTime);
+                vars.velocity = -(touch.pageX - startPointX) / deltaTime;
 
                 if (vars.velocity > 0) { //Set direction
                     vars.direction = 1; //PAN LEFT
@@ -596,26 +584,47 @@ Navigation.prototype = {
                 }
 
 
-                this.vars.distanceFromStart = (touch.pageX - this.startPointX) * vars.direction * -1; //Yaaa SOOO
-                var landingSlideIndex = this.anim.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - this.$el.translate3d().x);
+                vars.distanceFromStart = (touch.pageX - startPointX) * vars.direction * -1; //Yaaa SOOO
+                var landingSlideIndex = anim.getLandingSlideIndex(vars.velocity * options.swipe_sensitivity - $el.translate3d().x);
 
                 //TAP is when deltaX is less or equal to 12px
 
-                if (this.vars.distanceFromStart > 6) {
-                    this.anim.gotoSlideByIndex(landingSlideIndex);
+                if (vars.distanceFromStart > 6) {
+                    anim.gotoSlideByIndex(landingSlideIndex);
                     return;
                 }
             } //Regular horizontal pan until here
 
 
             //TAP - click to slide
-            if (this.$el.savedSlide.index() != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
+            if ($el.savedSlide.index() != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
                 e.preventDefault();
-                this.anim.gotoSlideByIndex(this.$el.savedSlideIndex);
+                anim.gotoSlideByIndex($el.savedSlideIndex);
             }
             //TAP until here
         }
+        isDown = false;
     }
+
+
+};
+
+function clearSelections() {
+    /*Clear Selections*/
+    if (window.getSelection) { //CLEAR SELECTIONS SO IT WONT AFFECT SLIDING
+        if (window.getSelection().empty) { // Chrome
+            window.getSelection().empty();
+        } else if (window.getSelection().removeAllRanges) { // Firefox
+            window.getSelection().removeAllRanges();
+        }
+    } else if (document.selection) { // IE?
+        document.selection.empty();
+    }
+    /*Clear Selections Until Here*/
+}
+
+function getTouch(e) {
+    return (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
 }
 
 // EXPORT
@@ -662,7 +671,7 @@ $.fn.outerWidth = function () {
 
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
-}
+};
 },{}],7:[function(require,module,exports){
 /*
  This code is for the swipe out feature.
@@ -680,9 +689,11 @@ module.exports = {
     slideout: slideout
 }
 
-function slideout(slides, settings, vars, el) {
+function slideout(_this) {
 
-    var _this = this;
+    var slides = _this.$el;
+    var settings = _this.options;
+    var vars = _this.vars;
 
     //Some variables for the swipe out animation
     var swipeOutLandPos = -400,
@@ -696,7 +707,12 @@ function slideout(slides, settings, vars, el) {
 
     var swipeDirection; // check direction of sliding - 1 (true) is up 0 is down
 
+
     slides.end_animation = true;
+
+    //For Slideout
+    slides.savedSlideIndex = 0;
+
 
     var goback = false;
     //Activate swipe out animation
@@ -784,10 +800,8 @@ function slideout(slides, settings, vars, el) {
                 $(".itemslide_slideoutwrap").children().unwrap(); //
                 $(itemslideMove).children().unwrap(); //Remove wrapper
 
-                if (isExplorer) //Some more propeirtery explorer problems yippe :)
-                {
-                    slides.children().css("height", "");
-                }
+                //Just fixing a minor issue with explorer
+                slides.children().css("height", "");
 
                 slides.end_animation = true;
                 currentTime = 0;
@@ -836,14 +850,14 @@ function slideout(slides, settings, vars, el) {
             if (currentTime >= 375) {
                 $(itemslideMove).children().unwrap(); //Remove wrapper
 
-                el.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
+                slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
                 if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
                     //change index instant change of active index
                     //Create function in this file to instant reposition.
                     //Or just t3d and getPositionByIndex
 
-                    _this.anim.gotoWithoutAnimation(vars.currentIndex - 1);
+                    _this.anim.gotoSlideByIndex(vars.currentIndex - 1, true);
 
                     //Goto-slide to slide without animation
                 }

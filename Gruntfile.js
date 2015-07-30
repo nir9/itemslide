@@ -27,7 +27,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
 
-    //Tests will go to tests dir and builds will go to dist.
     grunt.registerTask('default', ['browserify', 'uglify']);
     grunt.registerTask('test', ['browserify']);
 

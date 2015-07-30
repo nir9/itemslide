@@ -6,7 +6,7 @@ var Animations = function(carousel) {
 };
 
 Animations.prototype = {
-    gotoSlideByIndex: function (i) {
+    gotoSlideByIndex: function (i , without_animation) {
         var vars = this.vars;
         var options = this.options;
         var slides = this.$el;
@@ -37,8 +37,16 @@ Animations.prototype = {
         //SET DURATION UNTILL HERE
 
         this.total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / $(window).width()) : 0);
-        this.currentPos = this.$el.translate3d().x;
+        this.currentPos = slides.translate3d().x;
         this.currentLandPos = this.getPositionByIndex(i);
+
+        if(without_animation) {
+            //Goto position without sliding animation
+            slides.translate3d(this.getPositionByIndex(i));
+            // In this case just change position and get out of the function so the animation won't start
+            return;
+        }
+
 
         //Reset
         window.cancelAnimationFrame(this.slidesGlobalID);
@@ -97,14 +105,6 @@ Animations.prototype = {
         return (((Math.floor(this.$el.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1) || (Math.ceil(this.$el.translate3d().x) < (this.getPositionByIndex(this.$el.children('li').length - 1)) && this.vars.direction == 1)));
     },
 
-    //Goto position without sliding animation
-    gotoWithoutAnimation: function (i) {
-        this.changeActiveSlideTo(i);
-        this.vars.currentIndex = i;
-        this.currentLandPos = this.getPositionByIndex(i);
-        this.$el.translate3d(this.getPositionByIndex(i));
-    },
-
     //Repeats using requestAnimationFrame //For the sliding
     animationRepeat: function () {
         var _this = this;
@@ -116,7 +116,6 @@ Animations.prototype = {
         this.$el.translate3d(this.currentPos - easeOutBack(currentTime, 0, this.currentPos - this.currentLandPos, this.total_duration, this.total_back));
 
         // to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
-
 
         if (currentTime >= this.total_duration) { //Check if easing time has reached total duration
             //Animation Ended
