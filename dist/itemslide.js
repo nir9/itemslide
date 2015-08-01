@@ -363,7 +363,7 @@ var Navigation = function (carousel, anim) {
 
     // Start navigation listeners
     $el.on('mousedown touchstart', 'li', function (e) {
-        touchstart(e);
+        touchstart.call(this, e);
     });
     $(window).on('mouseup touchend', function (e) {
         touchend(e);
@@ -414,7 +414,7 @@ var Navigation = function (carousel, anim) {
         vertical_pan = false;
         horizontal_pan = false;
 
-        $el.savedSlide = $(e.target); // Get the slide that has been pressed
+        $el.savedSlide = $(this); // Get the slide that has been pressed
 
         $el.savedSlideIndex = $el.savedSlide.index();
 
@@ -548,6 +548,9 @@ var Navigation = function (carousel, anim) {
 
     function touchend(e) {
         if (isDown) {
+
+            isDown = false;
+
             var touch;
 
 
@@ -597,13 +600,13 @@ var Navigation = function (carousel, anim) {
 
 
             //TAP - click to slide
-            if ($el.savedSlide.index() != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
+            if ($el.savedSlideIndex != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
                 e.preventDefault();
                 anim.gotoSlideByIndex($el.savedSlideIndex);
             }
             //TAP until here
         }
-        isDown = false;
+
     }
 
 
