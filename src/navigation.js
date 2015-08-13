@@ -6,13 +6,8 @@ var Navigation = function (carousel, anim) {
         swipeOut = carousel.swipeOut;
 
 
-
-    // Access animation methods
-    //this.anim = anim;
-
-
     // Start navigation listeners
-    $el.on('mousedown touchstart', 'li', function (e) {
+    $el.children().on('mousedown touchstart', function (e) {
         touchstart.call(this, e);
     });
     $(window).on('mouseup touchend', function (e) {

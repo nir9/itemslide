@@ -1,88 +1,70 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 var Animations = function(carousel) {
-    this.$el = carousel.$el;
-    this.options = carousel.options;
-    this.vars = carousel.vars;
 
-};
+    // Private variables
+    var _this = this,
+        vars = carousel.vars,
+        options = carousel.options,
+        slides = carousel.$el;
 
-Animations.prototype = {
-    gotoSlideByIndex: function (i , without_animation) {
-        var vars = this.vars;
-        var options = this.options;
-        var slides = this.$el;
+
+    var total_duration, total_back, currentPos, startTime;
+    // Public functions
+    _this.gotoSlideByIndex = function (i , without_animation) {
 
         var isBoundary;
 
         // Put destination index between boundaries
-        if (i >= this.$el.children('li').length - 1 || i <= 0) {
+        if (i >= slides.children().length - 1 || i <= 0) {
             isBoundary = true;
-            i = Math.min(Math.max(i, 0), this.$el.children('li').length - 1); //Put in between boundaries
+            i = Math.min(Math.max(i, 0), slides.children().length - 1); //Put in between boundaries
         } else {
             isBoundary = false;
         }
 
-        this.changeActiveSlideTo(i);
+        changeActiveSlideTo(i);
 
         //SET DURATION
-        this.total_duration = Math.max(options.duration
+        //Minimum duration is 10
+        total_duration = Math.max(options.duration
             - ((1920 / $(window).width()) * Math.abs(vars.velocity) *
                 9 * (options.duration / 230) //Velocity Cut
             )
 
-            - (this.isOutBoundaries() ? (vars.distanceFromStart / 15) : 0) // Boundaries Spring cut
+            - (_this.isOutBoundaries() ? (vars.distanceFromStart / 15) : 0) // Boundaries Spring cut
             * (options.duration / 230) //Relative to chosen duration
 
             , 50
-        ); //Minimum duration is 10
+        );
+        //console.log(var.duration)
         //SET DURATION UNTILL HERE
 
-        this.total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / $(window).width()) : 0);
-        this.currentPos = slides.translate3d().x;
-        this.currentLandPos = this.getPositionByIndex(i);
+        total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / $(window).width()) : 0);
+        currentPos = slides.translate3d().x;
+        _this.currentLandPos = getPositionByIndex(i);
 
         if(without_animation) {
             //Goto position without sliding animation
-            slides.translate3d(this.getPositionByIndex(i));
+            slides.translate3d(getPositionByIndex(i));
             // In this case just change position and get out of the function so the animation won't start
             return;
         }
 
-
         //Reset
-        window.cancelAnimationFrame(this.slidesGlobalID);
+        window.cancelAnimationFrame(_this.slidesGlobalID);
 
-        this.startTime = Date.now();
-        this.slidesGlobalID = window.requestAnimationFrame(this.animationRepeat.bind(this));
+        startTime = Date.now();
+        _this.slidesGlobalID = window.requestAnimationFrame(animationRepeat);
+    };
 
-    },
+    _this.getLandingSlideIndex = function (x) {
+        //Get slide that will be selected when silding occured - by position
 
-    changeActiveSlideTo: function (i) {
-        var options = this.options;
-        var vars = this.vars;
+        for (var i = 0; i < slides.children().length; i++) {
 
-        this.$el.children(':nth-child(' + ((vars.currentIndex + 1) || 0) + ')').removeClass('itemslide-active');
-
-        this.$el.children(':nth-child(' + ((i + 1) || 0) + ')').addClass('itemslide-active'); //Change destination index to active
-
-        //Check if landingIndex is different from currentIndex
-        if (i != options.currentIndex) {
-            vars.currentIndex = i; //Set current index to landing index
-            this.$el.trigger('changeActiveIndex');
-        }
-    },
-
-    //Get slide that will be selected when silding occured - by position
-    getLandingSlideIndex: function (x) {
-        var $el = this.$el;
-        var options = this.options;
-        var vars = this.vars;
-
-        for (var i = 0; i < $el.children('li').length; i++) {
-
-            if ($el.children().outerWidth(true) * i + $el.children().outerWidth(true) / 2 -
-                $el.children().outerWidth(true) * options.pan_threshold * vars.direction - this.getPositionByIndex(0) > x) {
+            if (slides.children().outerWidth(true) * i + slides.children().outerWidth(true) / 2 -
+                slides.children().outerWidth(true) * options.pan_threshold * vars.direction - getPositionByIndex(0) > x) {
 
                 if (!options.one_item)
                     return i;
@@ -96,57 +78,93 @@ Animations.prototype = {
                 }
             }
         }
-        return options.one_item ? vars.currentIndex + 1 : $el.children('li').length - 1; //If one item enabled than just go one slide forward and not until the end.
-    },
+        return options.one_item ? vars.currentIndex + 1 : slides.children().length - 1; //If one item enabled than just go one slide forward and not until the end.
+    };
 
-    getPositionByIndex: function (i) { //Here we shall add basic nav
-        return -(i * this.$el.children().outerWidth(true) - ((this.$el.parent().outerWidth(true) - this.$el.children().outerWidth(true)) / 2))
-    },
+    _this.isOutBoundaries = function () { //Return if user is panning out of boundaries
+        return (((Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) || (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1)));
+    };
 
-    isOutBoundaries: function () { //Return if user is panning out of boundaries
-        return (((Math.floor(this.$el.translate3d().x) > (this.getPositionByIndex(0)) && this.vars.direction == -1) || (Math.ceil(this.$el.translate3d().x) < (this.getPositionByIndex(this.$el.children('li').length - 1)) && this.vars.direction == 1)));
-    },
 
-    //Repeats using requestAnimationFrame //For the sliding
-    animationRepeat: function () {
-        var _this = this;
+    // Private functions
+    function changeActiveSlideTo (i) {
+        slides.children(':nth-child(' + ((vars.currentIndex + 1) || 0) + ')').removeClass('itemslide-active');
 
-        var currentTime = Date.now() - this.startTime;
+        slides.children(':nth-child(' + ((i + 1) || 0) + ')').addClass('itemslide-active'); //Change destination index to active
 
-        this.$el.trigger('changePos');
+        //Check if landingIndex is different from currentIndex
+        if (i != options.currentIndex) {
+            vars.currentIndex = i; //Set current index to landing index
+            slides.trigger('changeActiveIndex');
+        }
+    }
 
-        this.$el.translate3d(this.currentPos - easeOutBack(currentTime, 0, this.currentPos - this.currentLandPos, this.total_duration, this.total_back));
+    function getPositionByIndex (i) {
+        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / 2))
+    }
+
+    function animationRepeat() {
+        var currentTime = Date.now() - startTime;
+
+        slides.trigger('changePos');
+
+        slides.translate3d(currentPos - easeOutBack(currentTime, 0, currentPos - _this.currentLandPos, total_duration, total_back));
 
         // to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
 
-        if (currentTime >= this.total_duration) { //Check if easing time has reached total duration
+        if (currentTime >= total_duration) { //Check if easing time has reached total duration
             //Animation Ended
-            this.$el.translate3d(this.currentLandPos);
-
+            slides.translate3d(_this.currentLandPos);
             return; //out of recursion
         }
 
         // yupp
-        this.slidesGlobalID = requestAnimationFrame(function() { _this.animationRepeat.call(_this) });
+        _this.slidesGlobalID = requestAnimationFrame(animationRepeat);
 
     }
-};
 
+
+};
 // Export object
 module.exports = Animations;
-
 
 //General Functions
 global.matrixToArray = function(matrix) {
     return matrix.substr(7, matrix.length - 8).split(', ');
-}
+};
 
 global.easeOutBack = function(t, b, c, d, s) {
     //s - controls how forward will it go beyond goal
     if (s == undefined) s = 1.70158;
 
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-}
+};
+
+// Function to access t3d
+$.fn.translate3d = function (x, y) {
+    if (x != null) { //Set value
+        this.css('transform', 'translate3d(' + x + 'px' + ',' + (y || 0) + 'px, 0px)');
+    } else { //Get value
+        var matrix = matrixToArray(this.css("transform"));
+
+        //Check if jQuery
+        if ($.fn.jquery != null) {
+            return { //Return object with x and y
+                x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
+                y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
+            };
+        }
+        else {
+            // Zepto
+            var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
+
+            return { //Return object with x and y
+                x: parseFloat(vals[0]),
+                y: parseFloat(vals[1])
+            };
+        }
+    }
+};
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
 var Navigation = require("./navigation");
@@ -226,9 +244,6 @@ module.exports = {
 // Basically adds all external methods to the object
 module.exports = {
     apply: function (slides, carousel) {
-        slides.gotoSlide = function (i) {
-            carousel.anim.gotoSlideByIndex(i);
-        };
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
@@ -289,63 +304,37 @@ module.exports = {
 };
 },{}],4:[function(require,module,exports){
 (function (global){
-$(function () { //document ready
-    "use strict";
+// Main...
 
-    global.isExplorer = !!document.documentMode; // At least IE6
+"use strict";
 
-    require("./polyfills");
-    var Carousel = require("./carousel");
-    var externalFuncs = require("./external_funcs");
+global.isExplorer = !!document.documentMode; // At least IE6
 
-    $.fn.itemslide = function (options) {
-        var carousel = Object.create(Carousel);
-        // Add external functions to element
-        externalFuncs.apply(this, carousel);
+require("./polyfills");
+var Carousel = require("./carousel");
+var externalFuncs = require("./external_funcs");
 
-        carousel.create(options, this);
-    };
-        
-    $.fn.itemslide.options = {
-        duration: 350,
-        swipe_sensitivity: 150,
-        disable_slide: false,
-        disable_clicktoslide: false,
-        disable_scroll: false,
-        start: 0,
-        one_item: false, //Set true for full screen navigation or navigation with one item every time
-        pan_threshold: 0.3, //Precentage of slide width
-        disable_autowidth: false,
-        parent_width: false,
-        swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
-    };
+$.fn.itemslide = function (options) {
+    var carousel = Object.create(Carousel);
+    // Add external functions to element
+    externalFuncs.apply(this, carousel);
 
-    // Function to access t3d
-    $.fn.translate3d = function (x, y) {
-        if (x != null) { //Set value
-            this.css('transform', 'translate3d(' + x + 'px' + ',' + (y || 0) + 'px, 0px)');
-        } else { //Get value
-            var matrix = matrixToArray(this.css("transform"));
+    carousel.create(options, this);
+};
 
-            //Check if jQuery
-            if ($.fn.jquery != null) {
-                return { //Return object with x and y
-                    x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
-                    y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
-                };
-            }
-            else {
-                // Zepto
-                var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
-
-                return { //Return object with x and y
-                    x: parseFloat(vals[0]),
-                    y: parseFloat(vals[1])
-                };
-            }
-        }
-    };
-});
+$.fn.itemslide.options = {
+    duration: 350,
+    swipe_sensitivity: 150,
+    disable_slide: false,
+    disable_clicktoslide: false,
+    disable_scroll: false,
+    start: 0,
+    one_item: false, //Set true for full screen navigation or navigation with one item every time
+    pan_threshold: 0.3, //Precentage of slide width
+    disable_autowidth: false,
+    parent_width: false,
+    swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
+};
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./carousel":2,"./external_funcs":3,"./polyfills":6}],5:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
@@ -356,13 +345,8 @@ var Navigation = function (carousel, anim) {
         swipeOut = carousel.swipeOut;
 
 
-
-    // Access animation methods
-    //this.anim = anim;
-
-
     // Start navigation listeners
-    $el.on('mousedown touchstart', 'li', function (e) {
+    $el.children().on('mousedown touchstart', function (e) {
         touchstart.call(this, e);
     });
     $(window).on('mouseup touchend', function (e) {

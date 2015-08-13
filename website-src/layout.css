@@ -42,20 +42,15 @@ table /*overide defaults*/
 }
 
 
-#buttons-menu a
-{
+#buttons-menu a {
     color:#FFF;
     text-decoration: none;
-
-
 }
 
 
-#buttons-menu td
-{
+#buttons-menu td {
     font-weight: 300;
     font-size:3.5vh;/*Buttons font size*/
-
 
     text-align: center;
     padding-left:2.8vw;
@@ -87,9 +82,6 @@ table /*overide defaults*/
     #fotter a {
         background: none !important;
     }
-
-
-
 }
 
 #download{
@@ -113,7 +105,6 @@ table /*overide defaults*/
 
 #welcome #main-img
 {
-
     position:absolute;
     top:-6.5vh;
     right:16vw;

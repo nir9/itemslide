@@ -1,4 +1,4 @@
-
+/* Add to docs */
 #scrolling{/*frame*/
     position:fixed;
     top:58%;
@@ -8,18 +8,14 @@
     width:100vw;
 
     overflow: hidden;
-
-
 }
 
 ul {
-
     /*Add if you want to disable the option of selecting the text while sliding*/
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
 
     margin: 0;
     padding: 0;
@@ -28,19 +24,11 @@ ul {
     margin-top:4vh;
     height:80%;
 
-
     list-style-type: none;
-
-
 
     -webkit-transform-style: preserve-3d;
 	-ms-transform-style: preserve-3d;
 	transform-style: preserve-3d;
-
-
-
-
-
 }
 
 li {
@@ -63,8 +51,6 @@ li {
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
     transform: scale(0.95);
-
-
 
 }
 

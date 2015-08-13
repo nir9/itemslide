@@ -1,9 +1,6 @@
 // Basically adds all external methods to the object
 module.exports = {
     apply: function (slides, carousel) {
-        slides.gotoSlide = function (i) {
-            carousel.anim.gotoSlideByIndex(i);
-        };
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
