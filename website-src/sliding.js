@@ -25,6 +25,9 @@ $(document).ready(function () {
         console.log("swiped out slide - " + event.slide);
     });*/
 
+    /*carousel.on('clickSlide', function(event) {
+        console.log("Tapped tapped slide index " + event.slide + " Current Active Index: " + carousel.getActiveIndex());
+    });*/
 
     $(window).resize(function () {
         carousel.reload();

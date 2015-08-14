@@ -245,6 +245,11 @@ var Navigation = function (carousel, anim) {
 
 
             //TAP - click to slide
+            $el.trigger({
+                type: "clickSlide",
+                slide: $el.savedSlideIndex
+            });
+
             if ($el.savedSlideIndex != vars.currentIndex && !options.disable_clicktoslide) { //If this occurs then its a tap
                 e.preventDefault();
                 anim.gotoSlideByIndex($el.savedSlideIndex);
