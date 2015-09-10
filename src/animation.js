@@ -17,7 +17,8 @@ var Animations = function(carousel) {
         if (i >= slides.children().length - 1 || i <= 0) {
             isBoundary = true;
             i = Math.min(Math.max(i, 0), slides.children().length - 1); //Put in between boundaries
-        } else {
+        }
+        else {
             isBoundary = false;
         }
 
@@ -80,7 +81,8 @@ var Animations = function(carousel) {
     };
 
     _this.isOutBoundaries = function () { //Return if user is panning out of boundaries
-        return (((Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) || (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1)));
+        return (Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) ||
+                 (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1); //CHANGED HERE
     };
 
 

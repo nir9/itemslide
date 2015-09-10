@@ -19,7 +19,8 @@ var Animations = function(carousel) {
         if (i >= slides.children().length - 1 || i <= 0) {
             isBoundary = true;
             i = Math.min(Math.max(i, 0), slides.children().length - 1); //Put in between boundaries
-        } else {
+        }
+        else {
             isBoundary = false;
         }
 
@@ -82,7 +83,8 @@ var Animations = function(carousel) {
     };
 
     _this.isOutBoundaries = function () { //Return if user is panning out of boundaries
-        return (((Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) || (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1)));
+        return (Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) ||
+                 (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1); //CHANGED HERE
     };
 
 
@@ -167,9 +169,10 @@ $.fn.translate3d = function (x, y) {
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
-var Navigation = require("./navigation");
-var Animations = require("./animation");
-var slideout = require("./slideout");
+var Navigation = require("./navigation"),
+    Animations = require("./animation"),
+    slideout = require("./slideout"),
+    mousewheel = require("./mousewheel.js");
 
 module.exports = {
     create: function (options, element) {
@@ -178,14 +181,14 @@ module.exports = {
         var _this = this;
 
         _this.$el = element;
-
-        _this.options = $.extend($.fn.itemslide.options, options);
+        _this.options = options;
 
         if (_this.options.parent_width) {
             element.children().width(element.parent().outerWidth(true)); //resize the slides
         }
 
-        element.css({ //Setting some css to avoid problems on touch devices
+        //Setting some css to avoid problems on touch devices
+        element.css({
             'touch-action': 'pan-y',
             '-webkit-user-select': 'none',
             '-webkit-touch-callout': 'none',
@@ -193,20 +196,23 @@ module.exports = {
             '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
         });
 
-        if (!_this.options.disable_autowidth)
+        if (!_this.options.disable_autowidth) {
             element.css("width", element.children('li').length * element.children().outerWidth(true) + 10); //SET WIDTH
-        //To add vertical scrolling just set width to slides.children('li').width()
+        }
+        //Note: To add vertical scrolling just set width to slides.children('li').width()
 
         _this.vars = {
             currentIndex: 0,
             parent_width: _this.options.parent_width,
             velocity: 0,
-            slideHeight: element.children().height()
+            slideHeight: element.children().height(),
+            direction: 1
         };
 
         element.end_animation = true;
 
-        if (_this.options.swipe_out) { //Check if enabled slideout feature
+        //Check if enabled slideout feature
+        if (_this.options.swipe_out) {
             slideout.slideout(_this); //Apply slideout (and transfer settings and variables)
         }
         // Init modules
@@ -218,29 +224,16 @@ module.exports = {
         element.translate3d(0);
         anim.gotoSlideByIndex(_this.options.start);
 
-
-        //IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
-        try {
-            element.mousewheel(function (e) {
-                if (!_this.options.disable_scroll && !nav.get_vertical_pan()) { //Check if scroll has been disabled
-                    e.preventDefault();
-
-                    var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1); //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
-
-                    if (mouseLandingIndex >= element.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
-                        return; //Consider in gotoSlide
-
-                    _this.vars.velocity = 0; //No BOUNCE
-                    anim.gotoSlideByIndex(mouseLandingIndex);
-                }
-            });
-        } catch (e) {
+        //Check if scroll has been enabled
+        if (!_this.options.disable_scroll) {
+            try {
+                // Add mousewheel sliding to carousel
+                mousewheel.add(_this, anim, nav, element);
+            } catch(e) {}
         }
-        //UNTILL HERE MOUSEWHEEL
     }
 };
-
-},{"./animation":1,"./navigation":5,"./slideout":7}],3:[function(require,module,exports){
+},{"./animation":1,"./mousewheel.js":5,"./navigation":6,"./slideout":8}],3:[function(require,module,exports){
 // Basically adds all external methods to the object
 module.exports = {
     apply: function (slides, carousel) {
@@ -298,45 +291,92 @@ module.exports = {
 
         //Get current position of carousel
         slides.getCurrentPos = function () {
-            return carousel.anim.translate3d().x;
+            return slides.translate3d().x;
+        };
+
+        // Get index of a slide given a position on carousel
+        slides.getIndexByPosition = function(x) {
+            return carousel.anim.getLandingSlideIndex(-x);
         };
     }
 };
 },{}],4:[function(require,module,exports){
 (function (global){
 // Main...
-
 "use strict";
 
 global.isExplorer = !!document.documentMode; // At least IE6
+
 
 require("./polyfills");
 var Carousel = require("./carousel");
 var externalFuncs = require("./external_funcs");
 
-$.fn.itemslide = function (options) {
-    var carousel = Object.create(Carousel);
-    // Add external functions to element
-    externalFuncs.apply(this, carousel);
-
-    carousel.create(options, this);
-};
-
-$.fn.itemslide.options = {
+var defaults = {
     duration: 350,
     swipe_sensitivity: 150,
     disable_slide: false,
     disable_clicktoslide: false,
     disable_scroll: false,
     start: 0,
-    one_item: false, //Set true for full screen navigation or navigation with one item every time
+    one_item: false, //Set true for "one slide per swipe" navigation (used in the full screen navigation example)
     pan_threshold: 0.3, //Precentage of slide width
     disable_autowidth: false,
     parent_width: false,
     swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
 };
+
+
+$.fn.itemslide = function (options) {
+    var carousel = Object.create(Carousel);
+    // Add external functions to element
+    externalFuncs.apply(this, carousel);
+
+    // And finally create the carousel
+    carousel.create($.extend(defaults, options), this);
+};
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./carousel":2,"./external_funcs":3,"./polyfills":6}],5:[function(require,module,exports){
+},{"./carousel":2,"./external_funcs":3,"./polyfills":7}],5:[function(require,module,exports){
+// Add mousewheel capability to carousel
+// IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
+
+// https://css-tricks.com/snippets/javascript/test-mac-pc-javascript/
+
+module.exports = {
+    add: function (_this, anim, nav, slides) {
+        // Add a mousewheel listener to carousel
+        var touchCounter = 0,
+            sensetivity = 7; // Less is more (for the touchpad)
+
+        slides.mousewheel(function (e) {
+            var isWheel = (e.deltaFactor >= 100 && e.deltaFactor % 1 == 0);
+
+            // different behavior for touchpad...
+            if (!isWheel) {
+                touchCounter++;
+
+                if (!(touchCounter % sensetivity == 0))
+                    return;
+            }
+
+            // Check if vertical pan is occuring...
+            if (!nav.get_vertical_pan()) {
+
+                e.preventDefault();
+                //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
+                var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1);
+
+                if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
+                    return; //Consider in gotoSlide
+
+                _this.vars.velocity = 0; //No BOUNCE
+
+                anim.gotoSlideByIndex(mouseLandingIndex);
+            }
+        });
+    }
+};
+},{}],6:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
 var Navigation = function (carousel, anim) {
     var $el = carousel.$el,
@@ -357,17 +397,21 @@ var Navigation = function (carousel, anim) {
     // And the navigation functions
 
     // Navigation Variables
-    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false, horizontal_pan;
+    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false,
+        horizontal_pan;
 
     // Swipe out Variables
     var verticalSlideFirstTimeCount;
 
     // Getter for vertical_pan
-    this.get_vertical_pan = function() { return vertical_pan };
+    this.get_vertical_pan = function () {
+        return vertical_pan
+    };
 
     function touchstart(e) {
         // no-drag feature
-        if ($(e.target).attr('no-drag') === 'true') {
+        if ($(e.target).attr('no-drag') === 'true' || !$el.end_animation) {
+            //Or if hasn't ended swipe out escape
             return;
         }
 
@@ -380,10 +424,6 @@ var Navigation = function (carousel, anim) {
             touch = e;
         }
 
-        //If hasn't ended swipe out escape
-        if (!$el.end_animation) {
-            return;
-        }
 
         //Reset
         swipeStartTime = Date.now();
@@ -435,8 +475,7 @@ var Navigation = function (carousel, anim) {
             if (prevent)
                 e.preventDefault();
 
-        }
-        else //Regular mousemove
+        } else //Regular mousemove
         {
             touch = e;
 
@@ -621,28 +660,30 @@ function getTouch(e) {
 
 // EXPORT
 module.exports = Navigation;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //Raf
+///yeppp
 var lastTime = 0;
 var vendors = ['ms', 'moz', 'webkit', 'o'];
-for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-        || window[vendors[x]+'CancelRequestAnimationFrame'];
+for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
 }
 
 if (!window.requestAnimationFrame)
-    window.requestAnimationFrame = function(callback, element) {
+    window.requestAnimationFrame = function (callback, element) {
         var currTime = new Date().getTime();
         var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+        var id = window.setTimeout(function () {
+                callback(currTime + timeToCall);
+            },
             timeToCall);
         lastTime = currTime + timeToCall;
         return id;
     };
 
 if (!window.cancelAnimationFrame)
-    window.cancelAnimationFrame = function(id) {
+    window.cancelAnimationFrame = function (id) {
         clearTimeout(id);
     };
 
@@ -664,7 +705,18 @@ $.fn.outerWidth = function () {
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
 };
-},{}],7:[function(require,module,exports){
+
+
+/*
+            if(e.deltaFactor>=100 && isInt(e.deltaFactor)) {
+                console.log("mousewheel " + e.deltaFactor);
+            }
+            else {
+                return;
+                console.log("touchpad");
+            }
+            */
+},{}],8:[function(require,module,exports){
 /*
  This code is for the swipe out feature.
  Can be enabled by setting the swipe_out option to true.

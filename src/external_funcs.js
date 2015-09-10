@@ -55,7 +55,12 @@ module.exports = {
 
         //Get current position of carousel
         slides.getCurrentPos = function () {
-            return carousel.anim.translate3d().x;
+            return slides.translate3d().x;
+        };
+
+        // Get index of a slide given a position on carousel
+        slides.getIndexByPosition = function(x) {
+            return carousel.anim.getLandingSlideIndex(-x);
         };
     }
 };

@@ -18,17 +18,21 @@ var Navigation = function (carousel, anim) {
     // And the navigation functions
 
     // Navigation Variables
-    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false, horizontal_pan;
+    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false,
+        horizontal_pan;
 
     // Swipe out Variables
     var verticalSlideFirstTimeCount;
 
     // Getter for vertical_pan
-    this.get_vertical_pan = function() { return vertical_pan };
+    this.get_vertical_pan = function () {
+        return vertical_pan
+    };
 
     function touchstart(e) {
         // no-drag feature
-        if ($(e.target).attr('no-drag') === 'true') {
+        if ($(e.target).attr('no-drag') === 'true' || !$el.end_animation) {
+            //Or if hasn't ended swipe out escape
             return;
         }
 
@@ -41,10 +45,6 @@ var Navigation = function (carousel, anim) {
             touch = e;
         }
 
-        //If hasn't ended swipe out escape
-        if (!$el.end_animation) {
-            return;
-        }
 
         //Reset
         swipeStartTime = Date.now();
@@ -96,8 +96,7 @@ var Navigation = function (carousel, anim) {
             if (prevent)
                 e.preventDefault();
 
-        }
-        else //Regular mousemove
+        } else //Regular mousemove
         {
             touch = e;
 
