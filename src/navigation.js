@@ -166,6 +166,10 @@ var Navigation = function (carousel, anim) {
             if (options.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
                 return;
             }
+            
+            if (options.snap_borders) {
+            	anim.currentLandPos = clamp( -(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
+            }
 
             vertical_pan = false;
 
