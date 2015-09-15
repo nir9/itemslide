@@ -105,6 +105,10 @@ var Animations = function(carousel) {
 
     function animationRepeat() {
         var currentTime = Date.now() - startTime;
+        
+        if (options.snap_borders) {
+        	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
+        }
 
         slides.trigger('changePos');
 
@@ -164,4 +168,16 @@ $.fn.translate3d = function (x, y) {
             };
         }
     }
+};
+
+global.clamp = function (min, max, value) {
+	  return Math.min(Math.max(value, min), max);
+};
+
+global.getCurrentTotalWidth = function (inSlides) { // Returns the total number of pixels for each items
+	var width = 0;
+	inSlides.children().each(function() {
+	    width += $(this).outerWidth( true );
+	});
+	return width;
 };

@@ -35,7 +35,8 @@ module.exports = {
             parent_width: _this.options.parent_width,
             velocity: 0,
             slideHeight: element.children().height(),
-            direction: 1
+            direction: 1,
+            allSlidesWidth: getCurrentTotalWidth(element)
         };
 
         element.end_animation = true;

@@ -19,7 +19,8 @@ var defaults = {
     pan_threshold: 0.3, //Precentage of slide width
     disable_autowidth: false,
     parent_width: false,
-    swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
+    swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
+    snap_borders: false // Restricts the movements to the borders instead of the middle
 };
 
 

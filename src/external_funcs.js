@@ -29,6 +29,7 @@ module.exports = {
 
             vars.slideHeight = $el.children().height();
 
+            vars.allSlidesWidth = getCurrentTotalWidth($el);
             // Set panning veloicity to zero
             vars.velocity = 0;
 
@@ -43,6 +44,7 @@ module.exports = {
 
         slides.removeSlide = function (index) {
             carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
+            carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
             //this.reload();
         };
 
