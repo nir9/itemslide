@@ -241,7 +241,7 @@ var Navigation = function (carousel, anim) {
                 //TAP is when deltaX is less or equal to 12px
 
                 if (vars.distanceFromStart > 6) {
-                    anim.gotoSlideByIndex(landingSlideIndex);
+                    anim.gotoSlideByIndex(landingSlideIndex, false, options.swipe_no_Active);
                     return;
                 }
             } //Regular horizontal pan until here
