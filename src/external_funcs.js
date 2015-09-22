@@ -24,7 +24,7 @@ module.exports = {
             }
 
             if (!carousel.options.disable_autowidth) {
-                $el.css("width", $el.children('li').length * $el.children().outerWidth(true) + 10); //SET WIDTH
+                $el.css("width", $el.children().length * $el.children().outerWidth(true) + 10); //SET WIDTH
             }
 
             vars.slideHeight = $el.children().height();
@@ -37,8 +37,8 @@ module.exports = {
             carousel.anim.gotoSlideByIndex(vars.currentIndex, true);
         };
 
-        slides.addSlide = function (data) {
-            carousel.$el.children('li').last().append("<li>" + data + "</li>");
+        slides.addSlide = function (data, tagName) {
+            carousel.$el.children().last().append("<" + tagName + ">" + data + "</" + tagName + ">");
             carousel.reload();
         };
 
