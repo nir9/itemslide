@@ -27,7 +27,7 @@ module.exports = {
                 //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
                 var mouseLandingIndex = _this.vars.currentIndex - (((e.deltaX == 0 ? e.deltaY : e.deltaX) > 0) ? 1 : -1);
 
-                if (mouseLandingIndex >= slides.children('li').length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
+                if (mouseLandingIndex >= slides.children().length || mouseLandingIndex < 0) //If exceeds boundaries dont goto slide
                     return; //Consider in gotoSlide
 
                 _this.vars.velocity = 0; //No BOUNCE

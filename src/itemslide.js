@@ -20,7 +20,8 @@ var defaults = {
     disable_autowidth: false,
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
-    snap_borders: false // Restricts the movements to the borders instead of the middle
+    snap_borders: false, // Restricts the movements to the borders instead of the middle
+    swipe_no_Active: false // determine if upon releasing a swipe the active item will change
 };
 
 

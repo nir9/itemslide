@@ -9,8 +9,8 @@ var Animations = function(carousel) {
 
     var total_duration, total_back, currentPos, startTime;
     // Public functions
-    _this.gotoSlideByIndex = function (i , without_animation) {
-
+    _this.gotoSlideByIndex = function (i , without_animation, noChangeActive) {
+    	
         var isBoundary;
 
         // Put destination index between boundaries
@@ -21,9 +21,11 @@ var Animations = function(carousel) {
         else {
             isBoundary = false;
         }
-
-        changeActiveSlideTo(i);
-
+        console.log(noChangeActive);
+        if (!noChangeActive) {
+        	changeActiveSlideTo(i);
+        }
+    
         //SET DURATION
         //Minimum duration is 10
         total_duration = Math.max(options.duration

@@ -26,9 +26,9 @@ module.exports = {
         });
 
         if (!_this.options.disable_autowidth) {
-            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10); //SET WIDTH
+            element.css("width", element.children().length * element.children().outerWidth(true) + 10); //SET WIDTH
         }
-        //Note: To add vertical scrolling just set width to slides.children('li').width()
+        //Note: To add vertical scrolling just set width to slides.children().width()
 
         _this.vars = {
             currentIndex: 0,
