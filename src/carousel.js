@@ -1,7 +1,7 @@
 var Navigation = require("./navigation"),
     Animations = require("./animation"),
     slideout = require("./slideout"),
-    mousewheel = require("./mousewheel.js");
+    mousewheel = require("./mousewheel");
 
 module.exports = {
     create: function (options, element) {

@@ -91,6 +91,8 @@ table /*overide defaults*/
     text-decoration: none;
 }
 
+/* Welcome */
+
 #welcome
 {
     position:fixed;
@@ -123,6 +125,22 @@ table /*overide defaults*/
     font-weight: 300;
 }
 
+
+/* the fullscreen example link */
+#welcome #example-link a {
+    color: white;
+    position: relative;
+    top: 2vh;
+    font-weight: 200;
+    text-decoration: none;
+    font-size: 5vh;
+
+    background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
+    background-size: 2px 0.2vmin;
+    background-position: 0 5.57vh; /*considering font size is 2.5*/
+    background-repeat: repeat-x;
+}
+
 #welcome .menu a
 {
     position: relative;
@@ -136,7 +154,7 @@ table /*overide defaults*/
     padding: 1.3vh 2.5vh 1.3vh 2.5vh;
 
     border-style: solid;
-    border-width: 2px;
+    border-width: 1.5px;
     border-color: #FFF;
 
     /*border-style: solid;
@@ -145,7 +163,7 @@ table /*overide defaults*/
 
     text-decoration: none;
     /*padding:2vh;*/
-    font-weight: 400;
+    font-weight: 300;
     color:#FFF;
     font-size:3.1vh;
     transition: background-color 0.25s;
@@ -156,6 +174,7 @@ table /*overide defaults*/
     background-color: #FF7676;
 }
 
+/* Until Here Welcome */
 
 #fotter
 {

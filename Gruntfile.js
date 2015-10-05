@@ -1,6 +1,18 @@
 module.exports = function (grunt) {
 
     grunt.initConfig({
+        usebanner: {
+            taskName: {
+                options: {
+                    position: 'top',
+                    banner: '/* ItemSlide.js - Licensed under the MIT license */',
+                    linebreak: true
+                },
+                files: {
+                    src: ['dist/itemslide.min.js']
+                }
+            }
+        },
         uglify: {
             regular: {
                 files: {
@@ -18,7 +30,7 @@ module.exports = function (grunt) {
             scripts: {
                 files: 'src/*.js',
                 tasks: ['browserify']
-                //tasks: ['browserify', 'uglify']
+                    //tasks: ['browserify', 'uglify']
             }
         }
     });
@@ -27,8 +39,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
+    grunt.loadNpmTasks('grunt-banner');
 
-    grunt.registerTask('default', ['browserify', 'uglify']);
+
+    grunt.registerTask('default', ['browserify', 'uglify', 'usebanner']); // Build
     grunt.registerTask('test', ['browserify']);
 
 };

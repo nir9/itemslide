@@ -16,8 +16,10 @@ module.exports = {
             if (!isWheel) {
                 touchCounter++;
 
-                if (!(touchCounter % sensetivity == 0))
+                if (!(touchCounter % sensetivity == 0)) {
+                    touchCounter = 0;
                     return;
+                }
             }
 
             // Check if vertical pan is occuring...

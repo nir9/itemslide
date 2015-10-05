@@ -108,6 +108,10 @@ var Animations = function(carousel) {
     function animationRepeat() {
         var currentTime = Date.now() - startTime;
 
+        if (options.left_sided) {
+        	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
+        }
+
         slides.trigger('changePos');
 
         slides.translate3d(currentPos - easeOutBack(currentTime, 0, currentPos - _this.currentLandPos, total_duration, total_back));
@@ -167,12 +171,25 @@ $.fn.translate3d = function (x, y) {
         }
     }
 };
+
+global.clamp = function (min, max, value) {
+	  return Math.min(Math.max(value, min), max);
+};
+
+global.getCurrentTotalWidth = function (inSlides) { // Returns the total number of pixels for each items
+	var width = 0;
+	inSlides.children().each(function() {
+	    width += $(this).outerWidth( true );
+	});
+	return width;
+};
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
 var Navigation = require("./navigation"),
     Animations = require("./animation"),
     slideout = require("./slideout"),
-    mousewheel = require("./mousewheel.js");
+    mousewheel = require("./mousewheel");
 
 module.exports = {
     create: function (options, element) {
@@ -206,7 +223,8 @@ module.exports = {
             parent_width: _this.options.parent_width,
             velocity: 0,
             slideHeight: element.children().height(),
-            direction: 1
+            direction: 1,
+            allSlidesWidth: getCurrentTotalWidth(element)
         };
 
         element.end_animation = true;
@@ -233,7 +251,8 @@ module.exports = {
         }
     }
 };
-},{"./animation":1,"./mousewheel.js":5,"./navigation":6,"./slideout":8}],3:[function(require,module,exports){
+
+},{"./animation":1,"./mousewheel":5,"./navigation":6,"./slideout":8}],3:[function(require,module,exports){
 // Basically adds all external methods to the object
 module.exports = {
     apply: function (slides, carousel) {
@@ -265,6 +284,7 @@ module.exports = {
 
             vars.slideHeight = $el.children().height();
 
+            vars.allSlidesWidth = getCurrentTotalWidth($el);
             // Set panning veloicity to zero
             vars.velocity = 0;
 
@@ -279,6 +299,7 @@ module.exports = {
 
         slides.removeSlide = function (index) {
             carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
+            carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
             //this.reload();
         };
 
@@ -300,6 +321,7 @@ module.exports = {
         };
     }
 };
+
 },{}],4:[function(require,module,exports){
 (function (global){
 // Main...
@@ -323,7 +345,8 @@ var defaults = {
     pan_threshold: 0.3, //Precentage of slide width
     disable_autowidth: false,
     parent_width: false,
-    swipe_out: false //Enable the swipe out feature - enables swiping items out of the carousel
+    swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
+    left_sided: false // Restricts the movements to the borders instead of the middle
 };
 
 
@@ -355,8 +378,10 @@ module.exports = {
             if (!isWheel) {
                 touchCounter++;
 
-                if (!(touchCounter % sensetivity == 0))
+                if (!(touchCounter % sensetivity == 0)) {
+                    touchCounter = 0;
                     return;
+                }
             }
 
             // Check if vertical pan is occuring...
@@ -376,6 +401,7 @@ module.exports = {
         });
     }
 };
+
 },{}],6:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
 var Navigation = function (carousel, anim) {
@@ -546,6 +572,10 @@ var Navigation = function (carousel, anim) {
                 return;
             }
 
+            if (options.left_sided) {
+            	anim.currentLandPos = clamp( -(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
+            }
+
             vertical_pan = false;
 
             $el.translate3d(
@@ -660,6 +690,7 @@ function getTouch(e) {
 
 // EXPORT
 module.exports = Navigation;
+
 },{}],7:[function(require,module,exports){
 //Raf
 ///yeppp
@@ -716,6 +747,7 @@ $.fn.outerWidth = function () {
                 console.log("touchpad");
             }
             */
+
 },{}],8:[function(require,module,exports){
 /*
  This code is for the swipe out feature.

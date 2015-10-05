@@ -106,7 +106,7 @@ var Animations = function(carousel) {
     function animationRepeat() {
         var currentTime = Date.now() - startTime;
         
-        if (options.snap_borders) {
+        if (options.left_sided) {
         	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
         }
 

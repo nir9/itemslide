@@ -167,7 +167,7 @@ var Navigation = function (carousel, anim) {
                 return;
             }
             
-            if (options.snap_borders) {
+            if (options.left_sided) {
             	anim.currentLandPos = clamp( -(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
             }
 
