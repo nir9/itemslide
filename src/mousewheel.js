@@ -1,29 +1,28 @@
 // Add mousewheel capability to carousel
 // IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
 
-// https://css-tricks.com/snippets/javascript/test-mac-pc-javascript/
-
 module.exports = {
     add: function (_this, anim, nav, slides) {
         // Add a mousewheel listener to carousel
         var touchCounter = 0,
-            sensetivity = 7; // Less is more (for the touchpad)
+            sensetivity = 4; // Less is more (for the touchpad)
 
         slides.mousewheel(function (e) {
-            var isWheel = (e.deltaFactor >= 100 && e.deltaFactor % 1 == 0);
-
-            // different behavior for touchpad...
-            if (!isWheel) {
-                touchCounter++;
-
-                if (!(touchCounter % sensetivity == 0)) {
-                    touchCounter = 0;
-                    return;
-                }
-            }
-
-            // Check if vertical pan is occuring...
+            // Check if vertical pan is occuring... (if occuring dont continue)
             if (!nav.get_vertical_pan()) {
+
+                var isWheel = (e.deltaFactor >= 100 || e.deltaFactor % 1 == 0); // Checked on Chrome, Firefox and Edge
+
+                if (!isWheel) {
+                    // different behavior for touchpad...
+                    touchCounter++;
+
+                    if (touchCounter == sensetivity) {
+                        touchCounter = 0;
+                        return;
+                    }
+                }
+
 
                 e.preventDefault();
                 //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.

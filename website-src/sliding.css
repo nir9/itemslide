@@ -5,7 +5,7 @@
 
     background:#FF8383;/*FF473D*/
     height:38%;
-    width:100vw;
+    width:100%;
 
     overflow: hidden;
 }
@@ -20,7 +20,7 @@ ul {
     margin: 0;
     padding: 0;
     position: absolute;
-
+    /*top:10%;*/
     margin-top:4vh;
     height:80%;
 
@@ -51,7 +51,6 @@ li {
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
     transform: scale(0.95);
-
 }
 
 .itemslide-active
@@ -60,5 +59,4 @@ li {
     -ms-transform:  scale(1);
     -moz-transform:  scale(1);
     transform: scale(1);
-
 }

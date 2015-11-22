@@ -358,34 +358,34 @@ $.fn.itemslide = function (options) {
     // And finally create the carousel
     carousel.create($.extend(defaults, options), this);
 };
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./carousel":2,"./external_funcs":3,"./polyfills":7}],5:[function(require,module,exports){
 // Add mousewheel capability to carousel
 // IF YOU WANT TO ADD MOUSEWHEEL CAPABILITY - USE: https://github.com/jquery/jquery-mousewheel
 
-// https://css-tricks.com/snippets/javascript/test-mac-pc-javascript/
-
 module.exports = {
     add: function (_this, anim, nav, slides) {
         // Add a mousewheel listener to carousel
         var touchCounter = 0,
-            sensetivity = 7; // Less is more (for the touchpad)
+            sensetivity = 4; // Less is more (for the touchpad)
 
         slides.mousewheel(function (e) {
-            var isWheel = (e.deltaFactor >= 100 && e.deltaFactor % 1 == 0);
-
-            // different behavior for touchpad...
-            if (!isWheel) {
-                touchCounter++;
-
-                if (!(touchCounter % sensetivity == 0)) {
-                    touchCounter = 0;
-                    return;
-                }
-            }
-
-            // Check if vertical pan is occuring...
+            // Check if vertical pan is occuring... (if occuring dont continue)
             if (!nav.get_vertical_pan()) {
+
+                var isWheel = (e.deltaFactor >= 100 || e.deltaFactor % 1 == 0); // Checked on Chrome, Firefox and Edge
+
+                if (!isWheel) {
+                    // different behavior for touchpad...
+                    touchCounter++;
+
+                    if (touchCounter == sensetivity) {
+                        touchCounter = 0;
+                        return;
+                    }
+                }
+
 
                 e.preventDefault();
                 //Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
@@ -401,7 +401,6 @@ module.exports = {
         });
     }
 };
-
 },{}],6:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
 var Navigation = function (carousel, anim) {
@@ -736,18 +735,6 @@ $.fn.outerWidth = function () {
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
 };
-
-
-/*
-            if(e.deltaFactor>=100 && isInt(e.deltaFactor)) {
-                console.log("mousewheel " + e.deltaFactor);
-            }
-            else {
-                return;
-                console.log("touchpad");
-            }
-            */
-
 },{}],8:[function(require,module,exports){
 /*
  This code is for the swipe out feature.

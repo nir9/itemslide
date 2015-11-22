@@ -11,13 +11,14 @@ A simple and beautiful touch carousel
 - Touch swiping
 - Mousewheel scrolling
 - The ability to "swipe out" slides
+- Centered carousel or left sided (default is centered)
 
 
 ![ItemSlide](https://raw.github.com/itemslide/itemslide.github.io/master/website-src/img/itemslide.png)
 
 
 
-#### Tested on iPhone 4, iPad Mini, Nexus 4 & LG G3
+#### Tested on iPhone 6, iPad Mini, Nexus 4 & LG G3
 <br/>
 
 

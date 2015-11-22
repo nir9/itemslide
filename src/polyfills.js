@@ -42,14 +42,3 @@ $.fn.outerWidth = function () {
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
 };
-
-
-/*
-            if(e.deltaFactor>=100 && isInt(e.deltaFactor)) {
-                console.log("mousewheel " + e.deltaFactor);
-            }
-            else {
-                return;
-                console.log("touchpad");
-            }
-            */
