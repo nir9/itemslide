@@ -255,7 +255,7 @@ module.exports = {
 },{"./animation":1,"./mousewheel":5,"./navigation":6,"./slideout":8}],3:[function(require,module,exports){
 // Basically adds all external methods to the object
 module.exports = {
-    apply: function (slides, carousel) {
+    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
@@ -293,8 +293,8 @@ module.exports = {
         };
 
         slides.addSlide = function (data) {
-            carousel.$el.children('li').last().append("<li>" + data + "</li>");
-            carousel.reload();
+            slides.append("<li>" + data + "</li>");
+            slides.reload();
         };
 
         slides.removeSlide = function (index) {
@@ -401,6 +401,7 @@ module.exports = {
         });
     }
 };
+
 },{}],6:[function(require,module,exports){
 // All things navigation - touch navigation and mouse
 var Navigation = function (carousel, anim) {
@@ -735,6 +736,7 @@ $.fn.outerWidth = function () {
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
     return width;
 };
+
 },{}],8:[function(require,module,exports){
 /*
  This code is for the swipe out feature.

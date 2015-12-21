@@ -136,43 +136,11 @@ table /*overide defaults*/
     font-size: 5vh;
 
     background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
-    background-size: 2px 0.2vmin;
+    background-size: 2px 0.26vmin;
     background-position: 0 5.57vh; /*considering font size is 2.5*/
     background-repeat: repeat-x;
 }
 
-#welcome .menu a
-{
-    position: relative;
-    top:5.5vh;
-
-    border-radius: 2vh;
-    -webkit-border-radius: 2vh;
-    -o-border-radius: 2vh;
-    -moz-border-radius: 2vh;
-
-    padding: 1.3vh 2.5vh 1.3vh 2.5vh;
-
-    border-style: solid;
-    border-width: 1.5px;
-    border-color: #FFF;
-
-    /*border-style: solid;
-    border-width: 4px;
-    border-color: grey;*/
-
-    text-decoration: none;
-    /*padding:2vh;*/
-    font-weight: 300;
-    color:#FFF;
-    font-size:3.1vh;
-    transition: background-color 0.25s;
-}
-
-#welcome .menu a:hover
-{
-    background-color: #FF7676;
-}
 
 /* Until Here Welcome */
 

@@ -1,6 +1,6 @@
 // Basically adds all external methods to the object
 module.exports = {
-    apply: function (slides, carousel) {
+    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
@@ -38,8 +38,8 @@ module.exports = {
         };
 
         slides.addSlide = function (data) {
-            carousel.$el.children('li').last().append("<li>" + data + "</li>");
-            carousel.reload();
+            slides.append("<li>" + data + "</li>");
+            slides.reload();
         };
 
         slides.removeSlide = function (index) {
