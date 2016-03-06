@@ -226,6 +226,8 @@ var Navigation = function (carousel, anim) {
 
                 //Calculate deltaTime for calculation of velocity
                 var deltaTime = (Date.now() - swipeStartTime);
+                //Verify delta is > 0 to avoid divide by 0 error
+                deltaTime++;
                 vars.velocity = -(touch.pageX - startPointX) / deltaTime;
 
                 if (vars.velocity > 0) { //Set direction
