@@ -1,22 +1,22 @@
 <html>
 
 <head>
-    <title>Full Screen Example</title>
+    <title>Simple Carousel Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!--CSS--->
-    <link href="main.css" rel="stylesheet" />
 
+    <!--CSS--->
+
+    <link href="../../website-src/sliding.css" rel="stylesheet" />
 
 
     <!--Plugins--->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    
-    
-    <script src="../../dist/itemslide.js"></script>
+
+    <script src="../../dist/itemslide.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js"></script>
 
     <!--Scripts--->
@@ -24,24 +24,30 @@
 
 </head>
 
-<body>
-
-    <div id="frame">
+<body style="font-family:Arial;">
+    <button id="previous">Previous</button>
+    <button id="next">Next</button>
+    <div id="scrolling">
+        <!--Slider--->
         <ul>
-            <li style="background-color:#FF3B30;">
-                    <h1>Swipe me</h1>
+            <li>
+                Swipe
             </li>
-            <li style="background-color:#1D62F0;">
-
+            <li>
+                Scroll
             </li>
-            <li style="background-color:#36EB7D;">
-
+            <li>
+                Simple
             </li>
-            <li style="background-color:#FE8C37;"><br>
-                <h1><a href="http://itemslide.github.io/">Website</a></h1>
+            <li>
+                Example
+            </li>
+            <li>
+                ItemSlide
             </li>
         </ul>
     </div>
+
 </body>
 
 </html>

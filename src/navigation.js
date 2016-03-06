@@ -6,13 +6,19 @@ var Navigation = function (carousel, anim) {
         swipeOut = carousel.swipeOut;
 
 
-    // Start navigation listeners
-    $el.children().on('mousedown touchstart', function (e) {
-        touchstart.call(this, e);
-    });
-    $(window).on('mouseup touchend', function (e) {
-        touchend(e);
-    });
+    this.createEvents = function () {
+        // Start navigation listeners
+        $el.children().on('mousedown touchstart', function (e) {
+            touchstart.call(this, e);
+        });
+        $(window).on('mouseup touchend', function (e) {
+            touchend(e);
+        });
+    };
+
+    this.createEvents();
+
+
 
 
     // And the navigation functions
@@ -166,9 +172,9 @@ var Navigation = function (carousel, anim) {
             if (options.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
                 return;
             }
-            
+
             if (options.left_sided) {
-            	anim.currentLandPos = clamp( -(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
+                anim.currentLandPos = clamp(-(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
             }
 
             vertical_pan = false;

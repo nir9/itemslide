@@ -32,20 +32,23 @@ module.exports = {
             vars.allSlidesWidth = getCurrentTotalWidth($el);
             // Set panning veloicity to zero
             vars.velocity = 0;
-
             // w/o animation cuz its smoother
-            carousel.anim.gotoSlideByIndex(vars.currentIndex, true);
+
+            slides.gotoSlide(vars.currentIndex);
         };
 
         slides.addSlide = function (data) {
             slides.append("<li>" + data + "</li>");
+
+            // Refresh events
+            carousel.nav.createEvents();
+
             slides.reload();
         };
 
         slides.removeSlide = function (index) {
             carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
-            //this.reload();
         };
 
         // GET Methods

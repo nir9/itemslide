@@ -1,4 +1,4 @@
-// Main...
+// Main
 "use strict";
 
 global.isExplorer = !!document.documentMode; // At least IE6
@@ -20,12 +20,13 @@ var defaults = {
     disable_autowidth: false,
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
-    left_sided: false // Restricts the movements to the borders instead of the middle
+    left_sided: false, // Restricts the movements to the borders instead of the middle
+    infinite: false
 };
 
-
+// Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
-    var carousel = Object.create(Carousel);
+    var carousel = $.extend(true, {}, Carousel);
     // Add external functions to element
     externalFuncs.apply(this, carousel);
 

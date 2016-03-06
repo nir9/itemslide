@@ -6,7 +6,6 @@ var Navigation = require("./navigation"),
 module.exports = {
     create: function (options, element) {
         // Create a new carousel
-
         var _this = this;
 
         _this.$el = element;
@@ -48,8 +47,10 @@ module.exports = {
         // Init modules
         var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
         var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
+
         // Give external access
         _this.anim = anim;
+        _this.nav = nav;
 
         element.translate3d(0);
         anim.gotoSlideByIndex(_this.options.start);

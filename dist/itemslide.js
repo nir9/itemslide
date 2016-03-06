@@ -194,7 +194,6 @@ var Navigation = require("./navigation"),
 module.exports = {
     create: function (options, element) {
         // Create a new carousel
-
         var _this = this;
 
         _this.$el = element;
@@ -236,8 +235,10 @@ module.exports = {
         // Init modules
         var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
         var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
+
         // Give external access
         _this.anim = anim;
+        _this.nav = nav;
 
         element.translate3d(0);
         anim.gotoSlideByIndex(_this.options.start);
@@ -287,20 +288,23 @@ module.exports = {
             vars.allSlidesWidth = getCurrentTotalWidth($el);
             // Set panning veloicity to zero
             vars.velocity = 0;
-
             // w/o animation cuz its smoother
-            carousel.anim.gotoSlideByIndex(vars.currentIndex, true);
+
+            slides.gotoSlide(vars.currentIndex);
         };
 
         slides.addSlide = function (data) {
             slides.append("<li>" + data + "</li>");
+
+            // Refresh events
+            carousel.nav.createEvents();
+
             slides.reload();
         };
 
         slides.removeSlide = function (index) {
             carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
-            //this.reload();
         };
 
         // GET Methods
@@ -324,7 +328,7 @@ module.exports = {
 
 },{}],4:[function(require,module,exports){
 (function (global){
-// Main...
+// Main
 "use strict";
 
 global.isExplorer = !!document.documentMode; // At least IE6
@@ -346,19 +350,19 @@ var defaults = {
     disable_autowidth: false,
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
-    left_sided: false // Restricts the movements to the borders instead of the middle
+    left_sided: false, // Restricts the movements to the borders instead of the middle
+    infinite: false
 };
 
-
+// Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
-    var carousel = Object.create(Carousel);
+    var carousel = $.extend(true, {}, Carousel);
     // Add external functions to element
     externalFuncs.apply(this, carousel);
 
     // And finally create the carousel
     carousel.create($.extend(defaults, options), this);
 };
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./carousel":2,"./external_funcs":3,"./polyfills":7}],5:[function(require,module,exports){
 // Add mousewheel capability to carousel
@@ -411,13 +415,19 @@ var Navigation = function (carousel, anim) {
         swipeOut = carousel.swipeOut;
 
 
-    // Start navigation listeners
-    $el.children().on('mousedown touchstart', function (e) {
-        touchstart.call(this, e);
-    });
-    $(window).on('mouseup touchend', function (e) {
-        touchend(e);
-    });
+    this.createEvents = function () {
+        // Start navigation listeners
+        $el.children().on('mousedown touchstart', function (e) {
+            touchstart.call(this, e);
+        });
+        $(window).on('mouseup touchend', function (e) {
+            touchend(e);
+        });
+    };
+
+    this.createEvents();
+
+
 
 
     // And the navigation functions
@@ -573,7 +583,7 @@ var Navigation = function (carousel, anim) {
             }
 
             if (options.left_sided) {
-            	anim.currentLandPos = clamp( -(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
+                anim.currentLandPos = clamp(-(vars.allSlidesWidth - $el.parent().width()), 0, anim.currentLandPos);
             }
 
             vertical_pan = false;
@@ -631,6 +641,8 @@ var Navigation = function (carousel, anim) {
 
                 //Calculate deltaTime for calculation of velocity
                 var deltaTime = (Date.now() - swipeStartTime);
+                //Verify delta is > 0 to avoid divide by 0 error
+                deltaTime++;
                 vars.velocity = -(touch.pageX - startPointX) / deltaTime;
 
                 if (vars.velocity > 0) { //Set direction
@@ -690,34 +702,7 @@ function getTouch(e) {
 
 // EXPORT
 module.exports = Navigation;
-
 },{}],7:[function(require,module,exports){
-//Raf
-///yeppp
-var lastTime = 0;
-var vendors = ['ms', 'moz', 'webkit', 'o'];
-for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
-}
-
-if (!window.requestAnimationFrame)
-    window.requestAnimationFrame = function (callback, element) {
-        var currTime = new Date().getTime();
-        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-        var id = window.setTimeout(function () {
-                callback(currTime + timeToCall);
-            },
-            timeToCall);
-        lastTime = currTime + timeToCall;
-        return id;
-    };
-
-if (!window.cancelAnimationFrame)
-    window.cancelAnimationFrame = function (id) {
-        clearTimeout(id);
-    };
-
 // Object Create
 if (typeof Object.create !== "function") {
     Object.create = function (obj) {
@@ -729,12 +714,14 @@ if (typeof Object.create !== "function") {
 
 // Stuff to add for compatibility with Zepto
 $.fn.outerWidth = function () {
-    var el = $(this)[0];
-    var width = el.offsetWidth;
-    var style = getComputedStyle(el);
+    if($(this)[0] instanceof Element){
+        var el = $(this)[0];
+        var width = el.offsetWidth;
+        var style = getComputedStyle(el);
 
-    width += parseInt(style.marginLeft) + parseInt(style.marginRight);
-    return width;
+        width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+        return width;
+	}
 };
 
 },{}],8:[function(require,module,exports){

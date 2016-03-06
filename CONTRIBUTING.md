@@ -1,3 +1,8 @@
+### Issues
+
+Please provide jsFiddle examples as well when reporting bugs.
+
+
 ### Pull requests
 
 1. Please do the changes to the plugin code in the `/src` files, and not in the `/dist` files.
