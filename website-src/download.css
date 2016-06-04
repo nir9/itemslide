@@ -18,10 +18,10 @@
     -o-border-radius: 2vh;
     -moz-border-radius: 2vh;
 
-    padding: 1.3vh 2.5vh 1.3vh 2.5vh;
+    padding: 2vh 5vh 2vh 5vh;
 
     border-style: solid;
-    border-width: 1.5px;
+    border-width: 2px;
     border-color: #FFF;
 
     /*border-style: solid;
@@ -30,9 +30,9 @@
 
     text-decoration: none;
     /*padding:2vh;*/
-    font-weight: 300;
+    font-weight: 600;
     color:#FFF;
-    font-size:3.1vh;
+    font-size:3.7vh;
     transition: background-color 0.25s;
 }
 

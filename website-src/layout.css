@@ -134,6 +134,7 @@ table /*overide defaults*/
     font-weight: 200;
     text-decoration: none;
     font-size: 5vh;
+    font-style: italic;
 
     background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
     background-size: 2px 0.26vmin;

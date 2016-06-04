@@ -1,7 +1,7 @@
 ItemSlide.js
 ===================
 
-A simple and beautiful touch carousel
+A simple & beautiful touch carousel
 
 [Website](http://itemslide.github.io/)
 

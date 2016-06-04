@@ -102,7 +102,7 @@ var Animations = function(carousel) {
     }
 
     function getPositionByIndex (i) {
-        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / 2))
+        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / (options.left_sided ? 1 : 2)))  // Changed Here!
     }
 
     function animationRepeat() {
@@ -363,6 +363,7 @@ $.fn.itemslide = function (options) {
     // And finally create the carousel
     carousel.create($.extend(defaults, options), this);
 };
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./carousel":2,"./external_funcs":3,"./polyfills":7}],5:[function(require,module,exports){
 // Add mousewheel capability to carousel
@@ -702,6 +703,7 @@ function getTouch(e) {
 
 // EXPORT
 module.exports = Navigation;
+
 },{}],7:[function(require,module,exports){
 // Object Create
 if (typeof Object.create !== "function") {
@@ -713,16 +715,18 @@ if (typeof Object.create !== "function") {
 }
 
 // Stuff to add for compatibility with Zepto
-$.fn.outerWidth = function () {
-    if($(this)[0] instanceof Element){
-        var el = $(this)[0];
-        var width = el.offsetWidth;
-        var style = getComputedStyle(el);
+if (!$.fn.outerWidth) {
+    $.fn.outerWidth = function () {
+        if ($(this)[0] instanceof Element) {
+            var el = $(this)[0];
+            var width = el.offsetWidth;
+            var style = getComputedStyle(el);
 
-        width += parseInt(style.marginLeft) + parseInt(style.marginRight);
-        return width;
-	}
-};
+            width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+            return width;
+        }
+    };
+}
 
 },{}],8:[function(require,module,exports){
 /*

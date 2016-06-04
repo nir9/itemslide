@@ -100,7 +100,7 @@ var Animations = function(carousel) {
     }
 
     function getPositionByIndex (i) {
-        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / 2))
+        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / (options.left_sided ? 1 : 2)))  // Changed Here!
     }
 
     function animationRepeat() {

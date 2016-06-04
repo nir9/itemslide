@@ -8,13 +8,15 @@ if (typeof Object.create !== "function") {
 }
 
 // Stuff to add for compatibility with Zepto
-$.fn.outerWidth = function () {
-    if($(this)[0] instanceof Element){
-        var el = $(this)[0];
-        var width = el.offsetWidth;
-        var style = getComputedStyle(el);
-    
-        width += parseInt(style.marginLeft) + parseInt(style.marginRight);
-        return width;
-	}
-};
+if (!$.fn.outerWidth) {
+    $.fn.outerWidth = function () {
+        if ($(this)[0] instanceof Element) {
+            var el = $(this)[0];
+            var width = el.offsetWidth;
+            var style = getComputedStyle(el);
+
+            width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+            return width;
+        }
+    };
+}
