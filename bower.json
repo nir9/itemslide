@@ -6,7 +6,7 @@
     "Nir Lichtman <nir.lich@gmail.com>"
   ],
   "description": "A simple and beautiful JavaScript touch carousel",
-  "main": "/dist/itemslide.min.js",
+  "main": "./dist/itemslide.min.js",
   "keywords": [
     "jquery-plugin",
     "carousel",
