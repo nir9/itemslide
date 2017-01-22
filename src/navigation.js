@@ -75,9 +75,7 @@ var Navigation = function (carousel, anim) {
 
 
         //Turn on mousemove event when mousedown
-        $(window).on('mousemove touchmove', function (e) {
-            mousemove(e)
-        }); //When mousedown start the handler for mousemove event
+        $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
 
         // Clear selections so they wont affect sliding
         clearSelections();
@@ -213,7 +211,7 @@ var Navigation = function (carousel, anim) {
             else
                 touch = e;
 
-            $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
+            $(window).off('mousemove touchmove', mousemove); //Stop listening for the mousemove event
 
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
