@@ -53,7 +53,7 @@ module.exports = {
         _this.nav = nav;
 
         element.translate3d(0);
-        anim.gotoSlideByIndex(_this.options.start);
+        anim.gotoSlideByIndex(parseInt(_this.options.start));
 
         //Check if scroll has been enabled
         if (!_this.options.disable_scroll) {
