@@ -351,7 +351,8 @@ var defaults = {
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
     left_sided: false, // Restricts the movements to the borders instead of the middle
-    infinite: false
+    infinite: false,
+	y_sensetivity:3
 };
 
 // Extend jQuery with the itemslide function
@@ -558,7 +559,17 @@ var Navigation = function (carousel, anim) {
             verticalSlideFirstTimeCount = -1;
         }
 
-        //Reposition according to current deltaX
+	    //ganesh
+        //Is vertical panning or horizontal panning
+ if (Math.abs(touch.pageY - startPointY) > options.y_sensetivity) //Is vertical panning
+        {
+            if (!horizontal_pan && $el.end_animation) {
+                vertical_pan = true;
+                // horizontal_pan=false;
+            }
+        }
+        else {
+        	 //Reposition according to current deltaX
         if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
         {
             if (!vertical_pan && $el.end_animation) //So it will stay one direction
@@ -567,12 +578,7 @@ var Navigation = function (carousel, anim) {
             window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
         }
-        //Is vertical panning or horizontal panning
-        if (Math.abs(touch.pageY - startPointY) > 6) //Is vertical panning
-        {
-            if (!horizontal_pan && $el.end_animation) {
-                vertical_pan = true;
-            }
+
         }
 
 
