@@ -59,6 +59,11 @@ var Animations = function(carousel) {
 
     _this.getLandingSlideIndex = function (x) {
         //Get slide that will be selected when silding occured - by position
+        
+        if (options.one_item && options.infinite) {
+            if (vars.direction == -1 && vars.currentIndex == 0) return slides.children().length - 1;
+            else if (vars.direction == 1 && vars.currentIndex == slides.children().length - 1) return 0;
+        }
 
         for (var i = 0; i < slides.children().length; i++) {
 

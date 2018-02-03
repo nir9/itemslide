@@ -31,5 +31,5 @@ $.fn.itemslide = function (options) {
     externalFuncs.apply(this, carousel);
 
     // And finally create the carousel
-    carousel.create($.extend(defaults, options), this);
+    carousel.create($.extend({}, defaults, options), this);
 };
