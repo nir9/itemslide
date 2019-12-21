@@ -5,7 +5,7 @@ module.exports = function (grunt) {
             taskName: {
                 options: {
                     position: 'top',
-                    banner: '/* ItemSlide.js - Licensed under the MIT license */',
+                    banner: '/* ItemSlide.js - Licensed under the MIT license - itemslide.github.io/license.html */',
                     linebreak: true
                 },
                 files: {
@@ -30,7 +30,6 @@ module.exports = function (grunt) {
             scripts: {
                 files: 'src/*.js',
                 tasks: ['browserify']
-                    //tasks: ['browserify', 'uglify']
             }
         }
     });

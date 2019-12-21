@@ -1,0 +1,46 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.7	//
+Animations	src\animation.js	/^var Animations = function(carousel) {$/;"	f
+Animations.animationRepeat	src\animation.js	/^    function animationRepeat() {$/;"	f
+Animations.changeActiveSlideTo	src\animation.js	/^    function changeActiveSlideTo (i) {$/;"	f
+Animations.getPositionByIndex	src\animation.js	/^    function getPositionByIndex (i) {$/;"	f
+Carousel	src\itemslide.js	/^var Carousel = require(".\/carousel");$/;"	v
+F	src\polyfills.js	/^        F.prototype = obj;$/;"	c
+Navigation	src\carousel.js	/^var Navigation = require(".\/navigation"),$/;"	v
+Navigation	src\navigation.js	/^var Navigation = function (carousel, anim) {$/;"	c
+Navigation.createEvents	src\navigation.js	/^    this.createEvents = function () {$/;"	m
+Navigation.get_vertical_pan	src\navigation.js	/^    this.get_vertical_pan = function () {$/;"	m
+Navigation.mousemove	src\navigation.js	/^    function mousemove(e) {$/;"	f
+Navigation.touchend	src\navigation.js	/^    function touchend(e) {$/;"	f
+Navigation.touchstart	src\navigation.js	/^    function touchstart(e) {$/;"	f
+Object.create	src\polyfills.js	/^    Object.create = function (obj) {$/;"	f
+Object.create.F	src\polyfills.js	/^        function F() {}$/;"	f
+_this.getLandingSlideIndex	src\animation.js	/^    _this.getLandingSlideIndex = function (x) {$/;"	f
+_this.gotoSlideByIndex	src\animation.js	/^    _this.gotoSlideByIndex = function (i , without_animation) {$/;"	f
+_this.isOutBoundaries	src\animation.js	/^    _this.isOutBoundaries = function () { \/\/Return if user is panning out of boundaries$/;"	f
+_this.swipeOut	src\slideout.js	/^    _this.swipeOut = function () {$/;"	f
+clearSelections	src\navigation.js	/^function clearSelections() {$/;"	f
+externalFuncs	src\itemslide.js	/^var externalFuncs = require(".\/external_funcs");$/;"	v
+fn.itemslide	src\itemslide.js	/^    infinite: false$/;"	f
+fn.outerWidth	src\polyfills.js	/^if (!$.fn.outerWidth) {$/;"	f
+fn.translate3d	src\animation.js	/^    return c * ((t = t \/ d - 1) * t * ((s + 1) * t + s) + 1) + b;$/;"	f
+getTouch	src\navigation.js	/^function getTouch(e) {$/;"	f
+global.clamp	src\animation.js	/^global.clamp = function (min, max, value) {$/;"	f
+global.easeOutBack	src\animation.js	/^global.easeOutBack = function(t, b, c, d, s) {$/;"	f
+global.getCurrentTotalWidth	src\animation.js	/^global.getCurrentTotalWidth = function (inSlides) { \/\/ Returns the total number of pixels for each items$/;"	f
+global.matrixToArray	src\animation.js	/^global.matrixToArray = function(matrix) {$/;"	f
+slideout	src\slideout.js	/^function slideout(_this) {$/;"	f
+slideout.swipeOutAnimation	src\slideout.js	/^    function swipeOutAnimation() {$/;"	f
+slides.addSlide	src\external_funcs.js	/^        slides.addSlide = function (data) {$/;"	f
+slides.getActiveIndex	src\external_funcs.js	/^        slides.getActiveIndex = function () {$/;"	f
+slides.getCurrentPos	src\external_funcs.js	/^        slides.getCurrentPos = function () {$/;"	f
+slides.getIndexByPosition	src\external_funcs.js	/^        slides.getIndexByPosition = function(x) {$/;"	f
+slides.gotoSlide	src\external_funcs.js	/^        slides.gotoSlide = function (i) {$/;"	f
+slides.next	src\external_funcs.js	/^        slides.next = function () {$/;"	f
+slides.previous	src\external_funcs.js	/^        slides.previous = function () {$/;"	f
+slides.reload	src\external_funcs.js	/^        slides.reload = function () { \/\/Get index of active slide$/;"	f
+slides.removeSlide	src\external_funcs.js	/^        slides.removeSlide = function (index) {$/;"	f

@@ -18,11 +18,6 @@ var Navigation = function (carousel, anim) {
 
     this.createEvents();
 
-
-
-
-    // And the navigation functions
-
     // Navigation Variables
     var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false,
         horizontal_pan;
@@ -47,6 +42,9 @@ var Navigation = function (carousel, anim) {
         //Check for touch event or mousemove
         if (e.type == 'touchstart') {
             touch = getTouch(e);
+
+            /* preventDefault because we don't want the whole page to move when the user touches the carousel */
+            e.preventDefault();
         } else {
             touch = e;
         }
@@ -94,22 +92,25 @@ var Navigation = function (carousel, anim) {
         if (e.type == 'touchmove') {
             touch = getTouch(e);
 
-            if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
+            if (Math.abs(touch.pageX - startPointX) > 10) { //If touch event than check if to start preventing default behavior
                 prevent = 1;
+            }
 
-            if (prevent)
+            if (prevent) {
                 e.preventDefault();
+            }
 
-        } else //Regular mousemove
-        {
+        } 
+        else {
             touch = e;
 
             // If disabled slide & swipe out do not prevent default to let the marking of text
-            if (!options.disable_slide && !options.swipe_out)
+            if (!options.disable_slide && !options.swipe_out) {
                 e.preventDefault();
+            }
         }
 
-        //Set direction of panning
+        // Set direction of panning
         if ((-(touch.pageX - startPointX)) > 0) { //Set direction
             vars.direction = 1; //PAN LEFT
         } else {
@@ -149,8 +150,9 @@ var Navigation = function (carousel, anim) {
         //Reposition according to current deltaX
         if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
         {
-            if (!vertical_pan && $el.end_animation) //So it will stay one direction
+            if (!vertical_pan && $el.end_animation) { //So it will stay one direction
                 horizontal_pan = true;
+            }
 
             window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
@@ -206,13 +208,14 @@ var Navigation = function (carousel, anim) {
             var touch;
 
 
-            if (e.type == 'touchend') //Check for touch event or mousemove
+            if (e.type == 'touchend') { //Check for touch event or mousemove
                 touch = getTouch(e);
-            else
+            }
+            else {
                 touch = e;
+            }
 
             $(window).off('mousemove touchmove', mousemove); //Stop listening for the mousemove event
-
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             //Vertical PANNING

@@ -107,7 +107,7 @@ var Animations = function(carousel) {
 
     function animationRepeat() {
         var currentTime = Date.now() - startTime;
-
+        
         if (options.left_sided) {
         	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
         }
@@ -203,17 +203,8 @@ module.exports = {
             element.children().width(element.parent().outerWidth(true)); //resize the slides
         }
 
-        //Setting some css to avoid problems on touch devices
-        element.css({
-            'touch-action': 'pan-y',
-            '-webkit-user-select': 'none',
-            '-webkit-touch-callout': 'none',
-            '-webkit-user-drag': 'none',
-            '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
-        });
-
         if (!_this.options.disable_autowidth) {
-            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10); //SET WIDTH
+            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10);
         }
         //Note: To add vertical scrolling just set width to slides.children('li').width()
 
@@ -228,10 +219,11 @@ module.exports = {
 
         element.end_animation = true;
 
-        //Check if enabled slideout feature
+        // Check if enabled slideout feature
         if (_this.options.swipe_out) {
-            slideout.slideout(_this); //Apply slideout (and transfer settings and variables)
+            slideout.slideout(_this); // Apply slideout (and transfer settings and variables)
         }
+
         // Init modules
         var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
         var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
@@ -241,7 +233,7 @@ module.exports = {
         _this.nav = nav;
 
         element.translate3d(0);
-        anim.gotoSlideByIndex(_this.options.start);
+        anim.gotoSlideByIndex(parseInt(_this.options.start));
 
         //Check if scroll has been enabled
         if (!_this.options.disable_scroll) {
@@ -428,11 +420,6 @@ var Navigation = function (carousel, anim) {
 
     this.createEvents();
 
-
-
-
-    // And the navigation functions
-
     // Navigation Variables
     var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false,
         horizontal_pan;
@@ -457,6 +444,9 @@ var Navigation = function (carousel, anim) {
         //Check for touch event or mousemove
         if (e.type == 'touchstart') {
             touch = getTouch(e);
+
+            /* preventDefault because we don't want the whole page to move when the user touches the carousel */
+            e.preventDefault();
         } else {
             touch = e;
         }
@@ -485,9 +475,7 @@ var Navigation = function (carousel, anim) {
 
 
         //Turn on mousemove event when mousedown
-        $(window).on('mousemove touchmove', function (e) {
-            mousemove(e)
-        }); //When mousedown start the handler for mousemove event
+        $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
 
         // Clear selections so they wont affect sliding
         clearSelections();
@@ -506,22 +494,25 @@ var Navigation = function (carousel, anim) {
         if (e.type == 'touchmove') {
             touch = getTouch(e);
 
-            if (Math.abs(touch.pageX - startPointX) > 10) //If touch event than check if to start preventing default behavior
+            if (Math.abs(touch.pageX - startPointX) > 10) { //If touch event than check if to start preventing default behavior
                 prevent = 1;
+            }
 
-            if (prevent)
+            if (prevent) {
                 e.preventDefault();
+            }
 
-        } else //Regular mousemove
-        {
+        } 
+        else {
             touch = e;
 
             // If disabled slide & swipe out do not prevent default to let the marking of text
-            if (!options.disable_slide && !options.swipe_out)
+            if (!options.disable_slide && !options.swipe_out) {
                 e.preventDefault();
+            }
         }
 
-        //Set direction of panning
+        // Set direction of panning
         if ((-(touch.pageX - startPointX)) > 0) { //Set direction
             vars.direction = 1; //PAN LEFT
         } else {
@@ -561,8 +552,9 @@ var Navigation = function (carousel, anim) {
         //Reposition according to current deltaX
         if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
         {
-            if (!vertical_pan && $el.end_animation) //So it will stay one direction
+            if (!vertical_pan && $el.end_animation) { //So it will stay one direction
                 horizontal_pan = true;
+            }
 
             window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
@@ -618,13 +610,14 @@ var Navigation = function (carousel, anim) {
             var touch;
 
 
-            if (e.type == 'touchend') //Check for touch event or mousemove
+            if (e.type == 'touchend') { //Check for touch event or mousemove
                 touch = getTouch(e);
-            else
+            }
+            else {
                 touch = e;
+            }
 
-            $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
-
+            $(window).off('mousemove touchmove', mousemove); //Stop listening for the mousemove event
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             //Vertical PANNING

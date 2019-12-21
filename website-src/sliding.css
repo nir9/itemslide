@@ -32,7 +32,6 @@ ul {
 }
 
 li {
-
     font-size:8vmin;/*cool*/
     float: left;
     width:25vw;
@@ -51,6 +50,7 @@ li {
     -ms-transform:  scale(0.95);
     -moz-transform:  scale(0.95);
     transform: scale(0.95);
+
 }
 
 .itemslide-active

@@ -15,17 +15,8 @@ module.exports = {
             element.children().width(element.parent().outerWidth(true)); //resize the slides
         }
 
-        //Setting some css to avoid problems on touch devices
-        element.css({
-            'touch-action': 'pan-y',
-            '-webkit-user-select': 'none',
-            '-webkit-touch-callout': 'none',
-            '-webkit-user-drag': 'none',
-            '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
-        });
-
         if (!_this.options.disable_autowidth) {
-            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10); //SET WIDTH
+            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10);
         }
         //Note: To add vertical scrolling just set width to slides.children('li').width()
 
@@ -40,10 +31,11 @@ module.exports = {
 
         element.end_animation = true;
 
-        //Check if enabled slideout feature
+        // Check if enabled slideout feature
         if (_this.options.swipe_out) {
-            slideout.slideout(_this); //Apply slideout (and transfer settings and variables)
+            slideout.slideout(_this); // Apply slideout (and transfer settings and variables)
         }
+
         // Init modules
         var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
         var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
