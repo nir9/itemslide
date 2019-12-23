@@ -203,6 +203,11 @@ module.exports = {
             element.children().width(element.parent().outerWidth(true)); //resize the slides
         }
 
+        // Disable text selection in carousel
+        element.css({
+            'user-select': 'none'
+        });
+
         if (!_this.options.disable_autowidth) {
             element.css("width", element.children('li').length * element.children().outerWidth(true) + 10);
         }
