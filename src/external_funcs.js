@@ -1,18 +1,24 @@
 // Basically adds all external methods to the object
 module.exports = {
-    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
+    apply: function (slides, carousel, optionsMergedWithDefaults) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
         };
 
-        slides.next = function () {
+        slides.nextSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex + 1);
         };
 
-        slides.previous = function () {
+        slides.previousSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
+
+        if (!optionsMergedWithDefaults.remove_deprecated_external_functions)
+        {
+            slides.next = slides.nextSlide;
+            slides.previous = slides.previousSlide;
+        }
 
         slides.reload = function () { //Get index of active slide
             var $el = carousel.$el;

@@ -21,15 +21,18 @@ var defaults = {
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
     left_sided: false, // Restricts the movements to the borders instead of the middle
-    infinite: false
+    remove_deprecated_external_functions: false // To not immediately break code that uses deprecated functions
 };
 
 // Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
     var carousel = $.extend(true, {}, Carousel);
+
+    var optionsMergedWithDefaults = $.extend(defaults, options);
+
     // Add external functions to element
-    externalFuncs.apply(this, carousel);
+    externalFuncs.apply(this, carousel, optionsMergedWithDefaults);
 
     // And finally create the carousel
-    carousel.create($.extend(defaults, options), this);
+    carousel.create(optionsMergedWithDefaults, this);
 };

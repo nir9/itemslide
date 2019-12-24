@@ -253,19 +253,25 @@ module.exports = {
 },{"./animation":1,"./mousewheel":5,"./navigation":6,"./slideout":8}],3:[function(require,module,exports){
 // Basically adds all external methods to the object
 module.exports = {
-    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
+    apply: function (slides, carousel, optionsMergedWithDefaults) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
         };
 
-        slides.next = function () {
+        slides.nextSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex + 1);
         };
 
-        slides.previous = function () {
+        slides.previousSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
+
+        if (!optionsMergedWithDefaults.remove_deprecated_external_functions)
+        {
+            slides.next = slides.nextSlide;
+            slides.previous = slides.previousSlide;
+        }
 
         slides.reload = function () { //Get index of active slide
             var $el = carousel.$el;
@@ -348,17 +354,20 @@ var defaults = {
     parent_width: false,
     swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
     left_sided: false, // Restricts the movements to the borders instead of the middle
-    infinite: false
+    remove_deprecated_external_functions: false // To not immediately break code that uses deprecated functions
 };
 
 // Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
     var carousel = $.extend(true, {}, Carousel);
+
+    var optionsMergedWithDefaults = $.extend(defaults, options);
+
     // Add external functions to element
-    externalFuncs.apply(this, carousel);
+    externalFuncs.apply(this, carousel, optionsMergedWithDefaults);
 
     // And finally create the carousel
-    carousel.create($.extend(defaults, options), this);
+    carousel.create(optionsMergedWithDefaults, this);
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

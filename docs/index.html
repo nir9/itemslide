@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
@@ -7,17 +6,9 @@
 
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
-    <!--CODE--->
-
-
-    <!--Website Files-->
     <link href="../website-src/layout.css" rel="stylesheet" />
-    <!--Main layout--->
     <link href="layout.css" rel="stylesheet" />
-    <!--Docs layout--->
-
 </head>
-
 <body>
     <header>
 
@@ -157,6 +148,7 @@ $(document).<span class="pu">ready</span>(<span class="bl">function</span> () {
                     <li>parent_width - set this to true if you want the width of the slides to be the width of the parent of ul. {default: false}</li>
                     <li>swipe_out - set this to true to enable the swipe out feature. {default: false} (<a href="http://itemslide.github.io/">Homepage</a> has it enabled)</li>
                     <li>left_sided - left sided carousel (instead of default force-centered) {default: false}</li>
+                    <li>remove_deprecated_external_functions - please set this to true and don't use deprecated functions {default: false}</li>
 
                 </ul>
             </div>
@@ -196,8 +188,8 @@ carousel.<span class="pu">itemslide</span>(
             <div class="sub-title">Set</div>
             </br>
             <ul class="code list">
-                <li>next() - goes to next slide</li>
-                <li>previous() - goes to previous slide</li>
+                <li>nextSlide() - goes to next slide</li>
+                <li>previousSlide() - goes to previous slide</li>
                 <li>gotoSlide(i) - goes to a specific slide by index</li>
                 <li>reload() - recalculates width and center object (recommended to call when resize occures)</li>
                 <li>addSlide(data) - adds in the end of the carousel a new item.</li>
@@ -262,7 +254,6 @@ carousel.<span class="pu">on</span>(<span class="or">'swipeout'</span>, <span cl
             </br>
             - attribute 'no-drag'- If you want to disable dragging only on a certain element in the carousel just add this attribute to the element. (example: &lt;li no-drag="true"&gt;)
             <br/><br/>
-            - You don't have to use a list for the carousel. you can use any other elements instead as long as its the same structure as here.
             <br/>
             <br/>
 

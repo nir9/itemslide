@@ -4,7 +4,7 @@ $(document).ready(function () {
     carousel = $("ul");
 
     carousel.itemslide({
-
+        remove_deprecated_external_functions: true
     }); //initialize itemslide
 
     $(window).resize(function () {
@@ -12,11 +12,11 @@ $(document).ready(function () {
     }); //Recalculate width and center positions and sizes when window is resized
 
     $("#next").click(function() {
-        carousel.next();
+        carousel.nextSlide();
     });
 
     $("#previous").click(function() {
-        carousel.previous();
+        carousel.previousSlide();
     });
 
 
