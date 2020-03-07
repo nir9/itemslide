@@ -1,6 +1,6 @@
 {
   "name": "itemslide",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "description": "A simple and beautiful JavaScript touch carousel",
   "main": "dist/itemslide.min.js",
   "directories": {
