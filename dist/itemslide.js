@@ -8,7 +8,6 @@ var Animations = function(carousel) {
         options = carousel.options,
         slides = carousel.$el;
 
-
     var total_duration, total_back, currentPos, startTime;
     // Public functions
     _this.gotoSlideByIndex = function (i , without_animation) {
@@ -336,7 +335,6 @@ module.exports = {
 
 global.isExplorer = !!document.documentMode; // At least IE6
 
-
 require("./polyfills");
 var Carousel = require("./carousel");
 var externalFuncs = require("./external_funcs");
@@ -357,18 +355,18 @@ var defaults = {
     remove_deprecated_external_functions: false // To not immediately break code that uses deprecated functions
 };
 
-// Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
     var carousel = $.extend(true, {}, Carousel);
 
-    var optionsMergedWithDefaults = $.extend(defaults, options);
+    var optionsMergedWithDefaults = {};
 
-    // Add external functions to element
+    $.extend(optionsMergedWithDefaults, defaults, options);
+
     externalFuncs.apply(this, carousel, optionsMergedWithDefaults);
 
-    // And finally create the carousel
     carousel.create(optionsMergedWithDefaults, this);
 };
+
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./carousel":2,"./external_funcs":3,"./polyfills":7}],5:[function(require,module,exports){

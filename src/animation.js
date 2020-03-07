@@ -6,7 +6,6 @@ var Animations = function(carousel) {
         options = carousel.options,
         slides = carousel.$el;
 
-
     var total_duration, total_back, currentPos, startTime;
     // Public functions
     _this.gotoSlideByIndex = function (i , without_animation) {

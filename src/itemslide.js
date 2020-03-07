@@ -3,7 +3,6 @@
 
 global.isExplorer = !!document.documentMode; // At least IE6
 
-
 require("./polyfills");
 var Carousel = require("./carousel");
 var externalFuncs = require("./external_funcs");
@@ -24,15 +23,15 @@ var defaults = {
     remove_deprecated_external_functions: false // To not immediately break code that uses deprecated functions
 };
 
-// Extend jQuery with the itemslide function
 $.fn.itemslide = function (options) {
     var carousel = $.extend(true, {}, Carousel);
 
-    var optionsMergedWithDefaults = $.extend(defaults, options);
+    var optionsMergedWithDefaults = {};
 
-    // Add external functions to element
+    $.extend(optionsMergedWithDefaults, defaults, options);
+
     externalFuncs.apply(this, carousel, optionsMergedWithDefaults);
 
-    // And finally create the carousel
     carousel.create(optionsMergedWithDefaults, this);
 };
+
