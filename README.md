@@ -3,9 +3,9 @@ ItemSlide.js
 
 A simple & beautiful touch carousel
 
-[Website](http://itemslide.github.io/)
+[Website](https://itemslide.org/)
 
-[Full Screen Example](http://itemslide.github.io/examples/fullscreen_navigation/)
+[Full Screen Example](https://itemslide.org/examples/fullscreen_navigation/)
 
 ### Features
 - Touch swiping
@@ -14,7 +14,7 @@ A simple & beautiful touch carousel
 - Centered carousel or left sided (default is centered)
 
 
-![ItemSlide](https://raw.github.com/itemslide/itemslide.github.io/master/website-src/img/itemslide.png)
+![ItemSlide](https://raw.github.com/nir9/itemslide/master/website-src/img/itemslide.png)
 
 
 
@@ -29,7 +29,7 @@ A simple & beautiful touch carousel
 
 ### Downloading
 
-#### [Download](http://itemslide.github.io/dist/itemslide.min.js)
+#### [Download](https://itemslide.org/dist/itemslide.min.js)
 
 Requires jQuery or Zepto.
 
@@ -41,6 +41,6 @@ or
 $ bower install itemslide
 ```
 
-#### Check out the docs at [this link](http://itemslide.github.io/docs)
+#### Check out the docs at [this link](https://itemslide.org/docs)
 
-#### [How to build ItemSlide using Grunt](https://github.com/itemslide/itemslide.github.io/blob/master/CONTRIBUTING.md)
+#### [How to build ItemSlide using Grunt](https://github.com/nir9/itemslide/blob/master/CONTRIBUTING.md)

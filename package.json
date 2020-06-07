@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/itemslide/itemslide.github.io"
+    "url": "https://github.com/nir9/itemslide"
   },
   "keywords": [
     "jquery-plugin",
@@ -27,7 +27,7 @@
   "author": "Nir Lichtman",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/itemslide/itemslide.github.io/issues"
+    "url": "https://github.com/nir9/itemslide/issues"
   },
   "devDependencies": {
     "browserify": "^10.1.3",

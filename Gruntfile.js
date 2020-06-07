@@ -5,7 +5,7 @@ module.exports = function (grunt) {
             taskName: {
                 options: {
                     position: 'top',
-                    banner: '/* ItemSlide.js - Licensed under the MIT license - itemslide.github.io/license.html */',
+                    banner: '/* ItemSlide.js - Licensed under the MIT license - itemslide.org/license.html */',
                     linebreak: true
                 },
                 files: {
