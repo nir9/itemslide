@@ -456,9 +456,6 @@ var Navigation = function (carousel, anim) {
         //Check for touch event or mousemove
         if (e.type == 'touchstart') {
             touch = getTouch(e);
-
-            /* preventDefault because we don't want the whole page to move when the user touches the carousel */
-            e.preventDefault();
         } else {
             touch = e;
         }
@@ -486,22 +483,20 @@ var Navigation = function (carousel, anim) {
         //Reset until here
 
 
-        //Turn on mousemove event when mousedown
-        $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
+        // Non-passive event listener to enable prevention of default scrolling behavior
+        window.addEventListener('mousemove', mousemove, { passive: false });
+        window.addEventListener('touchmove', mousemove, { passive: false });
 
         // Clear selections so they wont affect sliding
         clearSelections();
 
     }
 
-    //mousemove vars
     var savedStartPt, firstTime;
 
     function mousemove(e) {
 
         var touch;
-        //Check type of event
-        //Check if touch event or mousemove
 
         if (e.type == 'touchmove') {
             touch = getTouch(e);
@@ -513,7 +508,6 @@ var Navigation = function (carousel, anim) {
             if (prevent) {
                 e.preventDefault();
             }
-
         } 
         else {
             touch = e;
@@ -629,7 +623,8 @@ var Navigation = function (carousel, anim) {
                 touch = e;
             }
 
-            $(window).off('mousemove touchmove', mousemove); //Stop listening for the mousemove event
+            window.removeEventListener('mousemove', mousemove);
+            window.removeEventListener('touchmove', mousemove);
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             //Vertical PANNING
@@ -703,7 +698,11 @@ function clearSelections() {
 }
 
 function getTouch(e) {
-    return (($.fn.jquery == null) ? e.changedTouches[0] : (e.originalEvent.touches[0] || e.originalEvent.changedTouches[0])); //jQuery for some reason "clones" the event.
+    if (e.type == "touchmove") {
+        return e.changedTouches[0];
+    }
+
+    return e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 }
 
 // EXPORT
