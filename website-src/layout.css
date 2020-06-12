@@ -72,11 +72,11 @@ table /*overide defaults*/
 
 @media (max-aspect-ratio: 16/9) {/*cool*/
     #downloadarea {
-    display: none;
+        display: none;
     }
 
-    #main-img{
-    display:none;
+    #main-img {
+        display:none;
     }
 
     #fotter a {
@@ -108,7 +108,7 @@ table /*overide defaults*/
 #welcome #main-img
 {
     position:absolute;
-    top:-6.5vh;
+    top:1vh;
     right:16vw;
     width:53vh;
     height:53vh;
