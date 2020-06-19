@@ -266,19 +266,12 @@ module.exports = {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
 
-        if (!optionsMergedWithDefaults.remove_deprecated_external_functions)
-        {
-            slides.next = slides.nextSlide;
-            slides.previous = slides.previousSlide;
-        }
-
-        slides.reload = function () { //Get index of active slide
+        slides.reload = function () { // Get index of active slide
             var $el = carousel.$el;
             var vars = carousel.vars;
 
-            //Update some sizes
             if (vars.parent_width) {
-                $el.children().width($el.parent().outerWidth(true)); //resize the slides
+                $el.children().width($el.parent().outerWidth(true));
             }
 
             if (!carousel.options.disable_autowidth) {
@@ -330,7 +323,6 @@ module.exports = {
 
 },{}],4:[function(require,module,exports){
 (function (global){
-// Main
 "use strict";
 
 global.isExplorer = !!document.documentMode; // At least IE6
@@ -346,13 +338,12 @@ var defaults = {
     disable_clicktoslide: false,
     disable_scroll: false,
     start: 0,
-    one_item: false, //Set true for "one slide per swipe" navigation (used in the full screen navigation example)
-    pan_threshold: 0.3, //Precentage of slide width
+    one_item: false, // Set true for "one slide per swipe" navigation (used in the full screen navigation example)
+    pan_threshold: 0.3, // Precentage of slide width
     disable_autowidth: false,
     parent_width: false,
-    swipe_out: false, //Enable the swipe out feature - enables swiping items out of the carousel
-    left_sided: false, // Restricts the movements to the borders instead of the middle
-    remove_deprecated_external_functions: false // To not immediately break code that uses deprecated functions
+    swipe_out: false, // Enable the swipe out feature - enables swiping items out of the carousel
+    left_sided: false // Restricts the movements to the borders instead of the middle
 };
 
 $.fn.itemslide = function (options) {

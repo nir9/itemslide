@@ -14,19 +14,12 @@ module.exports = {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
 
-        if (!optionsMergedWithDefaults.remove_deprecated_external_functions)
-        {
-            slides.next = slides.nextSlide;
-            slides.previous = slides.previousSlide;
-        }
-
-        slides.reload = function () { //Get index of active slide
+        slides.reload = function () { // Get index of active slide
             var $el = carousel.$el;
             var vars = carousel.vars;
 
-            //Update some sizes
             if (vars.parent_width) {
-                $el.children().width($el.parent().outerWidth(true)); //resize the slides
+                $el.children().width($el.parent().outerWidth(true));
             }
 
             if (!carousel.options.disable_autowidth) {
