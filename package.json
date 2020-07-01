@@ -8,9 +8,10 @@
   },
   "scripts": {
     "start": "start ./index.html",
-    "build": "browserify src/itemslide.js | uglifyjs > dist/bundle.min.js",
-    "watch": "watchify src/itemslide.js -o dist/bundle.js",
-    "test": "start ./tests/index.html"
+    "release-build": "echo /* ItemSlide.js - Licensed under the MIT license - itemslide.org/license.html */ > dist/itemslide.min.js && browserify src/itemslide.js | uglifyjs >> dist/itemslide.min.js",
+    "testing-build": "browserify src/itemslide.js > dist/itemslide.js",
+    "watch": "watchify src/itemslide.js -o dist/itemslide.js",
+    "test": "start ./testing/index.html"
   },
   "repository": {
     "type": "git",
@@ -24,17 +25,15 @@
     "slide",
     "swipe"
   ],
+  "homepage": "https://itemslide.org",
   "author": "Nir Lichtman",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nir9/itemslide/issues"
   },
   "devDependencies": {
-    "browserify": "^10.1.3",
-    "grunt": "^0.4.5",
-    "grunt-banner": "^0.5.0",
-    "grunt-browserify": "^3.8.0",
-    "grunt-contrib-uglify": "^0.8.0",
-    "grunt-contrib-watch": "^0.6.1"
+    "browserify": "^16.5.1",
+    "uglify-js": "^3.10.0",
+    "watchify": "^3.11.1"
   }
 }

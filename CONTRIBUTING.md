@@ -7,28 +7,28 @@ Please provide jsFiddle examples as well when reporting bugs.
 1. Please make your changes to the plugin code in the `/src` files, and not in the `/dist` files.
 2. To test your code use `/testing/index.html`.
 3. Keep your pull request simple and avoid doing any unintended changes.
-4. Don't change `/dist/itemslide.min.js`, only run grunt `watch` or `test`.
+4. Don't commit any changes to `/dist/itemslide.min.js`
 
 This project is built using Browserify so if you want to contribute make sure you have a basic understanding of it.
 
-#### Building using Grunt
+#### Building
 
-Before starting make sure you have Node.js and grunt-cli installed on your system.
+Before starting make sure you have Node.js installed on your system.
 
-First install the devDependencies (so you can use Grunt) by typing-
+First install the devDependencies by typing-
 
 ```bash
 npm install
 ```
 
-You can use watch so that grunt will build as you make changes to the `/src` files:
+You can use watch so that itemslide will be built as you make changes to the `/src` files:
 
 ```bash
-grunt watch
+npm run-script watch
 ```
 
 Or manually build the project using:
 
 ```bash
-grunt test
+npm run-script testing-build
 ```
