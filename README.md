@@ -18,10 +18,6 @@ A simple & beautiful touch carousel
 
 
 
-#### Tested on iPhone 6, iPad Mini, Nexus 4 & LG G3
-<br/>
-
-
 #### Optional Plugins (To add features)
 - [jQuery Mousewheel (Adds scrolling) (~2.5KB)](https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.js)
 
@@ -43,4 +39,4 @@ $ bower install itemslide
 
 #### Check out the docs at [this link](https://itemslide.org/docs)
 
-#### [How to build ItemSlide using Grunt](https://github.com/nir9/itemslide/blob/master/CONTRIBUTING.md)
+#### [How to build ItemSlide](https://github.com/nir9/itemslide/blob/master/CONTRIBUTING.md)
