@@ -22,9 +22,7 @@ module.exports = {
                 $el.children().width($el.parent().outerWidth(true));
             }
 
-            if (!carousel.options.disable_autowidth) {
-                $el.css("width", $el.children('li').length * $el.children().outerWidth(true) + 10); //SET WIDTH
-            }
+            carousel.adjustCarouselWidthIfNotDisabled();
 
             vars.slideHeight = $el.children().height();
 

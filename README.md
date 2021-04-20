@@ -1,5 +1,4 @@
-ItemSlide.js
-===================
+# ItemSlide.js
 
 A simple & beautiful touch carousel
 
@@ -15,7 +14,6 @@ A simple & beautiful touch carousel
 
 
 ![ItemSlide](https://raw.github.com/nir9/itemslide/master/website-src/img/itemslide.png)
-
 
 
 #### Optional Plugins (To add features)

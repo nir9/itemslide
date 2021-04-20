@@ -12,18 +12,40 @@ module.exports = {
         _this.options = options;
 
         if (_this.options.parent_width) {
-            element.children().width(element.parent().outerWidth(true)); //resize the slides
+            element.children().width(element.parent().outerWidth(true));
         }
 
-        // Disable text selection in carousel
         element.css({
             'user-select': 'none'
         });
 
-        if (!_this.options.disable_autowidth) {
-            element.css("width", element.children('li').length * element.children().outerWidth(true) + 10);
-        }
-        //Note: To add vertical scrolling just set width to slides.children('li').width()
+        _this.getSlidesWidth = (allSlides = true, maxIndex = 0) => {
+            var totalWidth = 0;
+
+            if (allSlides) {
+                maxIndex = element.children("li").toArray().length;
+            }
+
+            for (var i = 0; i < maxIndex; i++) {
+                var item = element.children("li").toArray()[i];
+
+                totalWidth += item.offsetWidth
+                    + parseInt(getComputedStyle(item).marginLeft)
+                    + parseInt(getComputedStyle(item).marginRight);
+            }
+
+            return totalWidth;
+        };
+
+        _this.adjustCarouselWidthIfNotDisabled = () => {
+            if (!_this.options.disable_autowidth) {
+                element.css("width", _this.getSlidesWidth() + 10);
+            }
+        };
+
+        _this.adjustCarouselWidthIfNotDisabled();
+
+        // Note: To add vertical scrolling just set width to slides.children('li').width()
 
         _this.vars = {
             currentIndex: 0,

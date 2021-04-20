@@ -61,8 +61,8 @@ var Animations = function(carousel) {
 
         for (var i = 0; i < slides.children().length; i++) {
 
-            if (slides.children().outerWidth(true) * i + slides.children().outerWidth(true) / 2 -
-                slides.children().outerWidth(true) * options.pan_threshold * vars.direction - getPositionByIndex(0) > x) {
+            if (carousel.getSlidesWidth(false, i) + slides.children().eq(i).outerWidth(true) / 2 -
+                slides.children().eq(i).outerWidth(true) * options.pan_threshold * vars.direction - getPositionByIndex(0) > x) {
 
                 if (!options.one_item)
                     return i;
@@ -99,7 +99,7 @@ var Animations = function(carousel) {
     }
 
     function getPositionByIndex (i) {
-        return -(i * slides.children().outerWidth(true) - ((slides.parent().outerWidth(true) - slides.children().outerWidth(true)) / (options.left_sided ? 1 : 2)))  // Changed Here!
+        return -(carousel.getSlidesWidth(false, i) - ((slides.parent().outerWidth(true) - slides.children().eq(i).outerWidth(true)) / (options.left_sided ? 1 : 2)));
     }
 
     function animationRepeat() {
