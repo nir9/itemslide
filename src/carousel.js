@@ -5,14 +5,13 @@ var Navigation = require("./navigation"),
 
 module.exports = {
     create: function (options, element) {
-        // Create a new carousel
         var _this = this;
 
         _this.$el = element;
         _this.options = options;
 
         if (_this.options.parent_width) {
-            element.children().width(element.parent().outerWidth(true));
+            element.get()[0].style.width = element.parent().outerWidth(true);
         }
 
         element.css({

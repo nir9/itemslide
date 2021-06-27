@@ -22,14 +22,9 @@ var defaults = {
 };
 
 $.fn.itemslide = function (options) {
-    var carousel = $.extend(true, {}, Carousel);
+    let optionsMergedWithDefaults = { ...defaults, ...options };
 
-    var optionsMergedWithDefaults = {};
+    externalFuncs.apply(this, Carousel, optionsMergedWithDefaults);
 
-    $.extend(optionsMergedWithDefaults, defaults, options);
-
-    externalFuncs.apply(this, carousel, optionsMergedWithDefaults);
-
-    carousel.create(optionsMergedWithDefaults, this);
+    Carousel.create(optionsMergedWithDefaults, this);
 };
-

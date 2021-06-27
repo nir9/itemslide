@@ -1,6 +1,5 @@
-// Basically adds all external methods to the object
 module.exports = {
-    apply: function (slides, carousel, optionsMergedWithDefaults) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
+    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);

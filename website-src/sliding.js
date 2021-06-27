@@ -6,7 +6,8 @@ $(document).ready(function () {
 
     carousel.itemslide({
         swipe_out: true, //NOTE: REMOVE THIS OPTION IF YOU WANT TO DISABLE THE SWIPING SLIDES OUT FEATURE.
-        remove_deprecated_external_functions: true
+        remove_deprecated_external_functions: true,
+        parent_width: true
     }); //initialize itemslide
 
 
