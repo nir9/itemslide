@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const fs = require("fs");
 
 module.exports = {
     mode: "production",
@@ -10,7 +11,7 @@ module.exports = {
     },
     plugins: [
         new webpack.BannerPlugin(
-            "/* ItemSlide.js - Licensed under the MIT license - itemslide.org/license.html */"
+            fs.readFileSync("license.txt", "utf8")
         )
     ]
 };
