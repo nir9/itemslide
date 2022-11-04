@@ -5,18 +5,17 @@ var Navigation = require("./navigation"),
 
 module.exports = {
     create: function (options, element) {
-        var _this = this;
+        var _this = this,
+            el = element.get()[0];
 
         _this.$el = element;
         _this.options = options;
 
         if (_this.options.parent_width) {
-            element.get()[0].style.width = element.parent().outerWidth(true);
+            el.style.width = el.parentElement.offsetWidth;
         }
 
-        element.css({
-            'user-select': 'none'
-        });
+        el.style.userSelect = "none";
 
         _this.getSlidesWidth = (allSlides = true, maxIndex = 0) => {
             var totalWidth = 0;
@@ -38,7 +37,7 @@ module.exports = {
 
         _this.adjustCarouselWidthIfNotDisabled = () => {
             if (!_this.options.disable_autowidth) {
-                element.css("width", _this.getSlidesWidth() + 10);
+                el.style.width = _this.getSlidesWidth() + 10 + "px";
             }
         };
 
@@ -50,7 +49,7 @@ module.exports = {
             currentIndex: 0,
             parent_width: _this.options.parent_width,
             velocity: 0,
-            slideHeight: element.children().height(),
+            slideHeight: el.children[0].offsetHeight,
             direction: 1,
             allSlidesWidth: getCurrentTotalWidth(element)
         };
@@ -73,12 +72,14 @@ module.exports = {
         element.translate3d(0);
         anim.gotoSlideByIndex(parseInt(_this.options.start));
 
-        //Check if scroll has been enabled
+        // Check if scroll has been enabled
         if (!_this.options.disable_scroll) {
             try {
-                // Add mousewheel sliding to carousel
+                // Add mouse wheel sliding to carousel
                 mousewheel.add(_this, anim, nav, element);
-            } catch(e) {}
+            } catch (e) {
+                console.error("ItemSlide: Caught exception while inititalizing mouse wheel plugin", e);
+            }
         }
     }
 };
