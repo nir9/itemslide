@@ -24,52 +24,45 @@
     <link href="website-src/layout.css" rel="stylesheet" />
     <link href="website-src/sliding.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!--Optional-->
-    <!--Mousewheel compatible only with jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
 
     <script src="dist/itemslide.min.js"></script>
-
-    <script src="website-src/sliding.js"></script>  <!-- Here the carousel is initialized -->
+    <script src="website-src/sliding.js"></script>
 
 </head>
 <body>
     <header>
-        <a style="color:#FFF;text-decoration:none;" href="index.html">
-            <div id="headertext">ItemSlide<span style="font-size:4.3vh;">.js</span>
-            </div>
-          </a>
-            <table id="buttons-menu">
-                <tr>
-                    <td>
-                        <a id="docs" href="docs/index.html">
-                            Docs
-                        </a>
-                    </td>
-                    <td>
-                        <a id="github" href="https://github.com/nir9/itemslide">
-                            Github
-                        </a>
-                    </td>
-                </tr>
-            </table>
-
-        <span id="downloadarea">
-        <a href="website-src/download.html" id="download">DOWNLOAD</a> (10K)
-        </span>
+        <br>
+        <a id="headertext" href="index.html">
+            ItemSlide.js
+        </a>
     </header>
 
     <div id="welcome">
         <span class="content">
-        <img id="main-img" src="website-src/img/hero.svg"/>
-        <div id="maintitle">simple & beautiful<br/>
-            <span style="font-weight:400;">touch carousel</span><br/>
-            <span id="example-link"><a href="examples/fullscreen_navigation/index.html">Fullscreen Example</a></span>
-        </div>
+            <div id="maintitle">JavaScript touch carousel library<br/></div>
+            <table id="buttons-menu">
+                <tr>
+                    <td>
+                        <a id="docs" href="docs/index.html">
+                            Documentation
+                        </a>
+                    </td>
+                    <td>
+                        <a id="github" href="https://github.com/nir9/itemslide">
+                            Source on Github
+                        </a>
+                    </td>
+                    <td>
+                        <span id="downloadarea">
+                            <a href="website-src/download.html" id="download">Download</a> (10K)
+                        </span>
+                    </td>
+                </tr>
+            </table>
         </span>
     </div>
 
-    <!-- Here is the carousel -->
     <div id="scrolling">
         <ul>
             <li>
@@ -99,7 +92,7 @@
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </span>
 
-        Created by <a class="hrefs" href="https://github.com/nir9">Nir Lichtman</a>. Design by <a class="hrefs" href="http://aniddan.com/">Iddan Aaronsohn</a>.
+        Created by <a class="hrefs" href="https://github.com/nir9">Nir Lichtman</a>
     </div>
 </body>
 </html>

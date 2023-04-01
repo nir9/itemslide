@@ -13,7 +13,7 @@ A simple & beautiful touch carousel
 - Centered carousel or left sided (default is centered)
 
 
-![ItemSlide](https://raw.github.com/nir9/itemslide/master/website-src/img/itemslide.png)
+![ItemSlide](https://raw.github.com/nir9/itemslide/master/website-src/img/image.jpg)
 
 
 #### Optional Plugins (To add features)

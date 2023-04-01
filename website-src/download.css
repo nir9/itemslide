@@ -1,22 +1,13 @@
-
-
-#welcome
-{
-    height:86.5vh; font-size:5vh;
-    background-color: #FF7676;
+#welcome {
+    height: 86.5vh;
+    font-size: 5vh;
+    background-color: #8601AF;
 }
-
-
 
 #welcome .menu a
 {
     position: relative;
     top:5.5vh;
-
-    border-radius: 2vh;
-    -webkit-border-radius: 2vh;
-    -o-border-radius: 2vh;
-    -moz-border-radius: 2vh;
 
     padding: 2vh 5vh 2vh 5vh;
 
@@ -24,22 +15,15 @@
     border-width: 2px;
     border-color: #FFF;
 
-    /*border-style: solid;
-    border-width: 4px;
-    border-color: grey;*/
-
     text-decoration: none;
-    /*padding:2vh;*/
     font-weight: 600;
-    color:#FFF;
+    color: #FFF;
     font-size:3.7vh;
     transition: background-color 0.25s;
 }
 
 
-#welcome .menu a:hover
-{
-    background-color: #FFA6A6;
+#welcome .menu a:hover {
+    background-color: #FEFE33;
+    color: #8601AF;
 }
-
-

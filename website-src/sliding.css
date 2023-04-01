@@ -1,11 +1,10 @@
-/* Add to docs */
-#scrolling{/*frame*/
+#scrolling {
     position:fixed;
-    top:58%;
+    top:52%;
 
-    background:#FF8383;/*FF473D*/
-    height:38%;
-    width:100%;
+    background: #8601AF;
+    height: 48%;
+    width: 100%;
 
     overflow: hidden;
 }
@@ -37,7 +36,7 @@ li {
     width:25vw;
     min-width: 250px;
     height: 100%;
-    color: #000;
+    color: #8601AF;
     font-weight: 300;
     text-align: center;
     border-radius: 30px;

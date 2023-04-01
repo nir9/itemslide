@@ -1,44 +1,33 @@
-body{
+body {
     font-family: 'Source Sans Pro', sans-serif;
-    text-align:center;
-
-    margin:0;
-
-
+    text-align: center;
+    margin: 0;
 }
 
-/*Header*/
-header{
-    width:100vw;
-    position:fixed;
-    left:0;
-    height: 9.5vh;
-    background-color: #FF3333;
-
-    color:#FFF;
+header {
+    width: 100vw;
+    position: fixed;
+    left: 0;
+    height: 15vh;
+    background-color: #FEFE33;
+    text-align: center;
 }
 
-#headertext
-{
-    /*position:absolute;*/
-    float:left;
+#headertext {
+    text-decoration: none;
+    color: #8601AF;
 
-    margin-top:0.35vh;
-    font-size:6.5vh;
-    margin-left:1.5vw;
-    font-weight: 300;
+    font-size: 6.5vh;
+    font-weight: 400;
 }
 
-
-table /*overide defaults*/
-{
+table {
     border-collapse: collapse;
 	border-spacing: 0;
 }
 
 #buttons-menu {
-    margin-left:225px;
-    margin-top:2.8vh;
+    display: inline;
 }
 
 
@@ -50,27 +39,17 @@ table /*overide defaults*/
 
 #buttons-menu td {
     font-weight: 300;
-    font-size:3.5vh;/*Buttons font size*/
+    font-size: 3.5vh;
 
     text-align: center;
     padding-left:2.8vw;
 }
 
-
-
-#downloadarea{
-
-
-    position:absolute;
-    top:2vh;
-    right:2vw;
+#downloadarea {
     font-weight: 200;
-    font-size:4.9vh;
-    line-height: 6vh;
-
 }
 
-@media (max-aspect-ratio: 16/9) {/*cool*/
+@media (max-aspect-ratio: 16/9) {
     #downloadarea {
         display: none;
     }
@@ -84,29 +63,25 @@ table /*overide defaults*/
     }
 }
 
-#download{
+#download {
     color:#FFF;
 
     font-weight: 600;
     text-decoration: none;
 }
 
-/* Welcome */
+#welcome {
+    position: fixed;
+    top: 15vh;
+    height: 48.5vh;
+    width: 100vw;
+    background-color: #8601AF;
 
-#welcome
-{
-    position:fixed;
-    top:9.5vh;
-    height:48.5vh;
-    width:100vw;
-    background-color:#FF4D4D;
-
-    font-size:8vh;
-    color:#FFF;
+    font-size: 8vh;
+    color: #FFF;
 }
 
-#welcome #main-img
-{
+#welcome #main-img {
     position:absolute;
     top:1vh;
     right:16vw;
@@ -125,66 +100,36 @@ table /*overide defaults*/
     font-weight: 300;
 }
 
-
-/* the fullscreen example link */
-#welcome #example-link a {
-    color: white;
-    position: relative;
-    top: 2vh;
-    font-weight: 200;
-    text-decoration: none;
-    font-size: 5vh;
-    font-style: italic;
-
-    background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
-    background-size: 2px 0.26vmin;
-    background-position: 0 5.57vh; /*considering font size is 2.5*/
-    background-repeat: repeat-x;
-}
-
-
-/* Until Here Welcome */
-
-#fotter
-{
-
+#fotter {
     position:fixed;
-    font-size:2.5vh;
-    bottom:0%;
+    font-size: 2.5vh;
+    bottom: 0%;
     padding: 0.5vh;
-    background-color: #8E0C0C;
+    background-color: #8601AF;
     font-weight: 200;
-    color:white;
-    right:0;left:0;
-
+    color: #FFF;
+    right:0;
+    left:0;
 }
 
 #fotter .hrefs {
     color: #FFF;
     font-weight: 400;
     text-decoration: none;
-
-
-    background-image: linear-gradient(to bottom, white, white); /*mimic underline (enables thinner underline)*/
-    background-size: 2px 0.2vmin;
-    background-position: 0 2.86vh; /*considering font size is 2.5*/
-    background-repeat: repeat-x;
 }
 
-/* fotter buttons */
 #links {
     position: absolute;
     left:1vw;
     top:1vmin;
-
 }
+
 #twitterwrap {
     position:absolute;
     left:100px;
     bottom:0%;
 }
 
-/* stars button and twitter share */
 @media (max-aspect-ratio: 16/9), (max-width: 1200px), (max-height: 800px) {
     #links {
         display:none;

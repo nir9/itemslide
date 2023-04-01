@@ -3,12 +3,12 @@
     overflow-y: scroll;
     font-size: 3vh;
     text-align: left;
-    background-color: #FF7676;
+    background-color: #8601AF;
     -webkit-overflow-scrolling: touch;
 }
 
 #welcome a {
-    color:white;
+    color: white;
 }
 
 #docs-content {
@@ -37,7 +37,6 @@
 
     margin: auto;
     background-color: #fff;
-    /*e1e1e1*/
 
     border-radius: 5px;
 }
