@@ -16,11 +16,6 @@ A simple & beautiful touch carousel
 ![ItemSlide](https://raw.github.com/nir9/itemslide/master/website-src/img/image.jpg)
 
 
-#### Optional Plugins (To add features)
-- [jQuery Mousewheel (Adds scrolling) (~2.5KB)](https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.js)
-
-
-
 ### Downloading
 
 #### [Download](https://itemslide.org/dist/itemslide.min.js)
