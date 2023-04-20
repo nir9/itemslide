@@ -1,1 +1,0 @@
-#### Requires jQuery or Zepto.
