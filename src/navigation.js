@@ -291,5 +291,4 @@ function getTouch(e) {
     return e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 }
 
-// EXPORT
-module.exports = Navigation;
+export default Navigation;

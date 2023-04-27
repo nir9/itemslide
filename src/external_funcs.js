@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
 
         slides.gotoSlide = function (i) {

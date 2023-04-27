@@ -1,9 +1,9 @@
-var Navigation = require("./navigation"),
-    Animations = require("./animation"),
-    slideout = require("./slideout"),
-    mousewheel = require("./mousewheel");
+import Navigation from "./navigation";
+import Animations from "./animation";
+import slideout from "./slideout";
+import mousewheel from "./mousewheel";
 
-module.exports = {
+export default {
     create: function (options, element) {
         var _this = this,
             el = element.get()[0];

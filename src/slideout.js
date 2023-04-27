@@ -10,7 +10,7 @@
 
 // http://css-tricks.com/useful-nth-child-recipies/
 
-module.exports = {
+export default {
     slideout: slideout
 }
 

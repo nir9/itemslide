@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     add: function (_this, anim, nav, slides) {
         // Add a mousewheel listener to carousel
         var touchCounter = 0,

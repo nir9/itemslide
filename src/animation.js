@@ -125,11 +125,10 @@ var Animations = function(carousel) {
         _this.slidesGlobalID = requestAnimationFrame(animationRepeat);
 
     }
-
-
 };
+
 // Export object
-module.exports = Animations;
+export default Animations;
 
 //General Functions
 global.matrixToArray = function(matrix) {

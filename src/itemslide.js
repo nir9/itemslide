@@ -2,9 +2,9 @@
 
 global.isExplorer = !!document.documentMode; // At least IE6
 
-require("./polyfills");
-var Carousel = require("./carousel");
-var externalFuncs = require("./external_funcs");
+import "./polyfills";
+import Carousel from "./carousel";
+import externalFuncs from "./external_funcs";
 
 var defaults = {
     duration: 350,
