@@ -1,4 +1,5 @@
 import { getTranslate3d, setTranslate3d, clamp } from "./animation";
+import { wrapElements } from "./slideout";
 
 var Navigation = function (carousel, anim) {
     var $el = carousel.$el,
@@ -137,9 +138,10 @@ var Navigation = function (carousel, anim) {
         if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
         {
             // Fixing a minor issue on ie and edge
-            $el.children().css("height", vars.slideHeight);
+            // TODO: think about this
+            // $el.children().css("height", vars.slideHeight);
 
-            $el.savedSlide.wrapAll("<div class='itemslide_slideoutwrap' />"); //wrapAll
+            wrapElements([$el.savedSlide], "itemslide_slideoutwrap");
 
             verticalSlideFirstTimeCount = -1;
         }

@@ -65,10 +65,16 @@ export function slideout(_this) {
         if (slides.savedSlideIndex < vars.currentIndex) //Check if before or after
         {
             before = true;
-            slides.children(":nth-child(-n+" + (slides.savedSlideIndex + 1) + ")").wrapAll("<div class='itemslide_move' />");
+
+            const toWrap = slides.querySelectorAll(":nth-child(-n+" + (slides.savedSlideIndex + 1) + ")");
+
+            wrapElements(toWrap, "itemslide_move");
         } else {
             before = false;
-            slides.children(":nth-child(n+" + (slides.savedSlideIndex + 2) + ")").wrapAll("<div class='itemslide_move' />");
+
+            const toWrap = slides.querySelectorAll(":nth-child(n+" + (slides.savedSlideIndex + 2) + ")");
+
+            wrapElements(toWrap, "itemslide_move");
         }
 
         enableOpacity = true;
@@ -91,18 +97,19 @@ export function slideout(_this) {
         currentTime = Date.now() - swipeOutStartTime;
 
         if (enableOpacity) {
-            $(".itemslide_slideoutwrap").translate3d(0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0)); //DURATION VELOCITY
-            slides.savedSlide.css("opacity", savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1)); //Can try to remove opacity when animating width
+            setTranslate3d(document.querySelector(".itemslide_slideoutwrap"), 0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0)); // DURATION VELOCITY
+            slides.savedSlide.style.opacity = savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1); // Can try to remove opacity when animating width
         } else {
             //Animate slides after current swiped out slide
 
             if (goback) //Go back to regular (escape)
             {
-                $(".itemslide_slideoutwrap").children().unwrap(); //
-                $(itemslideMove).children().unwrap(); //Remove wrapper
+                unwrapElements(document.querySelector(".itemslide_slideoutwrap").children); //
+                unwrapElements(document.querySelector(itemslideMove).children); //Remove wrapper
 
                 //Just fixing a minor issue with explorer
-                slides.children().css("height", "");
+                //TODO: think about here
+                // slides.children().css("height", "");
 
                 slides.end_animation = true;
                 currentTime = 0;
@@ -111,25 +118,24 @@ export function slideout(_this) {
             }
 
             //Before - multiply by -1 to turn to positive if before = true
-            $(itemslideMove).translate3d(0 - easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1), 0);
-
+            document.querySelector(itemslideMove).translate3d(0 - easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.width(), 125, 0) * (before ? (-1) : 1), 0);
         }
 
         //Happen once every time
         if (removeWrapper == 1) {
 
-            $(".itemslide_slideoutwrap").children().unwrap();
+            unwrapElements(document.querySelector(".itemslide_slideoutwrap").children);
 
             //The slide changes to active
 
             if (slides.savedSlideIndex == vars.currentIndex) //Cool it works
-                $(itemslideMove).children(':nth-child(' + (1) + ')').addClass('itemslide-active'); //Change destination index to active
+                document.querySelector(itemslideMove + ' :nth-child(' + (1) + ')').className = 'itemslide-active'; //Change destination index to active
 
             //Looks like the fix works
-            if (slides.savedSlideIndex == (slides.children().length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide
+            if (slides.savedSlideIndex == (slides.children.length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide
             {
                 settings.duration = 200;
-                _this.anim.gotoSlideByIndex(slides.children().length - 2); //Goto last slide (we still didn't remove slide)
+                _this.anim.gotoSlideByIndex(slides.children.length - 2); //Goto last slide (we still didn't remove slide)
 
             }
 
@@ -149,7 +155,7 @@ export function slideout(_this) {
                 removeWrapper = 1;
 
             if (currentTime >= 375) {
-                $(itemslideMove).children().unwrap(); //Remove wrapper
+                unwrapElements(document.querySelector(itemslideMove).children); //Remove wrapper
 
                 slides.removeSlide(prev.index()); //CAN DOO A WIDTH TRICK ;)
 
@@ -174,6 +180,29 @@ export function slideout(_this) {
     }
 }
 
-function wrapElement(element, wrapperClassName) {
+export function wrapElements(elements, wrapperClassName) {
+    const wrapperElement = document.createElement("div");
+    wrapperElement.className = wrapperClassName;
+
+    elements[0].parentElement.insertBefore(wrapperElement, elements[0]);
+
+    for (const element of elements) {
+        const parentElement = element.parentElement;
+
+
+        const elementToWrap = parentElement.removeChild(element);
+
+        wrapperElement.appendChild(elementToWrap);
+    }
+}
+
+function unwrapElements(elements) {
+    const wrapper = elements[0].parentElement;
+
+    wrapper.parentElement.removeChild(wrapper);
+
+    for (const element of elements) {
+        wrapper.parentElement.appendChild(element)
+    }
 }
 

@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const fs = require("fs");
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: "./src/itemslide.js",
     output: {
         path: path.resolve(__dirname, "dist"),
