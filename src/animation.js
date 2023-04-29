@@ -9,13 +9,12 @@ var Animations = function(carousel) {
     var total_duration, total_back, currentPos, startTime;
     // Public functions
     _this.gotoSlideByIndex = function (i , without_animation) {
-
         var isBoundary;
 
         // Put destination index between boundaries
-        if (i >= slides.children().length - 1 || i <= 0) {
+        if (i >= slides.children.length - 1 || i <= 0) {
             isBoundary = true;
-            i = Math.min(Math.max(i, 0), slides.children().length - 1); //Put in between boundaries
+            i = Math.min(Math.max(i, 0), slides.children.length - 1); //Put in between boundaries
         }
         else {
             isBoundary = false;
@@ -23,10 +22,9 @@ var Animations = function(carousel) {
 
         changeActiveSlideTo(i);
 
-        //SET DURATION
-        //Minimum duration is 10
+        // Minimum duration is 10
         total_duration = Math.max(options.duration
-            - ((1920 / $(window).width()) * Math.abs(vars.velocity) *
+            - ((1920 / window.outerWidth) * Math.abs(vars.velocity) *
                 9 * (options.duration / 230) //Velocity Cut
             )
 
@@ -35,21 +33,18 @@ var Animations = function(carousel) {
 
             , 50
         );
-        //console.log(var.duration)
-        //SET DURATION UNTILL HERE
 
-        total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / $(window).width()) : 0);
-        currentPos = slides.translate3d().x;
+        total_back = (isBoundary ? ((Math.abs(vars.velocity) * 250) / window.outerWidth) : 0);
+        currentPos = getTranslate3d(slides).x;
         _this.currentLandPos = getPositionByIndex(i);
 
-        if(without_animation) {
-            //Goto position without sliding animation
-            slides.translate3d(getPositionByIndex(i));
+        if (without_animation) {
+            setTranslate3d(slides, getPositionByIndex(i));
             // In this case just change position and get out of the function so the animation won't start
             return;
         }
 
-        //Reset
+        // Reset
         window.cancelAnimationFrame(_this.slidesGlobalID);
 
         startTime = Date.now();
@@ -57,12 +52,12 @@ var Animations = function(carousel) {
     };
 
     _this.getLandingSlideIndex = function (x) {
-        //Get slide that will be selected when silding occured - by position
+        // Get slide that will be selected when sliding occurred - by position
 
-        for (var i = 0; i < slides.children().length; i++) {
+        for (var i = 0; i < slides.children.length; i++) {
 
-            if (carousel.getSlidesWidth(false, i) + slides.children().eq(i).outerWidth(true) / 2 -
-                slides.children().eq(i).outerWidth(true) * options.pan_threshold * vars.direction - getPositionByIndex(0) > x) {
+            if (carousel.getSlidesWidth(false, i) + slides.children[i].offsetWidth / 2 -
+                slides.children[i].offsetWidth * options.pan_threshold * vars.direction - getPositionByIndex(0) > x) {
 
                 if (!options.one_item)
                     return i;
@@ -76,30 +71,31 @@ var Animations = function(carousel) {
                 }
             }
         }
-        return options.one_item ? vars.currentIndex + 1 : slides.children().length - 1; //If one item enabled than just go one slide forward and not until the end.
+        return options.one_item ? vars.currentIndex + 1 : slides.children.length - 1; //If one item enabled than just go one slide forward and not until the end.
     };
 
     _this.isOutBoundaries = function () { //Return if user is panning out of boundaries
-        return (Math.floor(slides.translate3d().x) > (getPositionByIndex(0)) && vars.direction == -1) ||
-                 (Math.ceil(slides.translate3d().x) < (getPositionByIndex(slides.children().length - 1)) && vars.direction == 1); //CHANGED HERE
+        return (Math.floor(getTranslate3d(slides).x) > (getPositionByIndex(0)) && vars.direction == -1) ||
+                 (Math.ceil(getTranslate3d(slides).x) < (getPositionByIndex(slides.children.length - 1)) && vars.direction == 1);
     };
 
 
-    // Private functions
-    function changeActiveSlideTo (i) {
-        slides.children(':nth-child(' + ((vars.currentIndex + 1) || 0) + ')').removeClass('itemslide-active');
+    function changeActiveSlideTo(i) {
+        const oldSlide = slides.children[vars.currentIndex || 0];
+        oldSlide.className = oldSlide.className.replace("itemslide-active", "");
 
-        slides.children(':nth-child(' + ((i + 1) || 0) + ')').addClass('itemslide-active'); //Change destination index to active
+        slides.children[i || 0].className += "itemslide-active"; //Change destination index to active
 
-        //Check if landingIndex is different from currentIndex
         if (i != options.currentIndex) {
-            vars.currentIndex = i; //Set current index to landing index
-            slides.trigger('changeActiveIndex');
+            vars.currentIndex = i;
+            slides.dispatchEvent(new Event("changeActiveIndex"));
         }
     }
 
-    function getPositionByIndex (i) {
-        return -(carousel.getSlidesWidth(false, i) - ((slides.parent().outerWidth(true) - slides.children().eq(i).outerWidth(true)) / (options.left_sided ? 1 : 2)));
+    function getPositionByIndex(i) {
+        const slidesWidth = carousel.getSlidesWidth(false, i);
+        const containerMinusSlideWidth = slides.parentElement.offsetWidth - slides.children[i].offsetWidth;
+        return -(slidesWidth - (containerMinusSlideWidth / (options.left_sided ? 1 : 2)));
     }
 
     function animationRepeat() {
@@ -109,73 +105,56 @@ var Animations = function(carousel) {
         	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
         }
 
-        slides.trigger('changePos');
+        slides.dispatchEvent(new Event("changePos"));
 
-        slides.translate3d(currentPos - easeOutBack(currentTime, 0, currentPos - _this.currentLandPos, total_duration, total_back));
+        const x = currentPos - easeOutBack(currentTime, 0, currentPos - _this.currentLandPos, total_duration, total_back);
+        setTranslate3d(slides, x);
 
         // to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
 
-        if (currentTime >= total_duration) { //Check if easing time has reached total duration
-            //Animation Ended
-            slides.translate3d(_this.currentLandPos);
-            return; //out of recursion
+        if (currentTime >= total_duration) {
+            setTranslate3d(slides, _this.currentLandPos);
+            return;
         }
 
-        // yupp
         _this.slidesGlobalID = requestAnimationFrame(animationRepeat);
-
     }
 };
 
-// Export object
 export default Animations;
 
-//General Functions
-global.matrixToArray = function(matrix) {
-    return matrix.substr(7, matrix.length - 8).split(', ');
-};
-
-global.easeOutBack = function(t, b, c, d, s) {
-    //s - controls how forward will it go beyond goal
+export function easeOutBack(t, b, c, d, s) {
+    // s - controls how forward will it go beyond goal
     if (s == undefined) s = 1.70158;
 
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
 };
 
-// Function to access t3d
-$.fn.translate3d = function (x, y) {
-    if (x != null) { //Set value
-        this.css('transform', 'translate3d(' + x + 'px' + ',' + (y || 0) + 'px, 0px)');
-    } else { //Get value
-        var matrix = matrixToArray(this.css("transform"));
+export function getTranslate3d(element) {
+    const transform = element.style.transform;
 
-        //Check if jQuery
-        if ($.fn.jquery != null) {
-            return { //Return object with x and y
-                x: (isExplorer ? parseFloat(matrix[12]) : parseFloat(matrix[4])),
-                y: (isExplorer ? parseFloat(matrix[13]) : parseFloat(matrix[5]))
-            };
-        }
-        else {
-            // Zepto
-            var vals = this.css('transform').replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); //Consider regex instead of tons of replaces
+    var vals = transform.replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); // Consider regex instead of tons of replaces
 
-            return { //Return object with x and y
-                x: parseFloat(vals[0]),
-                y: parseFloat(vals[1])
-            };
-        }
-    }
+    return { // Return object with x and y
+        x: parseFloat(vals[0]),
+        y: parseFloat(vals[1])
+    };
+}
+
+export function setTranslate3d(element, x, y) {
+    element.style.transform = `translate3d(${x}px,${(y || 0)}px, 0px)`;
 };
 
-global.clamp = function (min, max, value) {
-	  return Math.min(Math.max(value, min), max);
+export function clamp(min, max, value) {
+    return Math.min(Math.max(value, min), max);
 };
 
-global.getCurrentTotalWidth = function (inSlides) { // Returns the total number of pixels for each items
-	var width = 0;
-	inSlides.children().each(function() {
-	    width += $(this).outerWidth( true );
+export function getCurrentTotalWidth(inSlides) { // Returns the total number of pixels for each items
+	let width = 0;
+
+	Array.from(inSlides.children).forEach((slide) => {
+	    width += slide.offsetWidth;
 	});
+
 	return width;
 };

@@ -1,19 +1,17 @@
-export default {
-    apply: function (slides, carousel) {  // slides = jQuery object of carousel, carousel = ItemSlide object with the internal functions
-
-        slides.gotoSlide = function (i) {
+export function addExternalFunctions(element, carousel) {
+        element.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
         };
 
-        slides.nextSlide = function () {
+        element.nextSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex + 1);
         };
 
-        slides.previousSlide = function () {
+        element.previousSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
 
-        slides.reload = function () { // Get index of active slide
+        element.reload = function () { // Get index of active slide
             var $el = carousel.$el;
             var vars = carousel.vars;
 
@@ -30,19 +28,19 @@ export default {
             vars.velocity = 0;
             // w/o animation cuz its smoother
 
-            slides.gotoSlide(vars.currentIndex);
+            element.gotoSlide(vars.currentIndex);
         };
 
-        slides.addSlide = function (data) {
-            slides.append("<li>" + data + "</li>");
+        element.addSlide = function (data) {
+            element.append("<li>" + data + "</li>");
 
             // Refresh events
             carousel.nav.createEvents();
 
-            slides.reload();
+            element.reload();
         };
 
-        slides.removeSlide = function (index) {
+        element.removeSlide = function (index) {
             carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
         };
@@ -50,18 +48,17 @@ export default {
         // GET Methods
 
         //Get index of active slide
-        slides.getActiveIndex = function () {
+        element.getActiveIndex = function () {
             return carousel.vars.currentIndex;
         };
 
         //Get current position of carousel
-        slides.getCurrentPos = function () {
-            return slides.translate3d().x;
+        element.getCurrentPos = function () {
+            return element.translate3d().x;
         };
 
         // Get index of a slide given a position on carousel
-        slides.getIndexByPosition = function(x) {
+        element.getIndexByPosition = function(x) {
             return carousel.anim.getLandingSlideIndex(-x);
         };
-    }
-};
+}

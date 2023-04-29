@@ -1,32 +1,17 @@
-/*
- This code is for the swipe out feature.
- Can be enabled by setting the swipe_out option to true.
- */
+import { getTranslate3d, setTranslate3d } from "./animation";
 
-/*
- Wrappers for slide out explantion:
- To apply multiple transforms on one element - you wrap the element with a tag to apply the transform on the tag.
- */
+export function slideout(_this) {
 
-// http://css-tricks.com/useful-nth-child-recipies/
+    const slides = _this.$el;
+    const settings = _this.options;
+    const vars = _this.vars;
 
-export default {
-    slideout: slideout
-}
-
-function slideout(_this) {
-
-    var slides = _this.$el;
-    var settings = _this.options;
-    var vars = _this.vars;
-
-    //Some variables for the swipe out animation
-    var swipeOutLandPos = -400,
+    let swipeOutLandPos = -400,
         swipeOutStartTime = Date.now(),
         currentSwipeOutPos = 0,
         swipeOutGlobalID = 0;
 
-    var durationSave = 0,
+    let durationSave = 0,
         savedOpacity = 0,
         prev;
 
@@ -35,42 +20,36 @@ function slideout(_this) {
 
     slides.end_animation = true;
 
-    //For Slideout
     slides.savedSlideIndex = 0;
 
 
     var goback = false;
-    //Activate swipe out animation
-
 
     _this.swipeOut = function () {
 
-        currentSwipeOutPos = $(".itemslide_slideoutwrap").translate3d().y;
+        currentSwipeOutPos = getTranslate3d(document.querySelector(".itemslide_slideoutwrap")).y;
 
-        swipeDirection = (currentSwipeOutPos < 0);
+        swipeDirection = currentSwipeOutPos < 0;
 
-        //Check direction of swiping and change land position according
-        if (!swipeDirection)
+        if (!swipeDirection) {
             swipeOutLandPos = 400;
-        else
+        } else {
             swipeOutLandPos = -400;
+        }
 
-
-        //Check if to count as slide out or go back
+        // Check if to count as slide out or go back
         if (Math.abs(0 - currentSwipeOutPos) < 50) {
             goback = true;
             swipeOutLandPos = 0;
         } else {
             goback = false;
 
-            //Trigger swipeout event
-            slides.trigger({
-                type: "swipeout",
+            const swipeOutEvent = new Event("swipeout", {
                 slide: slides.savedSlideIndex
             });
-        }
 
-        //Some resets
+            slides.dispatchEvent(swipeOutEvent);
+        }
 
         removeWrapper = 0;
 
@@ -80,10 +59,9 @@ function slideout(_this) {
 
         swipeOutStartTime = Date.now();
 
-        savedOpacity = slides.savedSlide.css("opacity");
+        savedOpacity = slides.savedSlide.style.opacity;
 
-
-        //Replaced gt and lt with a pure css alternative
+        // Replaced gt and lt with a pure css alternative
         if (slides.savedSlideIndex < vars.currentIndex) //Check if before or after
         {
             before = true;
@@ -91,10 +69,8 @@ function slideout(_this) {
         } else {
             before = false;
             slides.children(":nth-child(n+" + (slides.savedSlideIndex + 2) + ")").wrapAll("<div class='itemslide_move' />");
-            /*Hmm looks like it works good on (x+2)*/
         }
 
-        ///BACK
         enableOpacity = true;
 
         slides.end_animation = false; //Set to disable more swipe out until finished (see swipeOutAnimation end if)
@@ -188,13 +164,16 @@ function slideout(_this) {
                 }
                 settings.duration = durationSave;
                 currentTime = 0;
-                slides.end_animation = true; //enables future swipe outs
+                slides.end_animation = true;
+
                 return;
             }
         }
 
         swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
+    }
+}
 
-    } //End of raf (Swipe out animation)
+function wrapElement(element, wrapperClassName) {
+}
 
-} //End of slide out init

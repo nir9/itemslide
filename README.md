@@ -1,6 +1,6 @@
-# ItemSlide.js
+# ItemSlide
 
-A simple & beautiful touch carousel
+A simple & beautiful JavaScript touch carousel
 
 [Website](https://itemslide.org/)
 
@@ -12,9 +12,7 @@ A simple & beautiful touch carousel
 - The ability to "swipe out" slides
 - Centered carousel or left sided (default is centered)
 
-
 ![ItemSlide](https://itemslide.org/website-src/img/image.jpg)
-
 
 ### Downloading
 
@@ -29,7 +27,6 @@ or
 ```bash
 $ bower install itemslide
 ```
-
 #### Check out the docs at [this link](https://itemslide.org/docs)
 
 #### [How to build ItemSlide](https://github.com/nir9/itemslide/blob/master/CONTRIBUTING.md)

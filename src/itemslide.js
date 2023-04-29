@@ -1,10 +1,7 @@
 "use strict";
 
-global.isExplorer = !!document.documentMode; // At least IE6
-
-import "./polyfills";
 import Carousel from "./carousel";
-import externalFuncs from "./external_funcs";
+import { addExternalFunctions } from "./external_funcs";
 
 var defaults = {
     duration: 350,
@@ -21,10 +18,15 @@ var defaults = {
     left_sided: false // Restricts the movements to the borders instead of the middle
 };
 
-$.fn.itemslide = function (options) {
-    let optionsMergedWithDefaults = { ...defaults, ...options };
+class Itemslide {
+    constructor(element, options) {
+        let optionsMergedWithDefaults = { ...defaults, ...options };
 
-    externalFuncs.apply(this, Carousel, optionsMergedWithDefaults);
+        console.log(element);
+        addExternalFunctions(element, Carousel);
 
-    Carousel.create(optionsMergedWithDefaults, this);
-};
+        Carousel.create(optionsMergedWithDefaults, element);
+    }
+}
+
+window.Itemslide = Itemslide;
