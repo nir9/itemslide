@@ -7,9 +7,7 @@ var Navigation = function (carousel, anim) {
         vars = carousel.vars,
         swipeOut = carousel.swipeOut;
 
-
     this.createEvents = function () {
-        // Start navigation listeners
         Array.from($el.children).forEach((slide) => {
             for (const eventType of ["mousedown", "touchstart"]) {
                 slide.addEventListener(eventType, (e) => {
@@ -27,41 +25,34 @@ var Navigation = function (carousel, anim) {
 
     this.createEvents();
 
-    // Navigation Variables
-    var swipeStartTime, isDown, prevent, startPointX, startPointY, vertical_pan = false,
+    var swipeStartTime, isDown, startPreventDefault, startPointX, startPointY, vertical_pan = false,
         horizontal_pan;
 
-    // Swipe out Variables
     var verticalSlideFirstTimeCount;
 
-    // Getter for vertical_pan
     this.get_vertical_pan = function () {
         return vertical_pan
     };
 
     function touchstart(e) {
-        // no-drag feature
         if (e.target.getAttribute("no-drag") === "true" || !$el.end_animation) {
-            //Or if hasn't ended swipe out escape
+            // Or if hasn't ended swipe out escape
             return;
         }
 
         var touch;
 
-        //Check for touch event or mousemove
         if (e.type == 'touchstart') {
             touch = getTouch(e);
         } else {
             touch = e;
         }
 
-
-        //Reset
         swipeStartTime = Date.now();
 
         isDown = 1;
 
-        prevent = 0; //to know when to start prevent default
+        startPreventDefault = 0;
 
         startPointX = touch.pageX;
         startPointY = touch.pageY;
@@ -69,7 +60,7 @@ var Navigation = function (carousel, anim) {
         vertical_pan = false;
         horizontal_pan = false;
 
-        $el.savedSlide = e.target; // Get the slide that has been pressed
+        $el.savedSlide = e.target;
 
         $el.savedSlideIndex = Array.from($el.savedSlide.parentElement.children).indexOf($el.savedSlide);
 
@@ -91,11 +82,11 @@ var Navigation = function (carousel, anim) {
         if (e.type == 'touchmove') {
             touch = getTouch(e);
 
-            if (Math.abs(touch.pageX - startPointX) > 10) { //If touch event than check if to start preventing default behavior
-                prevent = 1;
+            if (Math.abs(touch.pageX - startPointX) > 10) {
+                startPreventDefault = 1;
             }
 
-            if (prevent) {
+            if (startPreventDefault) {
                 e.preventDefault();
             }
         } 
@@ -125,7 +116,7 @@ var Navigation = function (carousel, anim) {
 
         } else {
 
-            if (!firstTime) { //Reset Values
+            if (!firstTime) {
                 anim.currentLandPos = getTranslate3d($el).x;
                 startPointX = touch.pageX;
             }
@@ -134,14 +125,13 @@ var Navigation = function (carousel, anim) {
 
         }
 
-        //check if to wrap
         if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
         {
-            // Fixing a minor issue on ie and edge
-            // TODO: think about this
-            // $el.children().css("height", vars.slideHeight);
+            Array.from($el.children).forEach((slide) => {
+                slide.style.height = vars.slideHeight + "px"
+            });
 
-            wrapElements([$el.savedSlide], "itemslide_slideoutwrap");
+            wrapElements([$el.savedSlide], "itemslide_slideoutwrap", true);
 
             verticalSlideFirstTimeCount = -1;
         }
@@ -156,19 +146,18 @@ var Navigation = function (carousel, anim) {
             window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
         }
-        //Is vertical panning or horizontal panning
-        if (Math.abs(touch.pageY - startPointY) > 6) //Is vertical panning
-        {
+
+        if (Math.abs(touch.pageY - startPointY) > 6) {
             if (!horizontal_pan && $el.end_animation) {
                 vertical_pan = true;
             }
         }
 
-
         //Reposition according to horizontal navigation or vertical navigation
         if (horizontal_pan) {
 
-            if (options.disable_slide) { //Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
+            // Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
+            if (options.disable_slide) {
                 return;
             }
 
@@ -183,16 +172,18 @@ var Navigation = function (carousel, anim) {
 
                 + anim.currentLandPos);
 
-            //Triggers pan and changePos when swiping carousel
             $el.dispatchEvent(new Event("changePos"));
             $el.dispatchEvent(new Event("pan"));
 
-        } else if (vertical_pan && options.swipe_out) { //Swipe out
+        } else if (vertical_pan && options.swipe_out) {
             e.preventDefault();
 
-            setTranslate3d(document.querySelector(".itemslide_slideoutwrap"), 0, touch.pageY - startPointY); //Using wrapper to transform brief explanation at the top.
+            const slideOutWrap = document.querySelector(".itemslide_slideoutwrap");
 
-            //Happen once...
+            if (slideOutWrap) {
+                setTranslate3d(slideOutWrap, 0, touch.pageY - startPointY);
+            }
+
             if (verticalSlideFirstTimeCount != -1) {
                 verticalSlideFirstTimeCount = 1;
             }
@@ -201,7 +192,6 @@ var Navigation = function (carousel, anim) {
 
     function touchend(e) {
         if (isDown) {
-
             isDown = false;
 
             var touch;
@@ -217,10 +207,9 @@ var Navigation = function (carousel, anim) {
             window.removeEventListener('mousemove', mousemove);
             window.removeEventListener('touchmove', mousemove);
 
-            //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
-            //Vertical PANNING
+            // Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             if (vertical_pan && options.swipe_out) {
-                vertical_pan = false; //Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
+                vertical_pan = false; // Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
 
                 swipeOut();
 
@@ -276,7 +265,7 @@ function getTouch(e) {
         return e.changedTouches[0];
     }
 
-    return e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    return e.touches[0] || e.changedTouches[0];
 }
 
 export default Navigation;

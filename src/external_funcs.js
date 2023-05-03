@@ -1,3 +1,5 @@
+import { getCurrentTotalWidth, setTranslate3d, getTranslate3d } from "./animation";
+
 export function addExternalFunctions(element, carousel) {
         element.gotoSlide = function (i) {
             carousel.anim.gotoSlideByIndex(i);
@@ -32,7 +34,10 @@ export function addExternalFunctions(element, carousel) {
         };
 
         element.addSlide = function (data) {
-            element.append("<li>" + data + "</li>");
+            const newSlide = document.createElement("li");
+            newSlide.innerHTML = data;
+
+            element.appendChild(newSlide);
 
             // Refresh events
             carousel.nav.createEvents();
@@ -41,7 +46,7 @@ export function addExternalFunctions(element, carousel) {
         };
 
         element.removeSlide = function (index) {
-            carousel.$el.children(':nth-child(' + ((index + 1) || 0) + ')').remove();
+            carousel.$el.removeChild(carousel.$el.children[index || 0]);
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
         };
 
@@ -54,7 +59,7 @@ export function addExternalFunctions(element, carousel) {
 
         //Get current position of carousel
         element.getCurrentPos = function () {
-            return element.translate3d().x;
+            return getTranslate3d(element).x;
         };
 
         // Get index of a slide given a position on carousel

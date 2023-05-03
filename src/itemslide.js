@@ -22,7 +22,6 @@ class Itemslide {
     constructor(element, options) {
         let optionsMergedWithDefaults = { ...defaults, ...options };
 
-        console.log(element);
         addExternalFunctions(element, Carousel);
 
         Carousel.create(optionsMergedWithDefaults, element);

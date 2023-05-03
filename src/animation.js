@@ -82,9 +82,9 @@ var Animations = function(carousel) {
 
     function changeActiveSlideTo(i) {
         const oldSlide = slides.children[vars.currentIndex || 0];
-        oldSlide.className = oldSlide.className.replace("itemslide-active", "");
+        oldSlide.className = "";
 
-        slides.children[i || 0].className += "itemslide-active"; //Change destination index to active
+        slides.children[i || 0].className = " itemslide-active"; //Change destination index to active
 
         if (i != options.currentIndex) {
             vars.currentIndex = i;
