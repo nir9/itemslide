@@ -12,7 +12,7 @@ export function slideout(_this) {
         swipeOutGlobalID = 0;
 
     let durationSave = 0,
-        savedOpacity = 0,
+        savedOpacity = 1,
         prev;
 
     let isSwipeDirectionUp;
@@ -57,7 +57,7 @@ export function slideout(_this) {
 
         swipeOutStartTime = Date.now();
 
-        savedOpacity = slides.savedSlide.style.opacity;
+        savedOpacity = slides.savedSlide.style.opacity || 1;
 
         if (slides.savedSlideIndex < vars.currentIndex) {
             before = true;
@@ -129,16 +129,18 @@ export function slideout(_this) {
 
             unwrapElements(document.querySelector(".itemslide_slideoutwrap").children);
 
-            // The slide changes to active
+            if (slides.savedSlideIndex == vars.currentIndex) {
+                const firstMoveSlide = document.querySelector(itemslideMove + ' :nth-child(1)');
+                if (firstMoveSlide) {
+                    firstMoveSlide.className = "itemslide-active"; // Change destination index to active
+                }
+            }
 
-            if (slides.savedSlideIndex == vars.currentIndex) //Cool it works
-                document.querySelector(itemslideMove + ' :nth-child(' + (1) + ')').className = 'itemslide-active'; //Change destination index to active
-
-            //Looks like the fix works
-            if (slides.savedSlideIndex == (slides.children.length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) //Is in last slide
+            // Looks like the fix works
+            if (slides.savedSlideIndex == (slides.children.length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) // Is in last slide
             {
                 settings.duration = 200;
-                _this.anim.gotoSlideByIndex(slides.children.length - 2); //Goto last slide (we still didn't remove slide)
+                _this.anim.gotoSlideByIndex(slides.children.length - 2); // Goto last slide (we still didn't remove slide)
 
             }
 

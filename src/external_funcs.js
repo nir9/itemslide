@@ -18,12 +18,12 @@ export function addExternalFunctions(element, carousel) {
             var vars = carousel.vars;
 
             if (vars.parent_width) {
-                $el.children().width($el.parent().outerWidth(true));
+                Array.from($el.children).forEach((slide) => slide.style.width = $el.parentElement.offsetWidth);
             }
 
             carousel.adjustCarouselWidthIfNotDisabled();
 
-            vars.slideHeight = $el.children().height();
+            vars.slideHeight = $el.children[0].offsetHeight;
 
             vars.allSlidesWidth = getCurrentTotalWidth($el);
             // Set panning veloicity to zero
