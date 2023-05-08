@@ -1,4 +1,4 @@
-import { getCurrentTotalWidth, setTranslate3d, getTranslate3d } from "./animation";
+import { getCurrentTotalWidth, getTranslate3d } from "./animation";
 
 export function addExternalFunctions(element, carousel) {
         element.gotoSlide = function (i) {
@@ -16,6 +16,10 @@ export function addExternalFunctions(element, carousel) {
         element.reload = function () { // Get index of active slide
             var $el = carousel.$el;
             var vars = carousel.vars;
+
+            if ($el.children.length === 0) {
+                return;
+            }
 
             if (vars.parent_width) {
                 Array.from($el.children).forEach((slide) => slide.style.width = $el.parentElement.offsetWidth);
@@ -46,8 +50,14 @@ export function addExternalFunctions(element, carousel) {
         };
 
         element.removeSlide = function (index) {
+            if (carousel.vars.currentIndex === carousel.$el.children.length - 1) {
+                carousel.vars.currentIndex -= 1;
+            }
+
             carousel.$el.removeChild(carousel.$el.children[index || 0]);
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
+
+            element.reload();
         };
 
         // GET Methods
