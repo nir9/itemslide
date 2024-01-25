@@ -1,14 +1,12 @@
 {
   "name": "itemslide",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "A simple and beautiful JavaScript touch carousel",
-  "main": "dist/itemslide.min.js",
+  "main": "itemslide.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "build": "webpack build",
-    "watch": "webpack watch"
   },
   "repository": {
     "type": "git",
@@ -28,7 +26,5 @@
     "url": "https://github.com/nir9/itemslide/issues"
   },
   "devDependencies": {
-    "webpack": "^5.77.0",
-    "webpack-cli": "^5.0.1"
   }
 }
