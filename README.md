@@ -13,7 +13,7 @@ A simple & beautiful vanilla JavaScript touch carousel
 ### Getting Started
 
 #### Markup
-```
+```html
     <div id="scrolling">
         <ul>
             <li>Slide #1</li>
@@ -26,7 +26,7 @@ A simple & beautiful vanilla JavaScript touch carousel
 
 For this example CSS, we assume the carousel is contained within an element that has the id "scrolling"
 
-```
+```css
 #scrolling {
     overflow: hidden;
 }
@@ -48,13 +48,13 @@ For this example CSS, we assume the carousel is contained within an element that
 
 #### Include Script
 
-```
+```html
 <script src="itemslide.js"></script>
 ```
 
 #### Initialize
 
-```
+```js
 var itemslide;
 
 window.addEventListener("load", () => {
