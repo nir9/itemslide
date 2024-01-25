@@ -1,15 +1,15 @@
 "use strict";
 
+(function () {
+
 var Animations = function(carousel) {
 
-    // Private variables
     var _this = this,
         vars = carousel.vars,
         options = carousel.options,
         slides = carousel.$el;
 
     var total_duration, total_back, currentPos, startTime;
-    // Public functions
     _this.gotoSlideByIndex = function (i , without_animation) {
         var isBoundary;
 
@@ -46,7 +46,6 @@ var Animations = function(carousel) {
             return;
         }
 
-        // Reset
         window.cancelAnimationFrame(_this.slidesGlobalID);
 
         startTime = Date.now();
@@ -194,7 +193,6 @@ function slideout(_this) {
             swipeOutLandPos = -400;
         }
 
-        // Check if to count as slide out or go back
         if (Math.abs(0 - currentSwipeOutPos) < 50) {
             goback = true;
             swipeOutLandPos = 0;
@@ -324,16 +322,16 @@ function slideout(_this) {
                     unwrapElements(document.querySelector(itemslideMove).children); //Remove wrapper
                 }
 
-                slides.removeSlide(Array.from(prev.parentElement.children).indexOf(prev)); // CAN DOO A WIDTH TRICK ;)
+				var shouldGotoAfterRemoveSlide = false;
 
-                if (slides.savedSlideIndex == 0 && vars.currentIndex != 0 || before) {
-                    // change index instant change of active index
-                    // Create function in this file to instant reposition.
-                    // Or just t3d and getPositionByIndex
+                if ((slides.savedSlideIndex == 0 && vars.currentIndex != 0) || (before && vars.currentIndex != slides.children.length - 1)) {
+					shouldGotoAfterRemoveSlide = true;
+				}
 
+                slides.removeSlide(Array.from(prev.parentElement.children).indexOf(prev));
+
+				if (shouldGotoAfterRemoveSlide) {
                     _this.anim.gotoSlideByIndex(vars.currentIndex - 1, true);
-
-                    // Goto-slide to slide without animation
                 }
 
                 settings.duration = durationSave;
@@ -483,13 +481,13 @@ var Navigation = function (carousel, anim) {
         }
 
         // Set direction of panning
-        if ((-(touch.pageX - startPointX)) > 0) { //Set direction
+        if ((-(touch.pageX - startPointX)) > 0) { // Set direction
             vars.direction = 1; //PAN LEFT
         } else {
             vars.direction = -1;
         }
 
-        //If out boundaries than set some variables to save previous location before out boundaries
+        // If out boundaries than set some variables to save previous location before out boundaries
         if (anim.isOutBoundaries()) {
             if (firstTime) {
                 savedStartPt = touch.pageX;
@@ -508,7 +506,7 @@ var Navigation = function (carousel, anim) {
 
         }
 
-        if (verticalSlideFirstTimeCount == 1) //This will happen once every mousemove when vertical panning
+        if (verticalSlideFirstTimeCount == 1) // This will happen once every mousemove when vertical panning
         {
             Array.from($el.children).forEach((slide) => {
                 slide.style.height = vars.slideHeight + "px"
@@ -519,14 +517,14 @@ var Navigation = function (carousel, anim) {
             verticalSlideFirstTimeCount = -1;
         }
 
-        //Reposition according to current deltaX
-        if (Math.abs(touch.pageX - startPointX) > 6) //Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+        // Reposition according to current deltaX
+        if (Math.abs(touch.pageX - startPointX) > 6) // Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
         {
-            if (!vertical_pan && $el.end_animation) { //So it will stay one direction
+            if (!vertical_pan && $el.end_animation) { // So it will stay one direction
                 horizontal_pan = true;
             }
 
-            window.cancelAnimationFrame(anim.slidesGlobalID); //STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+            window.cancelAnimationFrame(anim.slidesGlobalID); // STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
 
         }
 
@@ -599,7 +597,7 @@ var Navigation = function (carousel, anim) {
                 return;
             } else if ($el.end_animation && !options.disable_slide) {
                 var deltaTime = (Date.now() - swipeStartTime);
-                //Verify delta is > 0 to avoid divide by 0 error
+                // Verify delta is > 0 to avoid divide by 0 error
                 deltaTime++;
                 vars.velocity = -(touch.pageX - startPointX) / deltaTime;
 
@@ -769,8 +767,8 @@ var Carousel = {
 };
 
 function addExternalFunctions(element, carousel) {
-        element.gotoSlide = function (i) {
-            carousel.anim.gotoSlideByIndex(i);
+        element.gotoSlide = function (i, noAnimation) {
+            carousel.anim.gotoSlideByIndex(i, noAnimation);
         };
 
         element.nextSlide = function () {
@@ -781,7 +779,7 @@ function addExternalFunctions(element, carousel) {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
 
-        element.reload = function () { // Get index of active slide
+        element.reload = function (noAnimation) {
             var $el = carousel.$el;
             var vars = carousel.vars;
 
@@ -802,7 +800,7 @@ function addExternalFunctions(element, carousel) {
             vars.velocity = 0;
             // w/o animation cuz its smoother
 
-            element.gotoSlide(vars.currentIndex);
+            element.gotoSlide(vars.currentIndex, noAnimation);
         };
 
         element.addSlide = function (data) {
@@ -825,22 +823,17 @@ function addExternalFunctions(element, carousel) {
             carousel.$el.removeChild(carousel.$el.children[index || 0]);
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
 
-            element.reload();
+            element.reload(true);
         };
 
-        // GET Methods
-
-        //Get index of active slide
         element.getActiveIndex = function () {
             return carousel.vars.currentIndex;
         };
 
-        //Get current position of carousel
         element.getCurrentPos = function () {
             return getTranslate3d(element).x;
         };
 
-        // Get index of a slide given a position on carousel
         element.getIndexByPosition = function(x) {
             return carousel.anim.getLandingSlideIndex(-x);
         };
@@ -862,7 +855,10 @@ var defaults = {
 };
 
 function Itemslide(element, options) {
-	let optionsMergedWithDefaults = { ...defaults, ...options };
+	var optionsMergedWithDefaults = {  };
+
+	Object.assign(optionsMergedWithDefaults, defaults);
+	Object.assign(optionsMergedWithDefaults, options);
 
 	addExternalFunctions(element, Carousel);
 
@@ -870,3 +866,6 @@ function Itemslide(element, options) {
 }
 
 window.Itemslide = Itemslide;
+
+})();
+
