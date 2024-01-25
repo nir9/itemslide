@@ -1,14 +1,14 @@
 var carousel;
-let element;
+var itemslide;
 
 window.addEventListener("load", () => {
-    element = document.querySelector("#scrolling ul");
-    const itemslide = new Itemslide(element, {
+    var element = document.querySelector("#scrolling ul");
+    itemslide = new Itemslide(element, {
         swipe_out: true
     });
 });
 
 window.addEventListener("resize", () => {
-    element.reload();
+    itemslide.reload();
 });
 

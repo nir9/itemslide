@@ -13,10 +13,9 @@ var Animations = function(carousel) {
     _this.gotoSlideByIndex = function (i , without_animation) {
         var isBoundary;
 
-        // Put destination index between boundaries
         if (i >= slides.children.length - 1 || i <= 0) {
             isBoundary = true;
-            i = Math.min(Math.max(i, 0), slides.children.length - 1); //Put in between boundaries
+            i = Math.min(Math.max(i, 0), slides.children.length - 1);
         }
         else {
             isBoundary = false;
@@ -24,14 +23,13 @@ var Animations = function(carousel) {
 
         changeActiveSlideTo(i);
 
-        // Minimum duration is 10
         total_duration = Math.max(options.duration
             - ((1920 / window.outerWidth) * Math.abs(vars.velocity) *
-                9 * (options.duration / 230) //Velocity Cut
+                9 * (options.duration / 230)
             )
 
-            - (_this.isOutBoundaries() ? (vars.distanceFromStart / 15) : 0) // Boundaries Spring cut
-            * (options.duration / 230) //Relative to chosen duration
+            - (_this.isOutBoundaries() ? (vars.distanceFromStart / 15) : 0)
+            * (options.duration / 230)
 
             , 50
         );
@@ -236,7 +234,7 @@ function slideout(_this) {
 
         enableOpacity = true;
 
-        slides.end_animation = false; // Set to disable more swipe out until finished (see swipeOutAnimation end if)
+        slides.end_animation = false;
 
         swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
     };
@@ -328,7 +326,7 @@ function slideout(_this) {
 					shouldGotoAfterRemoveSlide = true;
 				}
 
-                slides.removeSlide(Array.from(prev.parentElement.children).indexOf(prev));
+                vars.instance.removeSlide(Array.from(prev.parentElement.children).indexOf(prev));
 
 				if (shouldGotoAfterRemoveSlide) {
                     _this.anim.gotoSlideByIndex(vars.currentIndex - 1, true);
@@ -679,11 +677,11 @@ var mousewheel = {
                 // Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
                 var mouseLandingIndex = _this.vars.currentIndex - (((deltaX == 0 ? deltaY : deltaX) > 0) ? -1 : 1);
 
-                if (mouseLandingIndex >= slides.children.length || mouseLandingIndex < 0) { // If exceeds boundaries dont goto slide
-                    return; //Consider in gotoSlide
+                if (mouseLandingIndex >= slides.children.length || mouseLandingIndex < 0) {
+                    return;
                 }
 
-                _this.vars.velocity = 0; //No BOUNCE
+                _this.vars.velocity = 0;
 
                 anim.gotoSlideByIndex(mouseLandingIndex);
             }
@@ -692,7 +690,7 @@ var mousewheel = {
 };
 
 var Carousel = {
-    create: function (options, element) {
+    create: function (instance, options, element) {
         let _this = this;
 
         _this.$el = element;
@@ -730,15 +728,14 @@ var Carousel = {
 
         _this.adjustCarouselWidthIfNotDisabled();
 
-        // Note: To add vertical scrolling just set width to slides.children('li').width()
-
         _this.vars = {
             currentIndex: 0,
             parent_width: _this.options.parent_width,
             velocity: 0,
             slideHeight: element.children[0].offsetHeight,
             direction: 1,
-            allSlidesWidth: getCurrentTotalWidth(element)
+            allSlidesWidth: getCurrentTotalWidth(element),
+			instance: instance
         };
 
         element.end_animation = true;
@@ -747,8 +744,8 @@ var Carousel = {
             slideout(_this);
         }
 
-        var anim = new Animations(_this); // Stuff like gotoslide and the sliding animation
-        var nav = new Navigation(_this, anim); // Add navigation like swiping and panning to the carousel
+        var anim = new Animations(_this);
+        var nav = new Navigation(_this, anim);
 
         _this.anim = anim;
         _this.nav = nav;
@@ -766,20 +763,20 @@ var Carousel = {
     }
 };
 
-function addExternalFunctions(element, carousel) {
-        element.gotoSlide = function (i, noAnimation) {
+function addExternalFunctions(itemslide, element, carousel) {
+        itemslide.gotoSlide = function (i, noAnimation) {
             carousel.anim.gotoSlideByIndex(i, noAnimation);
         };
 
-        element.nextSlide = function () {
+        itemslide.nextSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex + 1);
         };
 
-        element.previousSlide = function () {
+        itemslide.previousSlide = function () {
             carousel.anim.gotoSlideByIndex(carousel.vars.currentIndex - 1);
         };
 
-        element.reload = function (noAnimation) {
+        itemslide.reload = function (noAnimation) {
             var $el = carousel.$el;
             var vars = carousel.vars;
 
@@ -796,26 +793,24 @@ function addExternalFunctions(element, carousel) {
             vars.slideHeight = $el.children[0].offsetHeight;
 
             vars.allSlidesWidth = getCurrentTotalWidth($el);
-            // Set panning veloicity to zero
-            vars.velocity = 0;
-            // w/o animation cuz its smoother
 
-            element.gotoSlide(vars.currentIndex, noAnimation);
+            vars.velocity = 0;
+
+            itemslide.gotoSlide(vars.currentIndex, noAnimation);
         };
 
-        element.addSlide = function (data) {
+        itemslide.addSlide = function (data) {
             const newSlide = document.createElement("li");
             newSlide.innerHTML = data;
 
             element.appendChild(newSlide);
 
-            // Refresh events
             carousel.nav.createEvents();
 
-            element.reload();
+            itemslide.reload();
         };
 
-        element.removeSlide = function (index) {
+        itemslide.removeSlide = function (index) {
             if (carousel.vars.currentIndex === carousel.$el.children.length - 1) {
                 carousel.vars.currentIndex -= 1;
             }
@@ -823,18 +818,18 @@ function addExternalFunctions(element, carousel) {
             carousel.$el.removeChild(carousel.$el.children[index || 0]);
             carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
 
-            element.reload(true);
+            itemslide.reload(true);
         };
 
-        element.getActiveIndex = function () {
+        itemslide.getActiveIndex = function () {
             return carousel.vars.currentIndex;
         };
 
-        element.getCurrentPos = function () {
+        itemslide.getCurrentPos = function () {
             return getTranslate3d(element).x;
         };
 
-        element.getIndexByPosition = function(x) {
+        itemslide.getIndexByPosition = function(x) {
             return carousel.anim.getLandingSlideIndex(-x);
         };
 }
@@ -855,14 +850,14 @@ var defaults = {
 };
 
 function Itemslide(element, options) {
-	var optionsMergedWithDefaults = {  };
+	var optionsMergedWithDefaults = {};
 
 	Object.assign(optionsMergedWithDefaults, defaults);
 	Object.assign(optionsMergedWithDefaults, options);
 
-	addExternalFunctions(element, Carousel);
+	addExternalFunctions(this, element, Carousel);
 
-	Carousel.create(optionsMergedWithDefaults, element);
+	Carousel.create(this, optionsMergedWithDefaults, element);
 }
 
 window.Itemslide = Itemslide;
