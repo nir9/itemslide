@@ -111,19 +111,19 @@ NOTE: addSlide automatically adds li tags.
 
 ### Events
 
-changePos - triggered when the position of the carousel is changed
+carouselChangePos - triggered when the position of the carousel is changed
 
-pan - triggered when user pans
+carouselPan - triggered when user pans
 
-changeActiveIndex - triggered when the current active item has changed
+carouselChangeActiveIndex - triggered when the current active item has changed
 
-swipeout - triggered when user swipes out a slide (if swipe_out is enabled)
+carouselSwipeOut - triggered when user swipes out a slide (if swipe_out is enabled)
 
-event.slide - get index of swiped out slide
+> event.slideIndex - get index of swiped out slide
 
-clickSlide - triggered when clicking/tapping a slide
+carouselClickSlide - triggered when clicking/tapping a slide
 
-event.slide - get index of the clicked slide
+> event.slideIndex - get index of the clicked slide
 
 ### Classes
 

@@ -40,7 +40,6 @@ var Animations = function(carousel) {
 
         if (without_animation) {
             setTranslate3d(slides, getPositionByIndex(i));
-            // In this case just change position and get out of the function so the animation won't start
             return;
         }
 
@@ -51,7 +50,6 @@ var Animations = function(carousel) {
     };
 
     _this.getLandingSlideIndex = function (x) {
-        // Get slide that will be selected when sliding occurred - by position
 
         for (var i = 0; i < slides.children.length; i++) {
 
@@ -61,19 +59,18 @@ var Animations = function(carousel) {
                 if (!options.one_item)
                     return i;
 
-                // If one item navigation than no momentum therefore different landing slide(one forward or one backwards)
                 else {
                     if (i != vars.currentIndex)
-                        return vars.currentIndex + vars.direction; //Return 0 or more
+                        return vars.currentIndex + vars.direction;
                     else
                         return vars.currentIndex;
                 }
             }
         }
-        return options.one_item ? vars.currentIndex + 1 : slides.children.length - 1; //If one item enabled than just go one slide forward and not until the end.
+        return options.one_item ? vars.currentIndex + 1 : slides.children.length - 1;
     };
 
-    _this.isOutBoundaries = function () { //Return if user is panning out of boundaries
+    _this.isOutBoundaries = function () {
         return (Math.floor(getTranslate3d(slides).x) > (getPositionByIndex(0)) && vars.direction == -1) ||
                  (Math.ceil(getTranslate3d(slides).x) < (getPositionByIndex(slides.children.length - 1)) && vars.direction == 1);
     };
@@ -83,11 +80,11 @@ var Animations = function(carousel) {
         const oldSlide = slides.children[vars.currentIndex || 0];
         oldSlide.className = "";
 
-        slides.children[i || 0].className = " itemslide-active"; //Change destination index to active
+        slides.children[i || 0].className = " itemslide-active";
 
         if (i != options.currentIndex) {
             vars.currentIndex = i;
-            slides.dispatchEvent(new Event("changeActiveIndex"));
+            slides.dispatchEvent(new Event("carouselChangeActiveIndex"));
         }
     }
 
@@ -104,7 +101,7 @@ var Animations = function(carousel) {
         	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
         }
 
-        slides.dispatchEvent(new Event("changePos"));
+        slides.dispatchEvent(new Event("carouselChangePos"));
 
         const x = currentPos - easeOutBack(currentTime, 0, currentPos - _this.currentLandPos, total_duration, total_back);
         setTranslate3d(slides, x);
@@ -130,9 +127,9 @@ function easeOutBack(t, b, c, d, s) {
 function getTranslate3d(element) {
     const transform = element.style.transform;
 
-    var vals = transform.replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(","); // Consider regex instead of tons of replaces
+    var vals = transform.replace("translate3d", "").replace("(", "").replace(")", "").replace(" ", "").replace("px", "").split(",");
 
-    return { // Return object with x and y
+    return {
         x: parseFloat(vals[0]),
         y: parseFloat(vals[1])
     };
@@ -146,7 +143,7 @@ function clamp(min, max, value) {
     return Math.min(Math.max(value, min), max);
 };
 
-function getCurrentTotalWidth(inSlides) { // Returns the total number of pixels for each items
+function getCurrentTotalWidth(inSlides) {
 	let width = 0;
 
 	Array.from(inSlides.children).forEach((slide) => {
@@ -197,9 +194,9 @@ function slideout(_this) {
         } else {
             goback = false;
 
-            const swipeOutEvent = new Event("swipeout", {
-                slide: slides.savedSlideIndex
-            });
+            const swipeOutEvent = new Event("carouselSwipeOut");
+
+			swipeOutEvent.slideIndex = slides.savedSlideIndex;
 
             slides.dispatchEvent(swipeOutEvent);
         }
@@ -251,21 +248,17 @@ function slideout(_this) {
         currentTime = Date.now() - swipeOutStartTime;
 
         if (enableOpacity) {
-            setTranslate3d(document.querySelector(".itemslide_slideoutwrap"), 0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0)); // DURATION VELOCITY
-            slides.savedSlide.style.opacity = savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1); // Can try to remove opacity when animating width
+            setTranslate3d(document.querySelector(".itemslide_slideoutwrap"), 0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0));
+            slides.savedSlide.style.opacity = savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1);
         } else {
-            //Animate slides after current swiped out slide
-
             const itemslideMoveElement = document.querySelector(itemslideMove);
 
-            if (goback) //Go back to regular (escape)
+            if (goback)
             {
                 unwrapElements(document.querySelector(".itemslide_slideoutwrap").children);
                 if (itemslideMoveElement) {
-                    unwrapElements(itemslideMoveElement.children); //Remove wrapper
+                    unwrapElements(itemslideMoveElement.children);
                 }
-
-                // Array.from(slides.children).forEach((slide) => slide.style.height = "");
 
                 slides.end_animation = true;
                 currentTime = 0;
@@ -273,13 +266,11 @@ function slideout(_this) {
                 return;
             }
 
-            // Before - multiply by -1 to turn to positive if before = true
             if (itemslideMoveElement) {
                 setTranslate3d(itemslideMoveElement, 0 - easeOutBack(currentTime - 250, 0, 0 + slides.savedSlide.offsetWidth, 125, 0) * (before ? (-1) : 1), 0);
             }
         }
 
-        // Happen once every time
         if (removeWrapper == 1) {
 
             unwrapElements(document.querySelector(".itemslide_slideoutwrap").children);
@@ -287,37 +278,35 @@ function slideout(_this) {
             if (slides.savedSlideIndex == vars.currentIndex) {
                 const firstMoveSlide = document.querySelector(itemslideMove + ' :nth-child(1)');
                 if (firstMoveSlide) {
-                    firstMoveSlide.className = "itemslide-active"; // Change destination index to active
+                    firstMoveSlide.className = "itemslide-active";
                 }
             }
 
-            // Looks like the fix works
-            if (slides.savedSlideIndex == (slides.children.length - 1) && !before && slides.savedSlideIndex == vars.currentIndex) // Is in last slide
+            if (slides.savedSlideIndex == (slides.children.length - 1) && !before && slides.savedSlideIndex == vars.currentIndex)
             {
                 settings.duration = 200;
-                _this.anim.gotoSlideByIndex(slides.children.length - 2); // Goto last slide (we still didn't remove slide)
+                _this.anim.gotoSlideByIndex(slides.children.length - 2);
 
             }
 
             if (slides.savedSlideIndex == 0 && vars.currentIndex != 0) {
-                currentTime = 500; //To escape this will finish animation
+                currentTime = 500;
             }
 
             removeWrapper = -1;
         }
 
-        // Change current index
         if (currentTime >= 250) {
 
             enableOpacity = false;
 
-            if (removeWrapper != -1) { // Happen once...
+            if (removeWrapper != -1) {
                 removeWrapper = 1;
             }
 
             if (currentTime >= 375) {
                 if (document.querySelector(itemslideMove)) {
-                    unwrapElements(document.querySelector(itemslideMove).children); //Remove wrapper
+                    unwrapElements(document.querySelector(itemslideMove).children);
                 }
 
 				var shouldGotoAfterRemoveSlide = false;
@@ -415,7 +404,6 @@ var Navigation = function (carousel, anim) {
 
     function touchstart(e) {
         if (e.target.getAttribute("no-drag") === "true" || !$el.end_animation) {
-            // Or if hasn't ended swipe out escape
             return;
         }
 
@@ -445,12 +433,10 @@ var Navigation = function (carousel, anim) {
 
         verticalSlideFirstTimeCount = 0;
 
-        // Non-passive event listener to enable prevention of default scrolling behavior
         window.addEventListener('mousemove', mousemove, { passive: false });
         window.addEventListener('touchmove', mousemove, { passive: false });
 
-        // Clear selections so they wont affect sliding
-        clearSelections();
+        window.getSelection().removeAllRanges();
     }
 
     var savedStartPt, firstTime;
@@ -472,20 +458,17 @@ var Navigation = function (carousel, anim) {
         else {
             touch = e;
 
-            // If disabled slide & swipe out do not prevent default to let the marking of text
             if (!options.disable_slide && !options.swipe_out) {
                 e.preventDefault();
             }
         }
 
-        // Set direction of panning
-        if ((-(touch.pageX - startPointX)) > 0) { // Set direction
-            vars.direction = 1; //PAN LEFT
+        if ((-(touch.pageX - startPointX)) > 0) {
+            vars.direction = 1;
         } else {
             vars.direction = -1;
         }
 
-        // If out boundaries than set some variables to save previous location before out boundaries
         if (anim.isOutBoundaries()) {
             if (firstTime) {
                 savedStartPt = touch.pageX;
@@ -504,7 +487,7 @@ var Navigation = function (carousel, anim) {
 
         }
 
-        if (verticalSlideFirstTimeCount == 1) // This will happen once every mousemove when vertical panning
+        if (verticalSlideFirstTimeCount == 1)
         {
             Array.from($el.children).forEach((slide) => {
                 slide.style.height = vars.slideHeight + "px"
@@ -515,14 +498,13 @@ var Navigation = function (carousel, anim) {
             verticalSlideFirstTimeCount = -1;
         }
 
-        // Reposition according to current deltaX
-        if (Math.abs(touch.pageX - startPointX) > 6) // Check to see if TAP or PAN by checking using the tap threshold (if surpassed than cancelAnimationFrame and start panning)
+        if (Math.abs(touch.pageX - startPointX) > 6)
         {
-            if (!vertical_pan && $el.end_animation) { // So it will stay one direction
+            if (!vertical_pan && $el.end_animation) {
                 horizontal_pan = true;
             }
 
-            window.cancelAnimationFrame(anim.slidesGlobalID); // STOP animation of sliding because if not then it will not reposition according to panning if animation hasn't ended
+            window.cancelAnimationFrame(anim.slidesGlobalID);
 
         }
 
@@ -532,10 +514,8 @@ var Navigation = function (carousel, anim) {
             }
         }
 
-        //Reposition according to horizontal navigation or vertical navigation
         if (horizontal_pan) {
 
-            // Check if user disabled slide - if didn't than go to position according to distance from when horizontal panning started
             if (options.disable_slide) {
                 return;
             }
@@ -547,12 +527,12 @@ var Navigation = function (carousel, anim) {
             vertical_pan = false;
 
             setTranslate3d($el,
-                ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX)) //Check if out of boundaries - if true than add springy panning effect
+                ((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX))
 
                 + anim.currentLandPos);
 
-            $el.dispatchEvent(new Event("changePos"));
-            $el.dispatchEvent(new Event("pan"));
+            $el.dispatchEvent(new Event("carouselChangePos"));
+            $el.dispatchEvent(new Event("carouselPan"));
 
         } else if (vertical_pan && options.swipe_out) {
             e.preventDefault();
@@ -586,16 +566,14 @@ var Navigation = function (carousel, anim) {
             window.removeEventListener('mousemove', mousemove);
             window.removeEventListener('touchmove', mousemove);
 
-            // Check if vertical panning (swipe out) or horizontal panning (carousel swipe)
             if (vertical_pan && options.swipe_out) {
-                vertical_pan = false; // Back to false for mousewheel (Vertical pan has finished so enable mousewheel scrolling)
+                vertical_pan = false;
 
                 swipeOut();
 
                 return;
             } else if ($el.end_animation && !options.disable_slide) {
                 var deltaTime = (Date.now() - swipeStartTime);
-                // Verify delta is > 0 to avoid divide by 0 error
                 deltaTime++;
                 vars.velocity = -(touch.pageX - startPointX) / deltaTime;
 
@@ -614,7 +592,9 @@ var Navigation = function (carousel, anim) {
                 }
             }
 
-            const clickSlideEvent = new Event("clickSlide", { slide: $el.savedSlideIndex });
+            const clickSlideEvent = new Event("carouselClickSlide");
+
+			clickSlideEvent.slideIndex = $el.savedSlideIndex;
 
             $el.dispatchEvent(clickSlideEvent);
 
@@ -627,18 +607,6 @@ var Navigation = function (carousel, anim) {
     }
 };
 
-function clearSelections() {
-    if (window.getSelection) {
-        if (window.getSelection().empty) { // Chrome
-            window.getSelection().empty();
-        } else if (window.getSelection().removeAllRanges) { // Firefox
-            window.getSelection().removeAllRanges();
-        }
-    } else if (document.selection) { // IE?
-        document.selection.empty();
-    }
-}
-
 function getTouch(e) {
     if (e.type == "touchmove") {
         return e.changedTouches[0];
@@ -650,11 +618,10 @@ function getTouch(e) {
 var mousewheel = {
     add: function (_this, anim, nav, slides) {
         var touchCounter = 0,
-            sensetivity = 4; // Less is more (for the touchpad)
+            sensetivity = 4;
 
         slides.addEventListener("wheel", (e) => {
 
-            // Check if vertical pan is occuring... (if occuring dont continue)
             if (!nav.get_vertical_pan()) {
                 var deltaY = e.deltaY;
                 var deltaX = e.deltaX;
@@ -663,7 +630,6 @@ var mousewheel = {
                 var isWheel = (delta >= 100 || e.delta % 1 == 0);
 
                 if (!isWheel) {
-                    // different behavior for touchpad...
                     touchCounter++;
 
                     if (touchCounter == sensetivity) {
@@ -674,7 +640,6 @@ var mousewheel = {
 
 
                 e.preventDefault();
-                // Outer sorthand-if is for it to goto next or prev. the inner for touchpad.
                 var mouseLandingIndex = _this.vars.currentIndex - (((deltaX == 0 ? deltaY : deltaX) > 0) ? -1 : 1);
 
                 if (mouseLandingIndex >= slides.children.length || mouseLandingIndex < 0) {
