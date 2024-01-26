@@ -6,16 +6,133 @@
 
     <meta name="keywords" content="JavaScript,carousel,mobile,touch,slide">
 
-    <meta name="description" content="A simple and beautiful JavaScript touch carousel">
+    <meta name="description" content="JavaScript touch carousel with zero dependencies">
 
     <title>ItemSlide.js - JavaScript touch carousel</title>
 
-    <link href="layout.css" rel="stylesheet" />
-    <link href="sliding.css" rel="stylesheet" />
+	<style>
+	body {
+		font-family: calibri, sans-serif;
+		text-align: center;
+		margin: 0;
+		background-color: #8601AF;
+	}
+
+	header {
+		width: 100vw;
+		height: 15vh;
+		background-color: #FEFE33;
+		text-align: center;
+	}
+
+	#headertext {
+		text-decoration: none;
+		color: #8601AF;
+
+		font-size: 6.5vh;
+		font-weight: 400;
+	}
+
+	#about {
+		height: 48.5vh;
+		width: 90vw;
+
+		margin-left: auto;
+		margin-right: auto;
+
+		font-size: 5vh;
+		color: #FFF;
+	}
+
+	#about a {
+		font-size: 3.5vh;
+		color: white;
+	}
+
+	footer {
+		position: fixed;
+		font-size: 2.5vh;
+		bottom: 0%;
+		padding: 0.5vh;
+		background-color: #8601AF;
+		font-weight: 200;
+		color: #FFF;
+		right: 0;
+		left: 0;
+	}
+
+	footer .hrefs {
+		color: #FFF;
+		font-weight: 400;
+		text-decoration: none;
+	}
+
+	</style>
+
+	<style>
+	#scrolling {
+		position:fixed;
+		top:42%;
+
+		background: #8601AF;
+		height: 58%;
+		width: 100%;
+
+		overflow: hidden;
+	}
+
+	ul {
+		user-select: none;
+
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		margin-top:4vh;
+		height:80%;
+
+		list-style-type: none;
+
+		transform-style: preserve-3d;
+	}
+
+	li {
+		font-size: 8vmin;
+		float: left;
+		width: 55vw;
+		max-width: 750px;
+		height: 100%;
+		color: #8601AF;
+		font-weight: 300;
+		text-align: center;
+		border-radius: 30px;
+		cursor: pointer;
+		background: #FFF;
+		transform: scale(0.95);
+	}
+
+	.itemslide-active {
+		transform: scale(1);
+	}
+	</style>
 
     <script src="itemslide.js"></script>
-    <script src="sliding.js"></script>
 
+	<script>
+		var itemslide;
+
+		window.addEventListener("load", () => {
+
+			var element = document.querySelector("#scrolling ul");
+
+			itemslide = new Itemslide(element, {
+				swipe_out: true
+			});
+		});
+
+		window.addEventListener("resize", () => {
+			itemslide.reload();
+		});
+	</script>
 </head>
 <body>
     <header>
@@ -25,39 +142,33 @@
         </a>
     </header>
 
-    <div id="welcome">
-        <span class="content">
-            <table id="buttons-menu">
-		<tr>
-                    <td>
-                        <a id="github" href="https://github.com/nir9/itemslide">
-                            Github
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </span>
-    </div>
+	<section id="about">
+		<br>
+		JavaScript Carousel Library<br><br>
+		<a id="github" href="https://github.com/nir9/itemslide">
+			Source on Github
+		</a>
+	</section>
 
-    <div id="scrolling">
+    <section id="scrolling">
         <ul>
             <li>
-                Scroll
+				1
             </li>
             <li>
-                Swipe Up
+				2
             </li>
             <li>
-                Click to Slide
+				3
             </li>
             <li>
-                Mobile Friendly
+				4
             </li>
         </ul>
-    </div>
+    </section>
 
-    <div id="fotter" align="center">
-        Created by <a class="hrefs" href="https://youtube.com/@nirlichtman">Nir Lichtman</a>
-    </div>
+    <footer>
+        Created by <a class="hrefs" href="https://github.com/nir9">Nir Lichtman</a>
+    </footer>
 </body>
 </html>
