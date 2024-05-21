@@ -2,10 +2,9 @@
 
 (function ()
 {
+var carousel, totalDuration, totalBack, currentPos, startTime;
 
-var carousel, total_duration, total_back, currentPos, startTime;
-
-function gotoSlideByIndex(i, without_animation)
+function gotoSlideByIndex(i, withoutAnimation)
 {
 	var isBoundary;
 
@@ -19,7 +18,7 @@ function gotoSlideByIndex(i, without_animation)
 
 	changeActiveSlideTo(i);
 
-	total_duration = Math.max(carousel.options.duration
+	totalDuration = Math.max(carousel.options.duration
 		- ((1920 / window.outerWidth) * Math.abs(carousel.vars.velocity) *
 			9 * (carousel.options.duration / 230)
 		)
@@ -30,11 +29,11 @@ function gotoSlideByIndex(i, without_animation)
 		, 50
 	);
 
-	total_back = (isBoundary ? ((Math.abs(carousel.vars.velocity) * 250) / window.outerWidth) : 0);
+	totalBack = (isBoundary ? ((Math.abs(carousel.vars.velocity) * 250) / window.outerWidth) : 0);
 	currentPos = getTranslate3d(carousel.$el).x;
 	carousel.currentLandPos = getPositionByIndex(i);
 
-	if (without_animation) {
+	if (withoutAnimation) {
 		setTranslate3d(carousel.$el, getPositionByIndex(i));
 		return;
 	}
@@ -49,9 +48,9 @@ function getLandingSlideIndex(x)
 {
 	for (var i = 0; i < carousel.$el.children.length; i++) {
 		if (carousel.getSlidesWidth(false, i) + carousel.$el.children[i].offsetWidth / 2 -
-			carousel.$el.children[i].offsetWidth * carousel.options.pan_threshold * carousel.vars.direction - getPositionByIndex(0) > x) {
+			carousel.$el.children[i].offsetWidth * carousel.options.panThreshold * carousel.vars.direction - getPositionByIndex(0) > x) {
 
-			if (!carousel.options.one_item)
+			if (!carousel.options.oneItem)
 				return i;
 
 			else {
@@ -62,7 +61,7 @@ function getLandingSlideIndex(x)
 			}
 		}
 	}
-	return carousel.options.one_item ? carousel.vars.currentIndex + 1 : carousel.$el.children.length - 1;
+	return carousel.options.oneItem ? carousel.vars.currentIndex + 1 : carousel.$el.children.length - 1;
 }
 
 function isOutBoundaries()
@@ -88,25 +87,25 @@ function getPositionByIndex(i)
 {
 	const slidesWidth = carousel.getSlidesWidth(false, i);
 	const containerMinusSlideWidth = carousel.$el.parentElement.offsetWidth - carousel.$el.children[i].offsetWidth;
-	return -(slidesWidth - (containerMinusSlideWidth / (carousel.options.left_sided ? 1 : 2)));
+	return -(slidesWidth - (containerMinusSlideWidth / (carousel.options.leftSided ? 1 : 2)));
 }
 
 function animationRepeat()
 {
 	var currentTime = Date.now() - startTime;
 	
-	if (carousel.options.left_sided) {
+	if (carousel.options.leftSided) {
 		carousel.currentLandPos = clamp( -(carousel.vars.allSlidesWidth - carousel.$el.parent().width()), 0, carousel.currentLandPos);
 	}
 
 	carousel.$el.dispatchEvent(new Event("carouselChangePos"));
 
-	const x = currentPos - easeOutBack(currentTime, 0, currentPos - carousel.currentLandPos, total_duration, total_back);
+	const x = currentPos - easeOutBack(currentTime, 0, currentPos - carousel.currentLandPos, totalDuration, totalBack);
 	setTranslate3d(carousel.$el, x);
 
 	// to understand easings refer to: http://upshots.org/actionscript/jsas-understanding-easing
 
-	if (currentTime >= total_duration) {
+	if (currentTime >= totalDuration) {
 		setTranslate3d(carousel.$el, carousel.currentLandPos);
 		return;
 	}
@@ -171,7 +170,7 @@ function slideout()
 
 	let isSwipeDirectionUp;
 
-	carousel.$el.end_animation = true;
+	carousel.$el.endAnimation = true;
 
 	carousel.$el.savedSlideIndex = 0;
 
@@ -232,7 +231,7 @@ function slideout()
 
 		enableOpacity = true;
 
-		carousel.$el.end_animation = false;
+		carousel.$el.endAnimation = false;
 
 		swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
 	};
@@ -261,7 +260,7 @@ function slideout()
 					unwrapElements(itemslideMoveElement.children);
 				}
 
-				carousel.$el.end_animation = true;
+				carousel.$el.endAnimation = true;
 				currentTime = 0;
 
 				return;
@@ -324,7 +323,7 @@ function slideout()
 
 				settings.duration = durationSave;
 				currentTime = 0;
-				carousel.$el.end_animation = true;
+				carousel.$el.endAnimation = true;
 
 				return;
 			}
@@ -389,19 +388,19 @@ function createEvents()
 	}
 }
 
-var swipeStartTime, isDown, startPreventDefault, startPointX, startPointY, vertical_pan = false,
-	horizontal_pan;
+var swipeStartTime, isDown, startPreventDefault, startPointX, startPointY, verticalPan = false,
+	horizontalPan;
 
 var verticalSlideFirstTimeCount;
 
 function getVerticalPan()
 {
-	return vertical_pan
+	return verticalPan
 }
 
 function touchstart(e)
 {
-	if (e.target.getAttribute("no-drag") === "true" || !carousel.$el.end_animation) {
+	if (e.target.getAttribute("no-drag") === "true" || !carousel.$el.endAnimation) {
 		return;
 	}
 
@@ -422,8 +421,8 @@ function touchstart(e)
 	startPointX = touch.pageX;
 	startPointY = touch.pageY;
 
-	vertical_pan = false;
-	horizontal_pan = false;
+	verticalPan = false;
+	horizontalPan = false;
 
 	carousel.$el.savedSlide = e.target;
 
@@ -457,7 +456,7 @@ function mousemove(e)
 	else {
 		touch = e;
 
-		if (!carousel.options.disable_slide && !carousel.options.swipe_out) {
+		if (!carousel.options.disableSlide && !carousel.options.swipeOut) {
 			e.preventDefault();
 		}
 	}
@@ -499,8 +498,8 @@ function mousemove(e)
 
 	if (Math.abs(touch.pageX - startPointX) > 6)
 	{
-		if (!vertical_pan && carousel.$el.end_animation) {
-			horizontal_pan = true;
+		if (!verticalPan && carousel.$el.endAnimation) {
+			horizontalPan = true;
 		}
 
 		window.cancelAnimationFrame(carousel.slidesGlobalID);
@@ -508,22 +507,22 @@ function mousemove(e)
 	}
 
 	if (Math.abs(touch.pageY - startPointY) > 6) {
-		if (!horizontal_pan && carousel.$el.end_animation) {
-			vertical_pan = true;
+		if (!horizontalPan && carousel.$el.endAnimation) {
+			verticalPan = true;
 		}
 	}
 
-	if (horizontal_pan) {
+	if (horizontalPan) {
 
-		if (carousel.options.disable_slide) {
+		if (carousel.options.disableSlide) {
 			return;
 		}
 
-		if (carousel.options.left_sided) {
+		if (carousel.options.leftSided) {
 			carousel.currentLandPos = clamp(-(carousel.vars.allSlidesWidth - carousel.$el.parent().width()), 0, carousel.currentLandPos);
 		}
 
-		vertical_pan = false;
+		verticalPan = false;
 
 		setTranslate3d(carousel.$el,
 			((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX))
@@ -533,7 +532,7 @@ function mousemove(e)
 		carousel.$el.dispatchEvent(new Event("carouselChangePos"));
 		carousel.$el.dispatchEvent(new Event("carouselPan"));
 
-	} else if (vertical_pan && carousel.options.swipe_out) {
+	} else if (verticalPan && carousel.options.swipeOut) {
 		e.preventDefault();
 
 		const slideOutWrap = document.querySelector(".itemslide_slideoutwrap");
@@ -566,13 +565,13 @@ function touchend(e)
 		window.removeEventListener('mousemove', mousemove);
 		window.removeEventListener('touchmove', mousemove);
 
-		if (vertical_pan && carousel.options.swipe_out) {
-			vertical_pan = false;
+		if (verticalPan && carousel.options.swipeOut) {
+			verticalPan = false;
 
 			carousel.swipeOut();
 
 			return;
-		} else if (carousel.$el.end_animation && !carousel.options.disable_slide) {
+		} else if (carousel.$el.endAnimation && !carousel.options.disableSlide) {
 			var deltaTime = (Date.now() - swipeStartTime);
 			deltaTime++;
 			carousel.vars.velocity = -(touch.pageX - startPointX) / deltaTime;
@@ -584,7 +583,7 @@ function touchend(e)
 			}
 
 			carousel.vars.distanceFromStart = (touch.pageX - startPointX) * carousel.vars.direction * -1;
-			var landingSlideIndex = getLandingSlideIndex(carousel.vars.velocity * carousel.options.swipe_sensitivity - getTranslate3d(carousel.$el).x);
+			var landingSlideIndex = getLandingSlideIndex(carousel.vars.velocity * carousel.options.swipeSensitivity - getTranslate3d(carousel.$el).x);
 
 			if (carousel.vars.distanceFromStart > 6) {
 				gotoSlideByIndex(landingSlideIndex);
@@ -598,7 +597,7 @@ function touchend(e)
 
 		carousel.$el.dispatchEvent(clickSlideEvent);
 
-		if (carousel.$el.savedSlideIndex != carousel.vars.currentIndex && !carousel.options.disable_clicktoslide) {
+		if (carousel.$el.savedSlideIndex != carousel.vars.currentIndex && !carousel.options.disableClickToSlide) {
 			e.preventDefault();
 			gotoSlideByIndex(carousel.$el.savedSlideIndex);
 		}
@@ -661,7 +660,7 @@ create: function (instance, options, element) {
 	carousel.$el = element;
 	carousel.options = options;
 
-	if (carousel.options.parent_width) {
+	if (carousel.options.parentWidth) {
 		element.style.width = element.parentElement.offsetWidth;
 	}
 
@@ -686,7 +685,7 @@ create: function (instance, options, element) {
 	};
 
 	carousel.adjustCarouselWidthIfNotDisabled = () => {
-		if (!carousel.options.disable_autowidth) {
+		if (!carousel.options.disableAutoWidth) {
 			element.style.width = carousel.getSlidesWidth() + 10 + "px";
 		}
 	};
@@ -695,7 +694,7 @@ create: function (instance, options, element) {
 
 	carousel.vars = {
 		currentIndex: 0,
-		parent_width: carousel.options.parent_width,
+		parentWidth: carousel.options.parentWidth,
 		velocity: 0,
 		slideHeight: element.children[0].offsetHeight,
 		direction: 1,
@@ -703,9 +702,9 @@ create: function (instance, options, element) {
 		instance: instance
 	};
 
-	element.end_animation = true;
+	element.endAnimation = true;
 
-	if (carousel.options.swipe_out) {
+	if (carousel.options.swipeOut) {
 		slideout(carousel);
 	}
 
@@ -713,7 +712,7 @@ create: function (instance, options, element) {
 	gotoSlideByIndex(parseInt(carousel.options.start));
 	createEvents();
 
-	if (!carousel.options.disable_scroll) {
+	if (!carousel.options.disableScroll) {
 		mousewheel.add();
 	}
 }
@@ -741,7 +740,7 @@ function addExternalFunctions(itemslide, element, carousel)
 			return;
 		}
 
-		if (carousel.vars.parent_width) {
+		if (carousel.vars.parentWidth) {
 			Array.from($el.children).forEach((slide) => slide.style.width = $el.parentElement.offsetWidth);
 		}
 
@@ -793,17 +792,17 @@ function addExternalFunctions(itemslide, element, carousel)
 
 var defaults = {
     duration: 350,
-    swipe_sensitivity: 150,
-    disable_slide: false,
-    disable_clicktoslide: false,
-    disable_scroll: false,
+    swipeSensitivity: 150,
+    disableSlide: false,
+    disableClickToSlide: false,
+    disableScroll: false,
     start: 0,
-    one_item: false, // Set true for "one slide per swipe" navigation (used in the full screen navigation example)
-    pan_threshold: 0.3, // Percentage of slide width
-    disable_autowidth: false,
-    parent_width: false,
-    swipe_out: false, // Enable the swipe out feature - enables swiping items out of the carousel
-    left_sided: false // Restricts the movements to the borders instead of the middle
+    oneItem: false, // Set true for "one slide per swipe" navigation (used in the full screen navigation example)
+    panThreshold: 0.3, // Percentage of slide width
+    disableAutoWidth: false,
+    parentWidth: false,
+    swipeOut: false, // Enable the swipe out feature - enables swiping items out of the carousel
+    leftSided: false // Restricts the movements to the borders instead of the middle
 };
 
 function Itemslide(element, options)
