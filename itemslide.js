@@ -8,9 +8,9 @@ function gotoSlideByIndex(i, withoutAnimation)
 {
 	var isBoundary;
 
-	if (i >= carousel.$el.children.length - 1 || i <= 0) {
+	if (i >= carousel.element.children.length - 1 || i <= 0) {
 		isBoundary = true;
-		i = Math.min(Math.max(i, 0), carousel.$el.children.length - 1);
+		i = Math.min(Math.max(i, 0), carousel.element.children.length - 1);
 	}
 	else {
 		isBoundary = false;
@@ -21,11 +21,11 @@ function gotoSlideByIndex(i, withoutAnimation)
 	totalDuration = Math.max(carousel.options.duration - ((1920 / window.outerWidth) * Math.abs(carousel.vars.velocity) * 9 * (carousel.options.duration / 230)) - (isOutBoundaries() ? (carousel.vars.distanceFromStart / 15) : 0) * (carousel.options.duration / 230), 50);
 
 	totalBack = isBoundary ? ((Math.abs(carousel.vars.velocity) * 250) / window.outerWidth) : 0;
-	currentPos = getTranslate3d(carousel.$el).x;
+	currentPos = getTranslate3d(carousel.element).x;
 	carousel.currentLandPos = getPositionByIndex(i);
 
 	if (withoutAnimation) {
-		setTranslate3d(carousel.$el, getPositionByIndex(i));
+		setTranslate3d(carousel.element, getPositionByIndex(i));
 		return;
 	}
 
@@ -37,9 +37,9 @@ function gotoSlideByIndex(i, withoutAnimation)
 
 function getLandingSlideIndex(x)
 {
-	for (var i = 0; i < carousel.$el.children.length; i++) {
-		if (carousel.getSlidesWidth(false, i) + carousel.$el.children[i].offsetWidth / 2 -
-			carousel.$el.children[i].offsetWidth * carousel.options.panThreshold * carousel.vars.direction - getPositionByIndex(0) > x) {
+	for (var i = 0; i < carousel.element.children.length; i++) {
+		if (carousel.getSlidesWidth(false, i) + carousel.element.children[i].offsetWidth / 2 -
+			carousel.element.children[i].offsetWidth * carousel.options.panThreshold * carousel.vars.direction - getPositionByIndex(0) > x) {
 
 			if (!carousel.options.oneItem) {
 				return i;
@@ -53,31 +53,31 @@ function getLandingSlideIndex(x)
 		}
 	}
 
-	return carousel.options.oneItem ? carousel.vars.currentIndex + 1 : carousel.$el.children.length - 1;
+	return carousel.options.oneItem ? carousel.vars.currentIndex + 1 : carousel.element.children.length - 1;
 }
 
 function isOutBoundaries()
 {
-        return (Math.floor(getTranslate3d(carousel.$el).x) > (getPositionByIndex(0)) && carousel.vars.direction == -1) || (Math.ceil(getTranslate3d(carousel.$el).x) < (getPositionByIndex(carousel.$el.children.length - 1)) && carousel.vars.direction == 1);
+        return (Math.floor(getTranslate3d(carousel.element).x) > (getPositionByIndex(0)) && carousel.vars.direction == -1) || (Math.ceil(getTranslate3d(carousel.element).x) < (getPositionByIndex(carousel.element.children.length - 1)) && carousel.vars.direction == 1);
 }
 
 function changeActiveSlideTo(i)
 {
-	var oldSlide = carousel.$el.children[carousel.vars.currentIndex || 0];
+	var oldSlide = carousel.element.children[carousel.vars.currentIndex || 0];
 	oldSlide.className = "";
 
-	carousel.$el.children[i || 0].className = " itemslide-active";
+	carousel.element.children[i || 0].className = " itemslide-active";
 
 	if (i != carousel.options.currentIndex) {
 		carousel.vars.currentIndex = i;
-		carousel.$el.dispatchEvent(new Event("carouselChangeActiveIndex"));
+		carousel.element.dispatchEvent(new Event("carouselChangeActiveIndex"));
 	}
 }
 
 function getPositionByIndex(i)
 {
 	var slidesWidth = carousel.getSlidesWidth(false, i);
-	var containerMinusSlideWidth = carousel.$el.parentElement.offsetWidth - carousel.$el.children[i].offsetWidth;
+	var containerMinusSlideWidth = carousel.element.parentElement.offsetWidth - carousel.element.children[i].offsetWidth;
 	return -(slidesWidth - (containerMinusSlideWidth / (carousel.options.leftSided ? 1 : 2)));
 }
 
@@ -86,16 +86,16 @@ function animationRepeat()
 	var currentTime = Date.now() - startTime;
 	
 	if (carousel.options.leftSided) {
-		carousel.currentLandPos = clamp( -(carousel.vars.allSlidesWidth - carousel.$el.parent().width()), 0, carousel.currentLandPos);
+		carousel.currentLandPos = clamp(-(carousel.vars.allSlidesWidth - carousel.element.parentElement.clientWidth), 0, carousel.currentLandPos);
 	}
 
-	carousel.$el.dispatchEvent(new Event("carouselChangePos"));
+	carousel.element.dispatchEvent(new Event("carouselChangePos"));
 
 	var x = currentPos - easeOutBack(currentTime, 0, currentPos - carousel.currentLandPos, totalDuration, totalBack);
-	setTranslate3d(carousel.$el, x);
+	setTranslate3d(carousel.element, x);
 
 	if (currentTime >= totalDuration) {
-		setTranslate3d(carousel.$el, carousel.currentLandPos);
+		setTranslate3d(carousel.element, carousel.currentLandPos);
 		return;
 	}
 
@@ -146,7 +146,7 @@ function getCurrentTotalWidth(inSlides)
 
 function slideout()
 {
-	var slides = carousel.$el;
+	var slides = carousel.element;
 	var settings = carousel.options;
 	var vars = carousel.vars;
 
@@ -161,8 +161,8 @@ function slideout()
 
 	var isSwipeDirectionUp;
 
-	carousel.$el.endAnimation = true;
-	carousel.$el.savedSlideIndex = 0;
+	carousel.element.endAnimation = true;
+	carousel.element.savedSlideIndex = 0;
 
 	var goback = false;
 
@@ -184,20 +184,20 @@ function slideout()
 			goback = false;
 
 			var swipeOutEvent = new Event("carouselSwipeOut");
-			swipeOutEvent.slideIndex = carousel.$el.savedSlideIndex;
-			carousel.$el.dispatchEvent(swipeOutEvent);
+			swipeOutEvent.slideIndex = carousel.element.savedSlideIndex;
+			carousel.element.dispatchEvent(swipeOutEvent);
 		}
 
 		removeWrapper = 0;
 		durationSave = settings.duration;
-		prev = carousel.$el.savedSlide;
+		prev = carousel.element.savedSlide;
 		swipeOutStartTime = Date.now();
-		savedOpacity = carousel.$el.savedSlide.style.opacity || 1;
+		savedOpacity = carousel.element.savedSlide.style.opacity || 1;
 
-		if (carousel.$el.savedSlideIndex < carousel.vars.currentIndex) {
+		if (carousel.element.savedSlideIndex < carousel.vars.currentIndex) {
 			before = true;
 
-			var toWrap = carousel.$el.querySelectorAll("ul > li:nth-child(-n+" + (carousel.$el.savedSlideIndex + 1) + ")");
+			var toWrap = carousel.element.querySelectorAll("ul > li:nth-child(-n+" + (carousel.element.savedSlideIndex + 1) + ")");
 
 			if (toWrap.length > 0) {
 				wrapElements(toWrap, "itemslide_move");
@@ -205,7 +205,7 @@ function slideout()
 		} else {
 			before = false;
 
-			var toWrap = carousel.$el.querySelectorAll("ul > li:nth-child(n+" + (carousel.$el.savedSlideIndex + 2) + ")");
+			var toWrap = carousel.element.querySelectorAll("ul > li:nth-child(n+" + (carousel.element.savedSlideIndex + 2) + ")");
 
 			if (toWrap.length > 0) {
 				wrapElements(toWrap, "itemslide_move");
@@ -213,7 +213,7 @@ function slideout()
 		}
 
 		enableOpacity = true;
-		carousel.$el.endAnimation = false;
+		carousel.element.endAnimation = false;
 		swipeOutGlobalID = requestAnimationFrame(swipeOutAnimation);
 	};
 
@@ -230,7 +230,7 @@ function slideout()
 
 		if (enableOpacity) {
 			setTranslate3d(document.querySelector(".itemslide_slideoutwrap"), 0, currentSwipeOutPos - easeOutBack(currentTime, 0, currentSwipeOutPos - swipeOutLandPos, 250, 0));
-			carousel.$el.savedSlide.style.opacity = savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1);
+			carousel.element.savedSlide.style.opacity = savedOpacity - easeOutBack(currentTime, 0, savedOpacity, 250, 0) * (goback ? -1 : 1);
 		} else {
 			var itemslideMoveElement = document.querySelector(itemslideMove);
 
@@ -241,14 +241,14 @@ function slideout()
 					unwrapElements(itemslideMoveElement.children);
 				}
 
-				carousel.$el.endAnimation = true;
+				carousel.element.endAnimation = true;
 				currentTime = 0;
 
 				return;
 			}
 
 			if (itemslideMoveElement) {
-				setTranslate3d(itemslideMoveElement, 0 - easeOutBack(currentTime - 250, 0, 0 + carousel.$el.savedSlide.offsetWidth, 125, 0) * (before ? (-1) : 1), 0);
+				setTranslate3d(itemslideMoveElement, 0 - easeOutBack(currentTime - 250, 0, 0 + carousel.element.savedSlide.offsetWidth, 125, 0) * (before ? (-1) : 1), 0);
 			}
 		}
 
@@ -256,21 +256,21 @@ function slideout()
 
 			unwrapElements(document.querySelector(".itemslide_slideoutwrap").children);
 
-			if (carousel.$el.savedSlideIndex == carousel.vars.currentIndex) {
+			if (carousel.element.savedSlideIndex == carousel.vars.currentIndex) {
 				var firstMoveSlide = document.querySelector(itemslideMove + ' :nth-child(1)');
 				if (firstMoveSlide) {
 					firstMoveSlide.className = "itemslide-active";
 				}
 			}
 
-			if (carousel.$el.savedSlideIndex == (carousel.$el.children.length - 1) && !before && carousel.$el.savedSlideIndex == carousel.vars.currentIndex)
+			if (carousel.element.savedSlideIndex == (carousel.element.children.length - 1) && !before && carousel.element.savedSlideIndex == carousel.vars.currentIndex)
 			{
 				settings.duration = 200;
-				gotoSlideByIndex(carousel.$el.children.length - 2);
+				gotoSlideByIndex(carousel.element.children.length - 2);
 
 			}
 
-			if (carousel.$el.savedSlideIndex == 0 && carousel.vars.currentIndex != 0) {
+			if (carousel.element.savedSlideIndex == 0 && carousel.vars.currentIndex != 0) {
 				currentTime = 500;
 			}
 
@@ -291,7 +291,7 @@ function slideout()
 
 				var shouldGotoAfterRemoveSlide = false;
 
-				if ((carousel.$el.savedSlideIndex == 0 && carousel.vars.currentIndex != 0) || (before && carousel.vars.currentIndex != carousel.$el.children.length - 1)) {
+				if ((carousel.element.savedSlideIndex == 0 && carousel.vars.currentIndex != 0) || (before && carousel.vars.currentIndex != carousel.element.children.length - 1)) {
 					shouldGotoAfterRemoveSlide = true;
 				}
 
@@ -303,7 +303,7 @@ function slideout()
 
 				settings.duration = durationSave;
 				currentTime = 0;
-				carousel.$el.endAnimation = true;
+				carousel.element.endAnimation = true;
 
 				return;
 			}
@@ -353,7 +353,7 @@ function unwrapElements(elements)
 
 function createEvents()
 {
-	Array.from(carousel.$el.children).forEach((slide) => {
+	Array.from(carousel.element.children).forEach((slide) => {
 		for (var eventType of ["mousedown", "touchstart"]) {
 			slide.addEventListener(eventType, (e) => {
 				touchstart.call(this, e);
@@ -380,7 +380,7 @@ function getVerticalPan()
 
 function touchstart(e)
 {
-	if (e.target.getAttribute("no-drag") === "true" || !carousel.$el.endAnimation) {
+	if (e.target.getAttribute("no-drag") === "true" || !carousel.element.endAnimation) {
 		return;
 	}
 
@@ -404,9 +404,9 @@ function touchstart(e)
 	verticalPan = false;
 	horizontalPan = false;
 
-	carousel.$el.savedSlide = e.target;
+	carousel.element.savedSlide = e.target;
 
-	carousel.$el.savedSlideIndex = Array.from(carousel.$el.savedSlide.parentElement.children).indexOf(carousel.$el.savedSlide);
+	carousel.element.savedSlideIndex = Array.from(carousel.element.savedSlide.parentElement.children).indexOf(carousel.element.savedSlide);
 
 	verticalSlideFirstTimeCount = 0;
 
@@ -454,7 +454,7 @@ function mousemove(e)
 		}
 	} else {
 		if (!firstTime) {
-			carousel.currentLandPos = getTranslate3d(carousel.$el).x;
+			carousel.currentLandPos = getTranslate3d(carousel.element).x;
 			startPointX = touch.pageX;
 		}
 
@@ -463,18 +463,18 @@ function mousemove(e)
 
 	if (verticalSlideFirstTimeCount == 1)
 	{
-		Array.from(carousel.$el.children).forEach((slide) => {
+		Array.from(carousel.element.children).forEach((slide) => {
 			slide.style.height = carousel.vars.slideHeight + "px"
 		});
 
-		wrapElements([carousel.$el.savedSlide], "itemslide_slideoutwrap", true);
+		wrapElements([carousel.element.savedSlide], "itemslide_slideoutwrap", true);
 
 		verticalSlideFirstTimeCount = -1;
 	}
 
 	if (Math.abs(touch.pageX - startPointX) > 6)
 	{
-		if (!verticalPan && carousel.$el.endAnimation) {
+		if (!verticalPan && carousel.element.endAnimation) {
 			horizontalPan = true;
 		}
 
@@ -482,7 +482,7 @@ function mousemove(e)
 	}
 
 	if (Math.abs(touch.pageY - startPointY) > 6) {
-		if (!horizontalPan && carousel.$el.endAnimation) {
+		if (!horizontalPan && carousel.element.endAnimation) {
 			verticalPan = true;
 		}
 	}
@@ -494,18 +494,18 @@ function mousemove(e)
 		}
 
 		if (carousel.options.leftSided) {
-			carousel.currentLandPos = clamp(-(carousel.vars.allSlidesWidth - carousel.$el.parent().width()), 0, carousel.currentLandPos);
+			carousel.currentLandPos = clamp(-(carousel.vars.allSlidesWidth - carousel.element.parentElement.clientWidth), 0, carousel.currentLandPos);
 		}
 
 		verticalPan = false;
 
-		setTranslate3d(carousel.$el,
+		setTranslate3d(carousel.element,
 			((firstTime == 0) ? (savedStartPt - startPointX + (touch.pageX - savedStartPt) / 4) : (touch.pageX - startPointX))
 
 			+ carousel.currentLandPos);
 
-		carousel.$el.dispatchEvent(new Event("carouselChangePos"));
-		carousel.$el.dispatchEvent(new Event("carouselPan"));
+		carousel.element.dispatchEvent(new Event("carouselChangePos"));
+		carousel.element.dispatchEvent(new Event("carouselPan"));
 
 	} else if (verticalPan && carousel.options.swipeOut) {
 		e.preventDefault();
@@ -548,7 +548,7 @@ function touchend(e)
 		carousel.swipeOut();
 
 		return;
-	} else if (carousel.$el.endAnimation && !carousel.options.disableSlide) {
+	} else if (carousel.element.endAnimation && !carousel.options.disableSlide) {
 		var deltaTime = (Date.now() - swipeStartTime);
 		deltaTime++;
 		carousel.vars.velocity = -(touch.pageX - startPointX) / deltaTime;
@@ -560,7 +560,7 @@ function touchend(e)
 		}
 
 		carousel.vars.distanceFromStart = (touch.pageX - startPointX) * carousel.vars.direction * -1;
-		var landingSlideIndex = getLandingSlideIndex(carousel.vars.velocity * carousel.options.swipeSensitivity - getTranslate3d(carousel.$el).x);
+		var landingSlideIndex = getLandingSlideIndex(carousel.vars.velocity * carousel.options.swipeSensitivity - getTranslate3d(carousel.element).x);
 
 		if (carousel.vars.distanceFromStart > 6) {
 			gotoSlideByIndex(landingSlideIndex);
@@ -570,13 +570,13 @@ function touchend(e)
 
 	var clickSlideEvent = new Event("carouselClickSlide");
 
-	clickSlideEvent.slideIndex = carousel.$el.savedSlideIndex;
+	clickSlideEvent.slideIndex = carousel.element.savedSlideIndex;
 
-	carousel.$el.dispatchEvent(clickSlideEvent);
+	carousel.element.dispatchEvent(clickSlideEvent);
 
-	if (carousel.$el.savedSlideIndex != carousel.vars.currentIndex && !carousel.options.disableClickToSlide) {
+	if (carousel.element.savedSlideIndex != carousel.vars.currentIndex && !carousel.options.disableClickToSlide) {
 		e.preventDefault();
-		gotoSlideByIndex(carousel.$el.savedSlideIndex);
+		gotoSlideByIndex(carousel.element.savedSlideIndex);
 	}
 }
 
@@ -592,7 +592,7 @@ function getTouch(e)
 function addMousewheel() {
 	var touchCounter = 0, sensetivity = 4;
 
-	carousel.$el.addEventListener("wheel", (e) => {
+	carousel.element.addEventListener("wheel", (e) => {
 		if (!getVerticalPan()) {
 			var deltaY = e.deltaY;
 			var deltaX = e.deltaX;
@@ -612,7 +612,7 @@ function addMousewheel() {
 			e.preventDefault();
 			var mouseLandingIndex = carousel.vars.currentIndex - (((deltaX == 0 ? deltaY : deltaX) > 0) ? -1 : 1);
 
-			if (mouseLandingIndex >= carousel.$el.children.length || mouseLandingIndex < 0) {
+			if (mouseLandingIndex >= carousel.element.children.length || mouseLandingIndex < 0) {
 				return;
 			}
 
@@ -627,7 +627,7 @@ var Carousel = {
 create: function (instance, options, element) {
 	carousel = this;
 
-	carousel.$el = element;
+	carousel.element = element;
 	carousel.options = options;
 
 	if (carousel.options.parentWidth) {
@@ -703,22 +703,22 @@ function addExternalFunctions(itemslide, element, carousel)
 	};
 
 	itemslide.reload = function (noAnimation) {
-		var $el = carousel.$el;
+		var element = carousel.element;
 		var vars = carousel.vars;
 
-		if ($el.children.length === 0) {
+		if (element.children.length === 0) {
 			return;
 		}
 
 		if (carousel.vars.parentWidth) {
-			Array.from($el.children).forEach((slide) => slide.style.width = $el.parentElement.offsetWidth);
+			Array.from(element.children).forEach((slide) => slide.style.width = element.parentElement.offsetWidth);
 		}
 
 		carousel.adjustCarouselWidthIfNotDisabled();
 
-		carousel.vars.slideHeight = $el.children[0].offsetHeight;
+		carousel.vars.slideHeight = element.children[0].offsetHeight;
 
-		carousel.vars.allSlidesWidth = getCurrentTotalWidth($el);
+		carousel.vars.allSlidesWidth = getCurrentTotalWidth(element);
 
 		carousel.vars.velocity = 0;
 
@@ -737,12 +737,12 @@ function addExternalFunctions(itemslide, element, carousel)
 	};
 
 	itemslide.removeSlide = function (index) {
-		if (carousel.vars.currentIndex === carousel.$el.children.length - 1) {
+		if (carousel.vars.currentIndex === carousel.element.children.length - 1) {
 			carousel.vars.currentIndex -= 1;
 		}
 
-		carousel.$el.removeChild(carousel.$el.children[index || 0]);
-		carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.$el);
+		carousel.element.removeChild(carousel.element.children[index || 0]);
+		carousel.vars.allSlidesWidth = getCurrentTotalWidth(carousel.element);
 
 		itemslide.reload(true);
 	};
