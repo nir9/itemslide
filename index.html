@@ -3,24 +3,22 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
     <meta name="keywords" content="JavaScript,carousel,mobile,touch,slide">
-
     <meta name="description" content="JavaScript touch carousel with zero dependencies">
-
     <title>ItemSlide.js - JavaScript touch carousel</title>
-
 	<style>
 	body {
 		font-family: calibri, sans-serif;
 		text-align: center;
 		margin: 0;
+		height: 98vh;
 		background-color: #8601AF;
 	}
 
-	header {
-		width: 100vw;
-		height: 15vh;
+	#header {
+		width: 100%;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		background-color: #FEFE33;
 		text-align: center;
 	}
@@ -28,20 +26,16 @@
 	#headertext {
 		text-decoration: none;
 		color: #8601AF;
-
 		font-size: 6.5vh;
 		font-weight: 400;
 	}
 
 	#about {
-		height: 48.5vh;
-		width: 90vw;
-
+		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
-
 		font-size: 5vh;
-		color: #FFF;
+		color: white;
 	}
 
 	#about a {
@@ -49,54 +43,43 @@
 		color: white;
 	}
 
-	footer {
+	#footer {
 		position: fixed;
 		font-size: 2.5vh;
 		bottom: 0%;
-		padding: 0.5vh;
+		padding: 0.5%;
 		background-color: #8601AF;
 		font-weight: 200;
-		color: #FFF;
+		color: white;
 		right: 0;
 		left: 0;
 	}
 
-	footer .hrefs {
+	#footer .hrefs {
 		color: #FFF;
 		font-weight: 400;
 		text-decoration: none;
 	}
 
-	</style>
-
-	<style>
 	#scrolling {
-		position:fixed;
-		top:42%;
-
 		background: #8601AF;
 		height: 58%;
 		width: 100%;
-
 		overflow: hidden;
 	}
 
-	ul {
+	#scrolling ul {
 		user-select: none;
-
 		margin: 0;
 		padding: 0;
-		position: absolute;
-		margin-top:4vh;
-		height:80%;
-
+		margin-top: 3%;
+		height: 80%;
 		list-style-type: none;
-
 		transform-style: preserve-3d;
 	}
 
-	li {
-		font-size: 8vmin;
+	#scrolling ul li {
+		font-size: 30vh;
 		float: left;
 		width: 55vw;
 		max-width: 750px;
@@ -106,51 +89,45 @@
 		text-align: center;
 		border-radius: 30px;
 		cursor: pointer;
-		background: #FFF;
+		background: white;
 		transform: scale(0.95);
 	}
 
-	.itemslide-active {
+	#scrolling ul .itemslide-active {
 		transform: scale(1);
 	}
 	</style>
-
     <script src="itemslide.js"></script>
-
 	<script>
 		var itemslide;
-
-		window.addEventListener("load", () => {
-
+		window.addEventListener("load", function () {
 			var element = document.querySelector("#scrolling ul");
-
 			itemslide = new Itemslide(element, {
 				swipeOut: true
 			});
 		});
 
-		window.addEventListener("resize", () => {
+		window.addEventListener("resize", function () {
 			itemslide.reload();
 		});
 	</script>
 </head>
 <body>
-    <header>
-        <br>
+    <div id="header">
         <a id="headertext" href="index.html">
             ItemSlide.js
         </a>
-    </header>
-
-	<section id="about">
+    </div>
+	<div id="about">
 		<br>
-		JavaScript Carousel Library<br><br>
+		JavaScript Carousel Library
+		<br>
+		<br>
 		<a id="github" href="https://github.com/nir9/itemslide">
 			Source on Github
 		</a>
-	</section>
-
-    <section id="scrolling">
+	</div>
+    <div id="scrolling">
         <ul>
             <li>
 				1
@@ -165,10 +142,9 @@
 				4
             </li>
         </ul>
-    </section>
-
-    <footer>
+    </div>
+    <div id="footer">
         Created by <a class="hrefs" href="https://github.com/nir9">Nir Lichtman</a>
-    </footer>
+    </div>
 </body>
 </html>
