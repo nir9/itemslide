@@ -64,9 +64,9 @@ function isOutBoundaries()
 function changeActiveSlideTo(i)
 {
 	var oldSlide = carousel.element.children[carousel.vars.currentIndex || 0];
-	oldSlide.className = "";
+	oldSlide.classList.remove("itemslide-active");
 
-	carousel.element.children[i || 0].className = " itemslide-active";
+	carousel.element.children[i || 0].classList.add("itemslide-active");
 
 	if (i != carousel.options.currentIndex) {
 		carousel.vars.currentIndex = i;
@@ -259,7 +259,7 @@ function slideout()
 			if (carousel.element.savedSlideIndex == carousel.vars.currentIndex) {
 				var firstMoveSlide = document.querySelector(itemslideMove + ' :nth-child(1)');
 				if (firstMoveSlide) {
-					firstMoveSlide.className = "itemslide-active";
+					firstMoveSlide.classList.add("itemslide-active");
 				}
 			}
 
